@@ -1,0 +1,31 @@
+export interface OrderDetailResp {
+  transactionId: string;
+  transactionTime: string;
+  channelName: string;
+  brandId: string;
+  brandName: string;
+  storeId: string;
+  storeName: string;
+  mobileCountryCode: string;
+  mobile: string;
+  memberName: string;
+  memberCardId: string;
+  transactionType: string;
+  paymentMethod: number;
+  invoiceNumber: string;
+  pointDeduction: number;
+  originalAmount: number;
+  paidAmount: number;
+  discountAmount: number;
+  shippingFee: number;
+  createId: string;
+  deliveryMethod: string;
+  deliveryCity: string;
+  deliveryZip: string;
+  deliveryAddress: string;
+  pickupBrand: string;
+  pickupStore: string;
+  remark: string;
+  mealMethod: number;
+  paymentName: string;
+}

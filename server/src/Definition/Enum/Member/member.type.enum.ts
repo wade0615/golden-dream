@@ -1,0 +1,4 @@
+export enum CONSUMER_MEMBER_TYPE {
+  MEMBER = 1,
+  NON_MEMBER = 2
+}
