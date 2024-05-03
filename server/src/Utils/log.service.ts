@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ApiLogWhite } from 'src/Config/White/api.log.white';
 import { ELKLogObj } from 'src/Definition/Interface/Log/print.log.elk.third.party.interface';
 import { UTCToTimeString } from 'src/Utils/tools';
 
@@ -88,36 +87,5 @@ export class LogService {
     );
     // [end] print
     console.info(elkLogStr);
-  }
-
-  /**
-   * ******* 已棄用 *******
-   * 印 log 在本機
-   * @param req
-   * @param resp
-   */
-  async printLogELK(req, resp, level, msg?, code?, timing?, result?) {
-    const now = Date.now();
-    const { authorization } = req?.headers;
-    const token = authorization?.split(' ')[1];
-
-    let response = '';
-    if (ApiLogWhite.includes(req?.url)) {
-      response = JSON.stringify(result);
-    }
-
-    const logELK = `method=${req.method}|route=${req.originalUrl}|sourceIP=${
-      req?.headers['x-forwarded-for'] || req?.connection?.remoteAddress
-    }|userAgent=${
-      req.get('User-Agent') || req.headers['user-agent']
-    }|level=${level}|msg=${msg ?? ''}|code=${code ?? ''}|exectime=${
-      Date.now() - now
-    }ms|time=${UTCToTimeString(now)}|status=${resp?.statusCode ?? ''}|token=${
-      token || ''
-    }|timing=${timing ?? 'end'}|request=${JSON.stringify(req.body)}|response=${
-      response ?? ''
-    }|service=crm_backstage`;
-
-    console.log(logELK);
   }
 }
