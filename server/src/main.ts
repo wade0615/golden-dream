@@ -1,11 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+// import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 import * as helmet from 'helmet';
 
 import { VersioningType } from '@nestjs/common';
-import { version } from '../package.json';
+// import { version } from '../package.json';
 import { ConfigAppService } from './Config/App/config.service';
 import { AppModule } from './app.module';
 
@@ -55,19 +55,19 @@ async function bootstrap(): Promise<void> {
   app.useGlobalInterceptors(new globalInterceptor(new LogService()));
   app.useGlobalFilters(new globalExceptionHandleFilter(new LogService()));
 
-  const v1Config = new DocumentBuilder()
-    .setTitle(`${appConfig.name} V1`)
-    .setDescription('V1 documentation')
-    .setVersion(version)
-    .addTag('accounts')
-    .build();
+  // const v1Config = new DocumentBuilder()
+  //   .setTitle(`${appConfig.name} V1`)
+  //   .setDescription('V1 documentation')
+  //   .setVersion(version)
+  //   .addTag('accounts')
+  //   .build();
 
   // Swagger only generate at local or dev
-  const NOW_ENV = process.env.APP_ENV;
-  if (NOW_ENV === 'LOCAL' || NOW_ENV === 'DEV') {
-    const document = SwaggerModule.createDocument(app, v1Config);
-    SwaggerModule.setup('/v1/swagger/api', app, document);
-  }
+  // const NOW_ENV = process.env.APP_ENV;
+  // if (NOW_ENV === 'LOCAL' || NOW_ENV === 'DEV') {
+  //   const document = SwaggerModule.createDocument(app, v1Config);
+  //   SwaggerModule.setup('/v1/swagger/api', app, document);
+  // }
 
   const server = await app.listen(appConfig.port);
   server.keepAliveTimeout = appConfig.keepAliveTimeout;

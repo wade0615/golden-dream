@@ -4,7 +4,7 @@ import { Response } from 'express';
 import * as fs from 'fs';
 import oauthPath from 'src/Center/oauth.path';
 import { ConfigApiService } from 'src/Config/Api/config.service';
-import config from 'src/Config/config';
+// import config from 'src/Config/config';
 import configError from 'src/Config/error.message.config';
 import { MenuCommon, MetaDataCommon } from 'src/Definition/Dto';
 import { CHANNEL } from 'src/Definition/Enum/Channel/channel.enum';
@@ -168,7 +168,7 @@ export class MemberService {
       now.toString()
     ];
     const channel = crypto
-      .privateEncrypt(config.PUBLIC_KEY, Buffer.from(buffer.join('|')))
+      .privateEncrypt(process.env.PUBLIC_KEY, Buffer.from(buffer.join('|')))
       .toString('base64');
 
     // 取得 6 碼系統密碼
@@ -431,7 +431,7 @@ export class MemberService {
 
     // CRM 後台渠道簽證
     const channel = crypto
-      .privateEncrypt(config.PUBLIC_KEY, Buffer.from(buffer.join('|')))
+      .privateEncrypt(process.env.PUBLIC_KEY, Buffer.from(buffer.join('|')))
       .toString('base64');
 
     // 取得 6 碼系統密碼
@@ -965,7 +965,7 @@ export class MemberService {
 
     // CRM 後台渠道簽證
     const channel = crypto
-      .privateEncrypt(config.PUBLIC_KEY, Buffer.from(buffer.join('|')))
+      .privateEncrypt(process.env.PUBLIC_KEY, Buffer.from(buffer.join('|')))
       .toString('base64');
 
     const urlBody = {
@@ -1001,7 +1001,7 @@ export class MemberService {
 
     // CRM 後台渠道簽證
     const channel = crypto
-      .privateEncrypt(config.PUBLIC_KEY, Buffer.from(buffer.join('|')))
+      .privateEncrypt(process.env.PUBLIC_KEY, Buffer.from(buffer.join('|')))
       .toString('base64');
 
     const urlBody = {
