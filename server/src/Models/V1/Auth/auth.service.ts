@@ -5,14 +5,10 @@ import { CustomerException } from 'src/Global/ExceptionFilter/global.exception.h
 
 import config from 'src/Config/config';
 import configError from 'src/Config/error.message.config';
-import { ENUM_MEMBER_SHIP_SETTING_STATUS_CODE } from 'src/Definition/Enum/MemberShip/member.ship.setting.status.enum';
 import { RedisService } from 'src/Providers/Database/Redis/redis.service';
-import { secondsUntilEndOfDay, sha256Hash } from 'src/Utils/tools';
+import { sha256Hash } from 'src/Utils/tools';
 import { ConfigApiService } from '../../../Config/Api/config.service';
-import { MemberShipService } from '../MemberShip/memberShip.service';
-import { PermissionRepository } from '../Permission/permission.repository';
 import { GetUserInfoRes, LoginResDto } from './Dto';
-import { Age, Gender, GetDashBoardResp } from './Dto/get.dashbord.dto';
 import { GetUserInfoInterface } from './Interface/get.user.info.interface';
 import { AuthRepository } from './auth.repository';
 
@@ -25,8 +21,6 @@ export class AuthService {
     private authRepository: AuthRepository,
     private apiConfigService: ConfigApiService,
     private redisService: RedisService,
-    private permissionRepository: PermissionRepository,
-    private memberShipService: MemberShipService,
     private readonly jwtService: JwtService
   ) {}
 
@@ -136,8 +130,7 @@ export class AuthService {
     );
 
     // 取得權限
-    const getMemberRoleInfo =
-      await this.permissionRepository.getMemberPermission(authMemberId);
+    const getMemberRoleInfo = [];
 
     const authItems = getMemberRoleInfo.map((per) => {
       return per.permissionCode;
@@ -203,8 +196,7 @@ export class AuthService {
     const accessToken = await this._getToken(name);
 
     // 取得權限
-    const getMemberRoleInfo =
-      await this.permissionRepository.getMemberPermission(memberId);
+    const getMemberRoleInfo = [];
 
     const authItems = getMemberRoleInfo.map((per) => {
       return per.permissionCode;
@@ -301,88 +293,5 @@ export class AuthService {
     );
 
     return {};
-  }
-
-  /**
-   * dashboard 資訊
-   * @returns
-   */
-  async getDashboard(): Promise<GetDashBoardResp> {
-    // 為截止至前一日的會員資料
-    let result = <GetDashBoardResp>{};
-    const today = moment()
-      .tz(process.env.TIME_ZONE)
-      .format(process.env.DATE_ONLY);
-
-    result = await this.redisService.getCacheData(
-      `${today}-${config.REDIS_KEY.DASHBOARD}`
-    );
-    if (result) return result;
-
-    // 會籍
-    const activeMemberShipId = (
-      await this.memberShipService.getMemberShipSettingList()
-    )?.settingList?.find(
-      (x) => x.settingStatus === ENUM_MEMBER_SHIP_SETTING_STATUS_CODE.EFFECTIVE
-    );
-    const memberShipInfo = (
-      await this.memberShipService.getMemberSettingParameter(activeMemberShipId)
-    )?.memberShipList;
-
-    // 取得 dashBoard 資訊
-    const dashboardInfo = await this.authRepository.getDashboardInfo(
-      memberShipInfo
-    );
-
-    /** 取得比例 */
-    const getRate = (count: string) => {
-      const rate = ((Number(count) / dashboardInfo?.totalMember) * 100).toFixed(
-        2
-      );
-
-      if (rate.endsWith('.00')) return Math.round(Number(rate));
-      return Number(rate);
-    };
-
-    // 會籍佔比
-    const memberShip = Object.keys(dashboardInfo).reduce((acc, curr) => {
-      const singleMemberShip = memberShipInfo.find((item) =>
-        item.value.includes(curr)
-      );
-      if (singleMemberShip) {
-        acc.push({
-          rate: `${singleMemberShip?.label} ${getRate(dashboardInfo[curr])}%`,
-          count: Number(dashboardInfo[curr])
-        });
-      }
-      return acc;
-    }, []);
-
-    const gender = <Gender>{};
-    gender.male = getRate(dashboardInfo?.maleCount);
-    gender.female = getRate(dashboardInfo?.femaleCount);
-    gender.other = getRate(dashboardInfo?.otherCount);
-
-    const age = <Age>{};
-    age[20] = getRate(dashboardInfo?.age20BelowCount);
-    age[21] = getRate(dashboardInfo?.age21To30Count);
-    age[31] = getRate(dashboardInfo?.age31To40Count);
-    age[41] = getRate(dashboardInfo?.age41To50Count);
-    age[51] = getRate(dashboardInfo?.age51To60Count);
-    age[60] = getRate(dashboardInfo?.age60AboveCount);
-
-    result = <GetDashBoardResp>{};
-    result.totalMember = dashboardInfo?.totalMember;
-    result.memberShip = memberShip;
-    result.gender = gender;
-    result.age = age;
-
-    this.redisService.setCacheData(
-      `${today}-${config.REDIS_KEY.DASHBOARD}`,
-      result,
-      secondsUntilEndOfDay()
-    );
-
-    return result;
   }
 }

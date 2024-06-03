@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { MysqlProvider } from '../../../Providers/Database/DatabaseMysql/mysql.provider';
-import { ValueLable } from '../MemberShip/Dto/get.member.setting.parameter.dto';
-import { GetDashBoardInfoResp } from './Interface/get.dashbord.info.interface';
 import { GetUserDetailResp } from './Interface/get.user.detail.interface';
 import { GetUserInfoInterface } from './Interface/get.user.info.interface';
 import moment = require('moment-timezone');
@@ -49,40 +47,6 @@ export class AuthRepository {
     `;
 
     await this.internalConn.query(sqlStr, [set, account]);
-  }
-
-  /**
-   * 取得 dashBoard 資訊
-   */
-  async getDashboardInfo(
-    memberShip: ValueLable[]
-  ): Promise<GetDashBoardInfoResp> {
-    const memberShipClauses = memberShip
-      .map(
-        (x) =>
-          `SUM(CASE WHEN Membership_Status = '${x?.value}' THEN 1 ELSE 0 END) ${x?.value}`
-      )
-      .join(',\n');
-
-    const sqlStr = /* sql */ `
-SELECT
-    COUNT(1) totalMember,
-    ${memberShipClauses},
-    SUM(CASE WHEN gender = 'M' THEN 1 ELSE 0 END) maleCount,
-    SUM(CASE WHEN gender = 'F' THEN 1 ELSE 0 END) femaleCount,
-    SUM(CASE WHEN gender = 'S' THEN 1 ELSE 0 END) otherCount,
-    SUM(CASE WHEN YEAR(CURDATE()) - YEAR(birthday) <= 20 THEN 1 ELSE 0 END) age20BelowCount,
-    SUM(CASE WHEN YEAR(CURDATE()) - YEAR(birthday) BETWEEN 21 AND 30 THEN 1 ELSE 0 END) age21To30Count,
-    SUM(CASE WHEN YEAR(CURDATE()) - YEAR(birthday) BETWEEN 31 AND 40 THEN 1 ELSE 0 END) age31To40Count,
-    SUM(CASE WHEN YEAR(CURDATE()) - YEAR(birthday) BETWEEN 41 AND 50 THEN 1 ELSE 0 END) age41To50Count,
-    SUM(CASE WHEN YEAR(CURDATE()) - YEAR(birthday) BETWEEN 51 AND 60 THEN 1 ELSE 0 END) age51To60Count,
-    SUM(CASE WHEN YEAR(CURDATE()) - YEAR(birthday) > 60 THEN 1 ELSE 0 END) age60AboveCount
-FROM IEat_Member
-WHERE Create_Date < CURDATE() AND Is_Active = 1`;
-
-    const result = (await this.internalConn.query(sqlStr)) ?? [];
-
-    return result?.[0];
   }
 
   /**

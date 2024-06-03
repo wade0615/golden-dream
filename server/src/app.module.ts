@@ -17,27 +17,7 @@ import { RequestLoggerMiddleware } from './Global/Middlewares/request-logger.mid
 // Service
 import { ConfigKafkaModule } from './Config/Database/Kafka/config.module';
 import { AuthModule } from './Models/V1/Auth/auth.module';
-import { BrandModule } from './Models/V1/Brand/brand.module';
-import { ChannelModule } from './Models/V1/Channel/channel.module';
-import { ClusterModule } from './Models/V1/Cluster/cluster.module';
-import { CommodityModule } from './Models/V1/Commodity/commodity.module';
 import { CommonModule } from './Models/V1/Common/common.module';
-import { CouponModule } from './Models/V1/Coupon/coupon.module';
-import { DataSyncModule } from './Models/V1/DataSync/data.sync.module';
-import { HolidayModule } from './Models/V1/Holiday/holiday.module';
-import { MealPeriodModule } from './Models/V1/MealPeriod/meal.period.module';
-import { MemberModule } from './Models/V1/Member/member.module';
-import { MemberShipModule } from './Models/V1/MemberShip/memberShip.module';
-import { MotModule } from './Models/V1/Mot/mot.module';
-import { NotifyModule } from './Models/V1/Notify/notify.module';
-import { OrderModule } from './Models/V1/Order/order.module';
-import { PaymentModule } from './Models/V1/Payment/payment.module';
-import { PermissionModule } from './Models/V1/Permission/permission.module';
-import { PointModule } from './Models/V1/Point/point.module';
-import { ReportModule } from './Models/V1/Report/report.module';
-import { RewardCardModule } from './Models/V1/RewardCard/reward.card.module';
-import { StoreModule } from './Models/V1/Store/store.module';
-import { TagModule } from './Models/V1/Tag/tag.module';
 import { TestModule } from './Models/V1/Test/test.module';
 import { RedisModule } from './Providers/Database/Redis/redis.module';
 import { MailModule } from './Providers/Mail/mail.module';
@@ -53,29 +33,9 @@ const moduleImport = [
   }),
   TestModule,
   AuthModule,
-  MemberModule,
   CommonModule,
-  PointModule,
-  BrandModule,
-  ChannelModule,
-  StoreModule,
-  MemberShipModule,
-  OrderModule,
-  CommodityModule,
-  HolidayModule,
-  MealPeriodModule,
-  PaymentModule,
-  PermissionModule,
   AuthModule,
   RedisModule,
-  CouponModule,
-  RewardCardModule,
-  NotifyModule,
-  TagModule,
-  ReportModule,
-  DataSyncModule,
-  ClusterModule,
-  MotModule,
   SmsModule,
   MailModule,
   CsvDownloadExample
