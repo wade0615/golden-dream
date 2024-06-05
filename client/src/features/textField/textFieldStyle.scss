@@ -1,0 +1,92 @@
+// .text-field {
+//   width: fit-content;
+// }
+.field-group {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 0.75rem;
+  &__left {
+    label {
+      margin: 0;
+      padding-top: 0.5rem;
+      font-weight: 600;
+    }
+    flex: 0 0 120px;
+    &.isLarge {
+      flex-basis: 176px;
+    }
+  }
+  &__right {
+    flex: 1 1 auto;
+  }
+}
+
+.image-wrapper {
+  position: relative;
+  width: 120px;
+  .delete-btn {
+    padding: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  img {
+    width: inherit;
+    height: inherit;
+    object-fit: cover;
+  }
+}
+ul.image-note {
+  margin-top: 0.5rem;
+  list-style: none;
+  color: var(--secondary-lighten, #5e6366);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px; /* 150% */
+  li::before {
+    content: '\2022';
+    color: var(--secondary-lighten, #5e6366);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+  }
+}
+
+.chip-select {
+  .chips {
+    div:first-child {
+      margin: 0;
+    }
+  }
+}
+
+.date-chip .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.date-chip .chips > div {
+  display: flex;
+  height: 24px;
+  padding: 4px 8px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+  font-size: 13px;
+  margin-left: 0;
+}
+
+.input-group.has-error > .form-control.is-invalid,
+.input-group.has-error > .form-control {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.input-group.has-error > .input-group-text.is-invalid,
+.input-group.has-error > .input-group-text {
+  border-top-right-radius: 0.375rem !important;
+  border-bottom-right-radius: 0.375rem !important;
+}

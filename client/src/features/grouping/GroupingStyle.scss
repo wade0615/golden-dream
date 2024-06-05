@@ -1,0 +1,26 @@
+#grouping-EA228A82-8A0D-405A-8EB4-BC00B902629A {
+  flex-grow: 1;
+  margin-right: 1.5rem;
+
+  .zipCode-container {
+    max-height: 18rem;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    width: 160px;
+    div {
+      margin: 0.25rem;
+      margin-left: 1.25rem;
+    }
+  }
+
+  .chip-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    div {
+      margin-bottom: 0.75rem;
+    }
+  }
+}

@@ -1,0 +1,32 @@
+.tag-chip {
+  display: inline-block;
+  position: relative;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-left: 0.5rem;
+  .chip-text {
+    margin: 0;
+    padding: 0;
+    color: var(--bs-light);
+    line-height: 1;
+    padding-right: 4px;
+  }
+  &.chip-bg {
+    padding: 4px 10px 6px 14px;
+    border-radius: 4px;
+    background-color: var(--bs-primary);
+  }
+  button {
+    margin: 0;
+    padding: 0;
+  }
+  svg {
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+  }
+  &.chip-rounded {
+    border-radius: calc(1em + 4.5px);
+  }
+}

@@ -1,0 +1,173 @@
+/* scope css: 該頁面專用的樣式 */
+#log-list-c98283b4-c97b-4c9b-b026-4b8cd77640c9 {
+  .member-info-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 1.5rem 0;
+    gap: 48px;
+  }
+
+  .info {
+    flex: 1;
+  }
+
+  .info-row {
+    display: flex;
+    padding: 0.5rem 0;
+    font-size: 16px;
+    gap: 4px;
+  }
+
+  .info-title {
+    width: 120px;
+    color: #5e6366;
+    font-weight: 600;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .chips > div {
+    display: flex;
+    padding: 4px 8px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    font-size: 13px;
+    margin-left: 0;
+  }
+
+  .divider {
+    border-left: 1px solid rgba(0, 0, 0, 0.12);
+    // height: 100%;
+    min-height: 200px;
+  }
+
+  .detail-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    gap: 16px;
+  }
+
+  .detail-block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    border-radius: 4px;
+    background: var(--gray-main, #e9ecef);
+  }
+
+  .detailBillBoard {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    flex-direction: row;
+    background: var(--white, #fff);
+    padding: 16px 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .billBoard__item {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    padding: 4px;
+  }
+
+  .consumption-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    gap: 16px;
+  }
+
+  .consumption-block {
+    background: var(--gray-main, #e9ecef);
+    border-radius: 4px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .consumption-title {
+    font-size: 24px;
+    color: #2d4059;
+    font-weight: 700;
+    text-align: center;
+    padding: 16px 0;
+  }
+
+  .consumption-table {
+    background: #fff;
+    margin: 0 8px 8px 8px;
+  }
+
+  .consumption-table-header,
+  .consumption-table-row {
+    height: 64px;
+    display: flex;
+    justify-content: space-between;
+    // align-items: center;
+  }
+
+  .consumption-table-header {
+    height: 56px;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 12px;
+    box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.12) inset;
+  }
+
+  .consumption-table-row {
+    font-size: 16px;
+    padding: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  }
+
+  .consumption-table-row:last-child {
+    border-bottom: none;
+  }
+
+  .consumption-table-no-record {
+    color: #5e6366;
+    font-size: 24px;
+    text-align: center;
+    padding: 32px 0;
+  }
+
+  /* 根據比例分配寬度 */
+  .consumption-table-header > div,
+  .consumption-table-row > div {
+    flex: 1;
+    // text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+  }
+
+  .consumption-table-header > div:nth-child(1),
+  .consumption-table-row > div:nth-child(1) {
+    flex: 2.5;
+  }
+
+  .consumption-table-header > div:nth-child(2),
+  .consumption-table-row > div:nth-child(2) {
+    flex: 1;
+  }
+
+  .consumption-table-header > div:nth-child(3),
+  .consumption-table-row > div:nth-child(3) {
+    flex: 1.5;
+  }
+}

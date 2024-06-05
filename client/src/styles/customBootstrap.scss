@@ -1,0 +1,148 @@
+// Include any default variable overrides here (though functions won't be available)
+$primary: #2d4059;
+$secondary: #5e6366;
+$success: #50b847;
+$info: #457fe4;
+$warning: #f79307;
+$danger: #d41c35;
+$light: #e9ecef;
+$pagination-color: $info;
+$pagination-hover-color: $info;
+$pagination-active-bg: $info;
+$pagination-active-border-color: $info;
+$table-hover-bg: #f8f9fa;
+$form-check-input-checked-bg-color: $info;
+$form-check-input-indeterminate-bg-color: $info;
+
+.btn.btn-info {
+  color: #fff;
+}
+.btn.btn-outline-info {
+  svg {
+    fill: $info;
+  }
+  &:hover {
+    svg {
+      fill: $light;
+    }
+  }
+}
+.btn.btn-outline-info:hover,
+.btn.btn-outline-info:active {
+  color: #fff !important;
+}
+
+.btn.btn-info:hover,
+.btn.btn-info:active {
+  color: #fff !important;
+}
+span.input-group-text {
+  background-color: #e9ecef;
+}
+
+label.form-label {
+  font-weight: 700;
+  small {
+    font-weight: 400;
+  }
+}
+
+[role='tooltip'] {
+  .tooltip-inner {
+    background-color: #fff;
+    color: #000;
+  }
+  .tooltip-arrow::before {
+    border-right-color: #fff !important;
+  }
+  .popover-body {
+    padding: 12px;
+  }
+}
+
+.form-check-input[type='checkbox'] {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid #5e6366;
+  transform: translateY(-2px);
+}
+
+.form-check-input[type='radio'] {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid #5e6366;
+  transform: translateY(-2px);
+}
+
+.form-check-inline {
+  .form-check-label {
+    font-size: 1rem;
+    padding-left: 8px;
+  }
+}
+
+@import '../../node_modules/bootstrap/scss/bootstrap.scss';
+// Then add additional custom code here
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+table[role='table'] {
+  font-size: 14px;
+}
+
+html,
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+form {
+  overflow-x: clip;
+}
+
+button {
+  border: 0;
+  background: transparent;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+ol,
+ul {
+  padding-left: 1rem;
+  margin: 0;
+}

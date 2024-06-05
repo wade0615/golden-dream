@@ -1,0 +1,60 @@
+.table {
+  tr:hover .hover-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  th {
+    .sort {
+      // padding: 0 8px;
+      // cursor: pointer;
+      // vertical-align: middle;
+      display: inline-block;
+      position: relative;
+      width: 20px;
+      height: 100%;
+      right: 2px;
+      vertical-align: super;
+    }
+    .sort svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+  td {
+    position: relative;
+    .hover-actions {
+      display: none;
+      position: absolute;
+      background: #f8f9fa;
+      float: right;
+      top: 0;
+      right: 0;
+      height: 100%;
+      padding: 0 12px;
+      z-index: 9;
+      &.isShown {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        background: #f8f9fa;
+      }
+    }
+  }
+
+  img.nail {
+    object-fit: cover;
+    border: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    border: 1px solid var(--bs-gray-300);
+
+    margin-right: 4px;
+  }
+}

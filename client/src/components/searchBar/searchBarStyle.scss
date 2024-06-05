@@ -1,0 +1,20 @@
+.search-bar {
+  min-width: 304px;
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  display: inline-flex;
+  border-radius: 6px;
+  border: 1px solid var(--bs-gray-400);
+  margin-right: 0.5rem;
+  transition: 0.1s;
+  input {
+    flex: 1 1 auto;
+    border: 0;
+    &:focus {
+      outline: 0;
+    }
+  }
+  &:focus-within {
+    outline: var(--bs-focus-ring-width) solid var(--bs-focus-ring-color);
+  }
+}

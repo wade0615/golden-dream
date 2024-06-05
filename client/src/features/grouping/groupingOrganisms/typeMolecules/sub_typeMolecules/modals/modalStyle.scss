@@ -1,0 +1,31 @@
+.table-modal {
+  .modal-90w {
+    max-width: 1200px;
+    min-width: 70%;
+  }
+  .modal-content {
+    height: 90vh;
+    overflow: hidden;
+  }
+  .modal-body {
+    padding: 1.5rem;
+    padding-top: 1rem;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    form {
+      width: 100%;
+    }
+    .table-container {
+      margin-top: 1rem;
+      flex: 1 1 auto;
+      overflow: auto;
+    }
+  }
+  .search-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 4rem;
+    row-gap: 0.5rem;
+  }
+}

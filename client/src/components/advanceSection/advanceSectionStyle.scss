@@ -1,0 +1,19 @@
+.advance-search-section {
+  padding: 1rem 3rem;
+  width: 100%;
+  margin-top: 0.5rem;
+  background: #f8f9fa;
+  border-bottom: 2px solid var(--bs-gray-200);
+  .btn.btn-outline-primary:not(:hover) {
+    background: #fff;
+  }
+}
+
+.advance-search-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  &.active {
+    background-color: var(--bs-gray-200);
+  }
+}

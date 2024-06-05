@@ -1,0 +1,19 @@
+.item {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.breadcrumb-item.active.item-last {
+  color: black;
+}
+
+.link-no-style {
+  text-decoration: none;
+  color: inherit;
+}
+
+.link-no-style:hover {
+  text-decoration: underline;
+}

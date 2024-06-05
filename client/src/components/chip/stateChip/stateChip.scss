@@ -1,0 +1,25 @@
+.state-chip {
+  .state-text {
+    position: relative;
+    margin-left: 1rem;
+    font-size: 14px;
+    &::before {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      top: 50%;
+      left: -1rem;
+      border-radius: 50%;
+      transform: translateY(-50%);
+
+      background-color: var(--bs-info);
+    }
+    &.disabled {
+      color: #ced4da;
+      &::before {
+        background-color: #ced4da;
+      }
+    }
+  }
+}

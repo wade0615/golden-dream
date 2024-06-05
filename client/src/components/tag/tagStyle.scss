@@ -1,0 +1,10 @@
+.tag {
+  display: inline-flex;
+  background: rgba(var(--bs-info-rgb), 0.2);
+  border-radius: 4px;
+  padding: 4px 12px;
+  color: var(--bs-info);
+  font-size: 14px;
+  font-weight: 500;
+  margin: 2px;
+}

@@ -1,0 +1,10 @@
+/* scope css: 該頁面專用的樣式 */
+#log-list-dfd7bbf2-1101-467f-9a57-327ebb225a4b {
+  .user-info {
+    flex-grow: 1;
+    min-width: 0; /* 防止元素超出容器 */
+  }
+  .name-mobile {
+    white-space: nowrap; /* 防止換行 */
+  }
+}

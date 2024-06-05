@@ -1,0 +1,104 @@
+.nav {
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: calc(100vh - 49px);
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--bs-white, #fff);
+  &::-webkit-scrollbar {
+    width: 15px;
+    background-color: #101113;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 15px; /* 圓角 */
+    border: 4.5px solid transparent; /* 使用透明邊框來模擬更細的滾動條 */
+    background-clip: content-box; /* 不將背景畫在邊框下面 */
+  }
+  &-accordion {
+    &__Header {
+      position: relative;
+      cursor: pointer;
+      padding: 8px 10px;
+      font-weight: 700;
+      display: flex;
+      p {
+        flex-grow: 1;
+      }
+    }
+    &__collapse {
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 8px 0;
+    }
+  }
+  &-title {
+    font-weight: 700;
+    color: inherit;
+    font-size: 14px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    &.collapsed {
+      font-size: 12px;
+    }
+  }
+  &-item {
+    position: relative;
+    color: inherit;
+    padding-left: 12px;
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: none;
+    display: block;
+  }
+}
+
+.nav-closed::-webkit-scrollbar {
+  display: none; /* 隱藏滾動條但仍可滾動 */
+}
+
+.active-link-small::before {
+  content: '';
+  position: absolute;
+  height: 18px;
+  width: 2px;
+  left: 4px;
+  top: calc(50% - 9px);
+  border-radius: 2px;
+  background: var(--warning, #f79307);
+}
+
+.active-link-medium::before {
+  content: '';
+  position: absolute;
+  height: 34px;
+  width: 4px;
+  left: 0;
+  top: calc(50% - 17px);
+  border-radius: 2px;
+  background: var(--warning, #f79307);
+}
+
+.active-link-large::before {
+  content: '';
+  position: absolute;
+  height: 48px;
+  width: 4px;
+  // left: -8px;
+  left: var(--left-offset, 0);
+  top: calc(50% - 24px);
+  border-radius: 2px;
+  background: var(--warning, #f79307);
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.nav-accordion__Header-closed {
+  // padding: 8px 8px;
+  padding: 8px 0;
+}

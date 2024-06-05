@@ -1,0 +1,44 @@
+.avatar {
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.avatar-text {
+  font-size: 12px;
+}
+
+.avatar-container {
+  position: relative;
+  display: inline-block; // 使容器根據其內容大小
+
+  .avatar-menu {
+    position: absolute;
+    width: 100%;
+    top: 100%;
+    right: 0;
+    background-color: white; // 添加明顯的背景色
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.rotate-0 {
+  transform: rotate(0deg);
+  transition: transform 0.3s;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+  transition: transform 0.3s;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.hidden {
+  visibility: hidden;
+}

@@ -1,0 +1,23 @@
+.icon-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s;
+  cursor: pointer;
+  &.disabled {
+    path {
+      fill: var(--bs-gray-500);
+    }
+    &:hover {
+      cursor: auto;
+      background: #fff;
+    }
+  }
+  &:hover {
+    background: var(--hover-background);
+  }
+}

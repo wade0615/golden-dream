@@ -1,0 +1,7 @@
+@use '../../styles/defaultStyle.scss' as base;
+/* scope css: 該頁面專用的樣式 */
+#template-uuid {
+  h1 {
+    color: base.$test-color;
+  }
+}
