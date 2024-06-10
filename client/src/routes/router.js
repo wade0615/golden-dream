@@ -11,7 +11,7 @@ import {
 } from 'pages/member';
 import { Error404 } from 'pages/errors';
 import { RedirectUrl } from 'pages/redirectUrl';
-import { DefaultLayout } from 'layout';
+import { DefaultLayout, BloggerLayout } from 'layout';
 import { PersonOutlineIcon } from 'assets/icons';
 
 import RedisGui from 'pages/redis/Redis';
@@ -57,7 +57,7 @@ export const routerConfig = [
   },
   {
     path: '/', // 路由的路徑
-    element: <DefaultLayout />, // 訪問時要渲染的元件
+    element: <BloggerLayout />, // 訪問時要渲染的元件
     errorElement: <Error404 />, // 有任何錯誤，例如無效的路由，就會渲染這個元件
     children: [
       // 子路由的陣列，它們會在訪問此路由時進一步導航
@@ -134,8 +134,48 @@ export const routerConfig = [
             authCode: AUTH_CODE.MEMBER.BATCH_SETTING.PAGE
           }
         ]
+      },
+      /**
+       ** timeline 文章時間列表
+       **/
+      {
+        path: 'timeline', // 子路由的路徑
+        breadcrumbPath: 'timeline', // 頁面路由，用於麵包屑
+        errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
+        sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
+        pageTitle: '時間軸', // 此路由的頁面標題
+        shortTitle: '時間軸', // 此路由的短標題
+        authCode: '' // 權限代碼
+      },
+      /**
+       ** categories 文章分類
+       **/
+      {
+        path: 'categories', // 子路由的路徑
+        breadcrumbPath: 'categories', // 頁面路由，用於麵包屑
+        errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
+        sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
+        pageTitle: '文章分類', // 此路由的頁面標題
+        shortTitle: '分類', // 此路由的短標題
+        authCode: '' // 權限代碼
+      },
+      /**
+       ** about 關於我
+       **/
+      {
+        path: 'about', // 子路由的路徑
+        breadcrumbPath: 'about', // 頁面路由，用於麵包屑
+        errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
+        sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
+        pageTitle: '關於我', // 此路由的頁面標題
+        shortTitle: '關於我', // 此路由的短標題
+        authCode: '' // 權限代碼
       }
     ]
+  },
+  {
+    path: '/backstage', // 路由的路徑
+    element: <div>我是尚未建立的後台，你想要幹嘛 (•̀へ •́ ╮ )</div> // 當訪問 '/backstage' 路由時要渲染的元件
   },
   {
     path: '*', // 匹配任何未在前面定義的路徑

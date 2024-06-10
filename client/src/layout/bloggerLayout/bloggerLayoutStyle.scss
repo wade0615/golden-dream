@@ -1,0 +1,19 @@
+#blogger_layout {
+  .blogger_layout_banner {
+    height: 30vh;
+  }
+  .blogger_layout_main {
+    display: flex;
+    .blogger_layout_aside_card {
+      position: relative;
+    }
+    .blogger_layout_content {
+      position: relative;
+    }
+  }
+  .blogger_layout_footer {
+    padding: 2rem 1rem;
+    color: #eee;
+    text-align: center;
+  }
+}
