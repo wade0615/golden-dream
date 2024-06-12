@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { Login } from 'pages/login';
 import { Home } from 'pages/home';
+import { Posts } from 'pages/posts';
 import {
   MemberList,
   AddMember,
@@ -68,7 +69,8 @@ export const routerConfig = [
         index: true, // 表示當路徑為 '/' 時，這個路由會被使用
         path: '', // 子路由的路徑
         breadcrumbPath: '', // 頁面路由，用於麵包屑
-        element: <Home />,
+        // element: <Home />,
+        element: <Posts />,
         pageTitle: '首頁', // 可以添加首頁的標題
         tooltip: <p>本頁統計數據，為截至前一日之會員資料</p>
       },
@@ -134,6 +136,19 @@ export const routerConfig = [
             authCode: AUTH_CODE.MEMBER.BATCH_SETTING.PAGE
           }
         ]
+      },
+      /**
+       ** posts 文章首頁列表
+       **/
+      {
+        path: 'posts', // 子路由的路徑
+        breadcrumbPath: 'posts', // 頁面路由，用於麵包屑
+        element: <Posts />, // 當訪問 '/posts' 路由時要渲染的元件
+        errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
+        sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
+        pageTitle: '文章列表', // 此路由的頁面標題
+        shortTitle: '文章列表', // 此路由的短標題
+        authCode: '' // 權限代碼
       },
       /**
        ** timeline 文章時間列表
