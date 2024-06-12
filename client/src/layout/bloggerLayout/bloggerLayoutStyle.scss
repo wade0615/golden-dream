@@ -1,6 +1,9 @@
+@import '../../styles/defaultStyle.scss';
+
 #blogger_layout {
   .blogger_layout_banner {
     height: 30vh;
+    background-color: $base-bg-color;
   }
   .blogger_layout_main {
     display: flex;
@@ -13,7 +16,8 @@
   }
   .blogger_layout_footer {
     padding: 2rem 1rem;
-    color: #eee;
+    color: $base-font-color;
+    background-color: $base-bg-color;
     text-align: center;
   }
 }
