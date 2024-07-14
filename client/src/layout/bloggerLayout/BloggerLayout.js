@@ -6,6 +6,7 @@ import Breadcrumb from 'components/breadcrumb/Breadcrumb';
 import Avatar from 'components/avatar/Avatar';
 import IconButton from 'components/button/iconButton/IconButton';
 import Nav from 'components/nav/Nav';
+import Navbars from 'components/navbars/Navbars';
 import ToolTip from 'components/tooltip/ToolTip';
 
 import { Container, Row, Col } from 'react-bootstrap';
@@ -59,16 +60,44 @@ function BloggerLayout({ children }) {
     routerConfig[2].children,
     location.pathname
   );
+  console.log('currentRoute', currentRoute);
   return (
     <div id='blogger_layout'>
       {/* Side Menu */}
-      {/* <BloggerLayoutSideMenu /> */}
+      <div className='blogger_layout_side_menu'>
+        <Navbars
+          brand='W.S.Wade'
+          sideNavTitle='W.S.Wade'
+          subPath={[
+            {
+              path: '/',
+              title: '首頁',
+              icon: ''
+            },
+            {
+              path: '/',
+              title: '列表',
+              icon: ''
+            },
+            {
+              path: '/',
+              title: '分類',
+              icon: ''
+            },
+            {
+              path: '/',
+              title: '關於我',
+              icon: ''
+            }
+          ]}
+        />
+      </div>
       {/* Banner */}
       <div className='blogger_layout_banner'>
         這邊放 Banner 圖片，首頁會特別大
       </div>
       {/* Main content */}
-      <Container>
+      <Container className='container'>
         <Row className='blogger_layout_main'>
           {/* Aside Card */}
           <Col

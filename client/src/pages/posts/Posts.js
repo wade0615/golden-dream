@@ -20,6 +20,7 @@ function Posts() {
     try {
       (async () => {
         console.log('Page Posts');
+        // const res = await api.post.getPosts();
       })();
     } catch (error) {
       _EHS.errorReport(error, 'Page Posts', _EHS._LEVEL.ERROR);

@@ -1,9 +1,19 @@
 @import '../../styles/defaultStyle.scss';
 
 #blogger_layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  .blogger_layout_side_menu {
+    position: sticky;
+    top: 0;
+  }
   .blogger_layout_banner {
     height: 30vh;
     background-color: $base-bg-color;
+  }
+  .container {
+    flex: 1 0 auto;
   }
   .blogger_layout_main {
     display: flex;
