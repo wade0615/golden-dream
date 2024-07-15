@@ -18,7 +18,7 @@ import LocalStorageKeys from 'constants/localStorageKeys';
 import { CHECK_LOGIN, SIDE_MENU_IS_OPEN } from 'config/config';
 
 /* 基本樣式： 側邊欄 + 上部使用者導覽 + 名稱 */
-function BloggerLayout({ children }) {
+function BloggerLayout({ children, bannerHeight }) {
   const location = useLocation();
   const navigate = useNavigate();
   const checkLogin = CHECK_LOGIN;
@@ -92,8 +92,10 @@ function BloggerLayout({ children }) {
           ]}
         />
       </div>
-      {/* Banner */}
-      <div className='blogger_layout_banner'>
+      <div
+        className='blogger_layout_banner'
+        style={{ height: `${bannerHeight}vh` }}
+      >
         這邊放 Banner 圖片，首頁會特別大
       </div>
       {/* Main content */}

@@ -1,5 +1,44 @@
 @import '../../styles/defaultStyle.scss';
 
-#posts {
+#posts.posts_container {
   position: relative;
+  padding: 2rem 1rem;
+  .posts_list {
+    padding: 0 1rem;
+    .posts_item {
+      padding: 2rem 1rem;
+      border-bottom: 1px solid $base-font-color;
+      .posts_item_title {
+        margin: 0 0 0.75rem 0;
+        font-size: 2rem;
+        font-weight: bold;
+      }
+      .posts_item_date {
+        padding: 0 0.5rem 0 0;
+        margin: 0 0.5rem 0 0;
+        border-right: 2px solid $base-font-color;
+        font-size: 1.25rem;
+        color: $base-font-color;
+      }
+      .posts_item_tag {
+        font-size: 1.25rem;
+        color: $base-font-color;
+      }
+      .posts_item_content {
+        margin: 0.25rem 0 0 0;
+        font-size: 1.25rem;
+      }
+    }
+  }
+  .posts_pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    .posts_pagination_info {
+      margin: 0 0.5rem;
+    }
+    .posts_pagination_page {
+      margin: 0 0.5rem;
+    }
+  }
 }
