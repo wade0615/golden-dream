@@ -1,7 +1,9 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { Login } from 'pages/login';
-import { Home } from 'pages/home';
 import { Posts } from 'pages/posts';
+import { Categories } from 'pages/categories';
+import { About } from 'pages/about';
+import { Timeline } from 'pages/timeline';
 import {
   MemberList,
   AddMember,
@@ -21,6 +23,8 @@ import localStorageUtil from 'utils/localStorageUtil';
 import LocalStorageKeys from 'constants/localStorageKeys';
 import NonAccess from './other/NonAccess';
 import { PAGE_CHECK_AUTH } from 'config/config';
+
+import routerPath from 'routes/router.path';
 
 function HasAuth({ routeConfig, originalElement }) {
   const userInfo = localStorageUtil.getItem(LocalStorageKeys.UserInfo);
@@ -141,8 +145,8 @@ export const routerConfig = [
        ** posts 文章首頁列表
        **/
       {
-        path: 'posts', // 子路由的路徑
-        breadcrumbPath: 'posts', // 頁面路由，用於麵包屑
+        path: routerPath.posts, // 子路由的路徑
+        breadcrumbPath: routerPath.posts, // 頁面路由，用於麵包屑
         element: <Posts />, // 當訪問 '/posts' 路由時要渲染的元件
         errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
         sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
@@ -154,8 +158,9 @@ export const routerConfig = [
        ** timeline 文章時間列表
        **/
       {
-        path: 'timeline', // 子路由的路徑
-        breadcrumbPath: 'timeline', // 頁面路由，用於麵包屑
+        path: routerPath.timeline, // 子路由的路徑
+        breadcrumbPath: routerPath.timeline, // 頁面路由，用於麵包屑
+        element: <Timeline />, // 當訪問 '/timeline' 路由時要渲染的元件
         errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
         sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
         pageTitle: '時間軸', // 此路由的頁面標題
@@ -166,8 +171,9 @@ export const routerConfig = [
        ** categories 文章分類
        **/
       {
-        path: 'categories', // 子路由的路徑
-        breadcrumbPath: 'categories', // 頁面路由，用於麵包屑
+        path: routerPath.categories, // 子路由的路徑
+        breadcrumbPath: routerPath.categories, // 頁面路由，用於麵包屑
+        element: <Categories />, // 當訪問 '/categories' 路由時要渲染的元件
         errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
         sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
         pageTitle: '文章分類', // 此路由的頁面標題
@@ -178,8 +184,9 @@ export const routerConfig = [
        ** about 關於我
        **/
       {
-        path: 'about', // 子路由的路徑
-        breadcrumbPath: 'about', // 頁面路由，用於麵包屑
+        path: routerPath.about, // 子路由的路徑
+        breadcrumbPath: routerPath.about, // 頁面路由，用於麵包屑
+        element: <About />, // 當訪問 '/about' 路由時要渲染的元件
         errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
         sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
         pageTitle: '關於我', // 此路由的頁面標題
@@ -189,7 +196,7 @@ export const routerConfig = [
     ]
   },
   {
-    path: '/backstage', // 路由的路徑
+    path: routerPath.backstage, // 路由的路徑
     element: <div>我是尚未建立的後台，你想要幹嘛 (•̀へ •́ ╮ )</div> // 當訪問 '/backstage' 路由時要渲染的元件
   },
   {

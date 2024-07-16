@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { routerConfig } from 'routes/router';
+import routerPath from 'routes/router.path';
 
 import Breadcrumb from 'components/breadcrumb/Breadcrumb';
 import Avatar from 'components/avatar/Avatar';
@@ -70,22 +71,22 @@ function BloggerLayout({ children, bannerHeight }) {
           sideNavTitle='W.S.Wade'
           subPath={[
             {
-              path: '/',
-              title: '首頁',
+              path: routerPath.posts,
+              title: '文章',
               icon: ''
             },
             {
-              path: '/',
-              title: '列表',
+              path: routerPath.timeline,
+              title: '時間軸',
               icon: ''
             },
             {
-              path: '/',
+              path: routerPath.categories,
               title: '分類',
               icon: ''
             },
             {
-              path: '/',
+              path: routerPath.about,
               title: '關於我',
               icon: ''
             }
