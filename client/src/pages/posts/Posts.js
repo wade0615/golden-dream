@@ -90,8 +90,8 @@ const Posts = () => {
       {/* 列表 */}
       <div className='posts_list'>
         {listData?.length > 0 &&
-          listData.map((post) => (
-            <div key={post.id} className='posts_item'>
+          listData.map((post, index) => (
+            <div key={`post.id_${index}`} className='posts_item'>
               <h2 className='posts_item_title'>{post.title}</h2>
               <time className='posts_item_date'>{post.date}</time>
               <span className='posts_item_tag'>{post.tag}</span>

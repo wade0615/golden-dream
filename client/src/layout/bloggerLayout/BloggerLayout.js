@@ -3,42 +3,22 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { routerConfig } from 'routes/router';
 import routerPath from 'routes/router.path';
 
-import Breadcrumb from 'components/breadcrumb/Breadcrumb';
-import Avatar from 'components/avatar/Avatar';
-import IconButton from 'components/button/iconButton/IconButton';
-import Nav from 'components/nav/Nav';
 import Navbars from 'components/navbars/Navbars';
-import ToolTip from 'components/tooltip/ToolTip';
+import Avatar from 'components/avatar/Avatar';
+// import Breadcrumb from 'components/breadcrumb/Breadcrumb';
+// import IconButton from 'components/button/iconButton/IconButton';
+// import Nav from 'components/nav/Nav';
+// import ToolTip from 'components/tooltip/ToolTip';
 
 import { Container, Row, Col } from 'react-bootstrap';
-import { MenuIcon } from 'assets/icons';
-import logo from 'assets/images/logo.svg';
 import './bloggerLayoutStyle.scss';
-import localStorageUtil from 'utils/localStorageUtil';
-import LocalStorageKeys from 'constants/localStorageKeys';
-import { CHECK_LOGIN, SIDE_MENU_IS_OPEN } from 'config/config';
+// import localStorageUtil from 'utils/localStorageUtil';
+// import LocalStorageKeys from 'constants/localStorageKeys';
 
 /* 基本樣式： 側邊欄 + 上部使用者導覽 + 名稱 */
 function BloggerLayout({ children, bannerHeight }) {
   const location = useLocation();
-  const navigate = useNavigate();
-  const checkLogin = CHECK_LOGIN;
-
-  // 優先使用網址帶的 title
-  const urlTitle = useMemo(
-    () => new URLSearchParams(location.search).get('title'),
-    [location.search]
-  );
-
-  // 檢查使用者登入狀態，未登入則導向login
-  // useEffect(() => {
-  //   if (checkLogin) {
-  //     const userInfo = localStorageUtil.getItem(LocalStorageKeys.UserInfo);
-  //     if (!userInfo && location.pathname !== '/login') {
-  //       navigate('/login');
-  //     }
-  //   }
-  // }, [checkLogin, location, navigate]);
+  // const navigate = useNavigate();
 
   // 遞迴獲取最深層次且最匹配當前路徑的路由配置 反向遍歷
   const getMatchedRoute = (routes, pathname, prefix = '') => {
@@ -67,8 +47,8 @@ function BloggerLayout({ children, bannerHeight }) {
       {/* Side Menu */}
       <div className='blogger_layout_side_menu'>
         <Navbars
-          brand='W.S.Wade'
-          sideNavTitle='W.S.Wade'
+          brand='Wrench Sorcerer Wade'
+          sideNavTitle='Wrench Sorcerer Wade'
           subPath={[
             {
               path: routerPath.posts,
@@ -103,12 +83,8 @@ function BloggerLayout({ children, bannerHeight }) {
       <Container className='container'>
         <Row className='blogger_layout_main'>
           {/* Aside Card */}
-          <Col
-            sm={0}
-            md={3}
-            className='blogger_layout_aside_card d-none d-md-block'
-          >
-            這邊放人物框，手機版會消失， PC 版會顯示
+          <Col sm={0} md={3} className='blogger_layout_aside d-none d-md-block'>
+            <BloggerLayoutAsideCard />
           </Col>
           {/* Content */}
           <Col sm='auto' md={9} className='blogger_layout_content'>
@@ -121,51 +97,42 @@ function BloggerLayout({ children, bannerHeight }) {
   );
 }
 
-function BloggerLayoutSideMenu() {
-  // 從 localStorage 中獲取狀態或使用預設值
-  const savedMenuState =
-    localStorageUtil.getItem(LocalStorageKeys.SetSideMenu) || {};
-  const initialIsOpen =
-    savedMenuState.sideMenu !== undefined
-      ? savedMenuState.sideMenu
-      : SIDE_MENU_IS_OPEN;
-  const [isOpen, setIsOpen] = useState(initialIsOpen);
-  const toggleMenu = () => {
-    const newIsOpen = !isOpen;
-    setIsOpen(!isOpen); // 切換狀態
-    // 將新的狀態存儲到 localStorage
-    localStorageUtil.setItem(LocalStorageKeys.SetSideMenu, {
-      ...savedMenuState,
-      sideMenu: newIsOpen
-    });
-  };
-  const classSuffix = isOpen ? 'open' : 'closed';
+/** 側邊資訊小卡 */
+function BloggerLayoutAsideCard() {
   return (
-    <div className={`side-menu side-menu-${classSuffix}`}>
-      <div className={`side-menu__top side-menu__top-${classSuffix}`}>
-        {isOpen && (
-          <>
-            <img src={logo} alt='logo' />
-            <h6 className='text-white mb-0 fw-bold'>CRM管理系統</h6>
-          </>
-        )}
-        <div className={`icon-button-right-${classSuffix} `}>
-          <IconButton hoverBackground='transparent' onClick={toggleMenu}>
-            <MenuIcon />
-          </IconButton>
+    <div className='blogger_layout_aside_card'>
+      <section className='blogger_layout_aside_card_avatar'>
+        <img
+          alt='Wrench Sorcerer'
+          src='https://assets.juksy.com/files/articles/103935/800x_100_w-5f7d40d31d975.jpg'
+        ></img>
+      </section>
+      <section className='blogger_layout_aside_card_name'>
+        <h2>Wade Wu</h2>
+        <p>Wrench Sorcerer</p>
+      </section>
+      <section className='blogger_layout_aside_card_counts'>
+        <div>
+          <p>文章</p>
+          <p>0</p>
         </div>
-      </div>
-      <Nav isOpen={isOpen} />
+        <div>
+          <p>分類</p>
+          <p>0</p>
+        </div>
+      </section>
+      <section className='blogger_layout_aside_card_social'></section>
     </div>
   );
 }
 
+/** Footer */
 function BloggerLayoutFooter() {
   return (
-    <div className='blogger_layout_footer'>
+    <footer className='blogger_layout_footer'>
       <p>© 2024 By Wade Wu</p>
       <p>Theme From HEXO Butterfly</p>
-    </div>
+    </footer>
   );
 }
 

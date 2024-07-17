@@ -17,8 +17,59 @@
   }
   .blogger_layout_main {
     display: flex;
-    .blogger_layout_aside_card {
+    .blogger_layout_aside {
       position: relative;
+      padding: 1rem;
+      .blogger_layout_aside_card {
+        position: sticky;
+        top: 10vh;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px 6px rgba(7, 17, 27, 0.06);
+        transition: box-shadow 0.3s ease;
+        &:hover {
+          box-shadow: 0 4px 12px 12px rgba(7, 17, 27, 0.15);
+        }
+        .blogger_layout_aside_card_avatar {
+          margin: 0 0 1rem;
+          img {
+            display: block;
+            margin: 0 auto;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+          }
+        }
+        .blogger_layout_aside_card_name {
+          margin: 0 0 1.5rem;
+          text-align: center;
+          h2 {
+            margin: 0 0 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: $base-font-color;
+          }
+          p {
+            margin: 0;
+            font-size: 1rem;
+            color: $base-font-color;
+          }
+        }
+        .blogger_layout_aside_card_counts {
+          display: flex;
+          margin: 0 0 1rem;
+          padding: 1rem;
+          > div {
+            flex: 1;
+            text-align: center;
+            p {
+              margin: 0;
+              font-size: 1rem;
+              color: $base-font-color;
+            }
+          }
+        }
+      }
     }
     .blogger_layout_content {
       position: relative;
