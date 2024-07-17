@@ -41,7 +41,7 @@ function BloggerLayout({ children, bannerHeight }) {
     routerConfig[2].children,
     location.pathname
   );
-  console.log('currentRoute', currentRoute);
+  console.log('currentRoute', currentRoute, currentRoute?.path?.length);
   return (
     <div id='blogger_layout'>
       {/* Side Menu */}
@@ -75,9 +75,14 @@ function BloggerLayout({ children, bannerHeight }) {
       </div>
       <div
         className='blogger_layout_banner'
-        style={{ height: `${bannerHeight}vh` }}
+        style={{
+          height: currentRoute?.path?.length > 0 ? '30vh' : `${bannerHeight}vh`,
+          backgroundImage: `url(https://wallup.net/wp-content/uploads/2019/09/297559-mountains-taiwan-taipei-101.jpg)`
+        }}
       >
-        這邊放 Banner 圖片，首頁會特別大
+        <div className='blogger_layout_banner_intro'>
+          <h1>扳手之前人人平等</h1>
+        </div>
       </div>
       {/* Main content */}
       <Container className='container'>
