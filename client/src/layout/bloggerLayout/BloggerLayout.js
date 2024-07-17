@@ -47,8 +47,8 @@ function BloggerLayout({ children, bannerHeight }) {
       {/* Side Menu */}
       <div className='blogger_layout_side_menu'>
         <Navbars
-          brand='Wrench Sorcerer Wade'
-          sideNavTitle='Wrench Sorcerer Wade'
+          brand='Wandering Spanner Wade'
+          sideNavTitle='Wandering Spanner Wade'
           subPath={[
             {
               path: routerPath.posts,
@@ -108,13 +108,13 @@ function BloggerLayoutAsideCard() {
     <div className='blogger_layout_aside_card'>
       <section className='blogger_layout_aside_card_avatar'>
         <img
-          alt='Wrench Sorcerer'
+          alt='Wandering Spanner Wade'
           src='https://assets.juksy.com/files/articles/103935/800x_100_w-5f7d40d31d975.jpg'
         ></img>
       </section>
       <section className='blogger_layout_aside_card_name'>
         <h2>Wade Wu</h2>
-        <p>Wrench Sorcerer</p>
+        <p>Wandering Spanner Wade</p>
       </section>
       <section className='blogger_layout_aside_card_counts'>
         <div>
