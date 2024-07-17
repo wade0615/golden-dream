@@ -1,9 +1,12 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
+
+import { RedisGui } from 'pages/redis';
 import { Login } from 'pages/login';
 import { Posts } from 'pages/posts';
 import { Categories } from 'pages/categories';
 import { About } from 'pages/about';
 import { Timeline } from 'pages/timeline';
+
 import {
   MemberList,
   AddMember,
@@ -14,10 +17,10 @@ import {
 } from 'pages/member';
 import { Error404 } from 'pages/errors';
 import { RedirectUrl } from 'pages/redirectUrl';
-import { DefaultLayout, BloggerLayout } from 'layout';
+
+import { BloggerLayout } from 'layout';
 import { PersonOutlineIcon } from 'assets/icons';
 
-import RedisGui from 'pages/redis/Redis';
 import AUTH_CODE from 'config/auth.code.config';
 import localStorageUtil from 'utils/localStorageUtil';
 import LocalStorageKeys from 'constants/localStorageKeys';
@@ -77,6 +80,58 @@ export const routerConfig = [
         element: <Posts />,
         pageTitle: '首頁', // 可以添加首頁的標題
         tooltip: <p>首頁喔</p>
+      },
+      /**
+       ** posts 文章首頁列表
+       **/
+      {
+        path: routerPath.posts, // 子路由的路徑
+        breadcrumbPath: routerPath.posts, // 頁面路由，用於麵包屑
+        element: <Posts />, // 當訪問 '/posts' 路由時要渲染的元件
+        errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
+        sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
+        pageTitle: '文章列表', // 此路由的頁面標題
+        shortTitle: '文章列表', // 此路由的短標題
+        authCode: '' // 權限代碼
+      },
+      /**
+       ** timeline 文章時間列表
+       **/
+      {
+        path: routerPath.timeline, // 子路由的路徑
+        breadcrumbPath: routerPath.timeline, // 頁面路由，用於麵包屑
+        element: <Timeline />, // 當訪問 '/timeline' 路由時要渲染的元件
+        errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
+        sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
+        pageTitle: '時間軸', // 此路由的頁面標題
+        shortTitle: '時間軸', // 此路由的短標題
+        authCode: '' // 權限代碼
+      },
+      /**
+       ** categories 文章分類
+       **/
+      {
+        path: routerPath.categories, // 子路由的路徑
+        breadcrumbPath: routerPath.categories, // 頁面路由，用於麵包屑
+        element: <Categories />, // 當訪問 '/categories' 路由時要渲染的元件
+        errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
+        sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
+        pageTitle: '文章分類', // 此路由的頁面標題
+        shortTitle: '分類', // 此路由的短標題
+        authCode: '' // 權限代碼
+      },
+      /**
+       ** about 關於我
+       **/
+      {
+        path: routerPath.about, // 子路由的路徑
+        breadcrumbPath: routerPath.about, // 頁面路由，用於麵包屑
+        element: <About />, // 當訪問 '/about' 路由時要渲染的元件
+        errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
+        sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
+        pageTitle: '關於我', // 此路由的頁面標題
+        shortTitle: '關於我', // 此路由的短標題
+        authCode: '' // 權限代碼
       },
       /**
        ** 會員管理
@@ -140,58 +195,6 @@ export const routerConfig = [
             authCode: AUTH_CODE.MEMBER.BATCH_SETTING.PAGE
           }
         ]
-      },
-      /**
-       ** posts 文章首頁列表
-       **/
-      {
-        path: routerPath.posts, // 子路由的路徑
-        breadcrumbPath: routerPath.posts, // 頁面路由，用於麵包屑
-        element: <Posts />, // 當訪問 '/posts' 路由時要渲染的元件
-        errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
-        sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
-        pageTitle: '文章列表', // 此路由的頁面標題
-        shortTitle: '文章列表', // 此路由的短標題
-        authCode: '' // 權限代碼
-      },
-      /**
-       ** timeline 文章時間列表
-       **/
-      {
-        path: routerPath.timeline, // 子路由的路徑
-        breadcrumbPath: routerPath.timeline, // 頁面路由，用於麵包屑
-        element: <Timeline />, // 當訪問 '/timeline' 路由時要渲染的元件
-        errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
-        sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
-        pageTitle: '時間軸', // 此路由的頁面標題
-        shortTitle: '時間軸', // 此路由的短標題
-        authCode: '' // 權限代碼
-      },
-      /**
-       ** categories 文章分類
-       **/
-      {
-        path: routerPath.categories, // 子路由的路徑
-        breadcrumbPath: routerPath.categories, // 頁面路由，用於麵包屑
-        element: <Categories />, // 當訪問 '/categories' 路由時要渲染的元件
-        errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
-        sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
-        pageTitle: '文章分類', // 此路由的頁面標題
-        shortTitle: '分類', // 此路由的短標題
-        authCode: '' // 權限代碼
-      },
-      /**
-       ** about 關於我
-       **/
-      {
-        path: routerPath.about, // 子路由的路徑
-        breadcrumbPath: routerPath.about, // 頁面路由，用於麵包屑
-        element: <About />, // 當訪問 '/about' 路由時要渲染的元件
-        errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
-        sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
-        pageTitle: '關於我', // 此路由的頁面標題
-        shortTitle: '關於我', // 此路由的短標題
-        authCode: '' // 權限代碼
       }
     ]
   },

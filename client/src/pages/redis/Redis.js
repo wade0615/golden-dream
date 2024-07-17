@@ -23,7 +23,8 @@ const _EHS = new ExceptionHandleService({
 function RedisGui() {
   const getRedisKeys = useCallback(async (req) => {
     try {
-      const resBody = await api.common.getRedisKeys(req);
+      // const resBody = await api.common.getRedisKeys(req);
+      const resBody = ['key1', 'key2', 'key3'];
       if (resBody) {
         const _formatList = resBody.map((body) => {
           return {
@@ -34,7 +35,7 @@ function RedisGui() {
         setList(_formatList);
       }
     } catch (error) {
-      _EHS.errorReport(error, 'getMemberList', _EHS._LEVEL.ERROR);
+      _EHS.errorReport(error, 'getRedisKeys', _EHS._LEVEL.ERROR);
     }
   }, []);
 
@@ -94,8 +95,10 @@ function RedisGui() {
   });
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <BaseTable table={table} isDefaultEmpty={false} />
+    <div id='redis' className='redis_container'>
+      <div className='redis_table'>
+        <BaseTable table={table} isDefaultEmpty={false} />
+      </div>
     </div>
   );
 }

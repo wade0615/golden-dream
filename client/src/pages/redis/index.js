@@ -1,2 +1,2 @@
-import RedisGui from './RedisGui';
+import RedisGui from './Redis';
 export { RedisGui };
