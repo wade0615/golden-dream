@@ -16,9 +16,6 @@
     "start:nocache": "NODE_OPTIONS=\"--no-deprecation\" APP_ENV=local nest start --watch"
   },
   "dependencies": {
-    "@google-cloud/firestore": "^7.10.0",
-    "@google-cloud/storage": "^5.16.1",
-    "@grpc/grpc-js": "1.10.3",
     "@nestjs-modules/mailer": "^1.6.1",
     "@nestjs/axios": "0.0.2",
     "@nestjs/common": "^8.1.2",
@@ -38,7 +35,6 @@
     "csv-parser": "^3.0.0",
     "exceljs": "^4.3.0",
     "express": "^4.18.2",
-    "firebase-admin": "^12.5.0",
     "helmet": "^4.6.0",
     "https": "^1.0.0",
     "image-size": "^1.0.2",
@@ -46,7 +42,6 @@
     "jsonwebtoken": "^8.5.1",
     "kafkajs": "^2.2.4",
     "moment-timezone": "^0.5.43",
-    "mysql": "^2.18.1",
     "mysql2": "^3.5.2",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",

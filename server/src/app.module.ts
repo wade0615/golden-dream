@@ -18,8 +18,8 @@ import { RequestIdMiddleware } from './Global/Middlewares/request-id.middleware'
 import { RequestLoggerMiddleware } from './Global/Middlewares/request-logger.middleware';
 
 // Basic Service Setting
-import { FirebaseModule } from './Providers/Database/Firestore/firebase.module';
 import { RedisModule } from './Providers/Database/Redis/redis.module';
+// import { FirebaseModule } from './Providers/Database/Firestore/firebase.module';
 // import { MailModule } from './Providers/Mail/mail.module';
 // import { SmsModule } from './Providers/Sms/sms.module';
 // import { CsvDownloadExample } from './Utils/DataFrame/csv.download.example';
@@ -41,8 +41,8 @@ const moduleImport = [
   AuthModule,
   // CommonModule,
   AuthModule,
-  RedisModule,
-  FirebaseModule
+  RedisModule
+  // FirebaseModule
   // SmsModule,
   // MailModule,
   // CsvDownloadExample

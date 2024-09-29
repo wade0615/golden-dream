@@ -11,18 +11,18 @@ export class ConfigMysqlService {
   constructor(private configService: ConfigService) {}
 
   get host(): string {
-    return this.configService.get<string>('crm_db.host');
+    return this.configService.get<string>('personal_db.host');
   }
   get port(): number {
-    return Number(this.configService.get<number>('crm_db.port'));
+    return Number(this.configService.get<number>('personal_db.port'));
   }
   get username(): string {
-    return this.configService.get<string>('crm_db.username');
+    return this.configService.get<string>('personal_db.username');
   }
   get password(): string {
-    return this.configService.get<string>('crm_db.password');
+    return this.configService.get<string>('personal_db.password');
   }
   get database(): string {
-    return this.configService.get<string>('crm_db.database');
+    return this.configService.get<string>('personal_db.database');
   }
 }

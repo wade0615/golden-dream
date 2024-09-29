@@ -2,7 +2,9 @@ const test = {
   /** 打我啊笨蛋 */
   punchMe: `/punchMe`,
   /** getFireBase */
-  getFireBase: `/getFireBase`
+  getFireBase: `/getFireBase`,
+  /** getDB */
+  getDB: `/getDB`
 };
 
 const auth = {

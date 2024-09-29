@@ -8,14 +8,14 @@ import { CustomerException } from 'src/Global/ExceptionFilter/global.exception.h
 export class MysqlProvider {
   private pool: mysql.Pool;
 
-  constructor(private readonly crmDBConfigService: ConfigMysqlService) {
+  constructor(private readonly DBConfigService: ConfigMysqlService) {
     this.pool = mysql.createPool({
-      user: this.crmDBConfigService.username,
-      password: this.crmDBConfigService.password,
-      host: this.crmDBConfigService.host,
-      database: crmDBConfigService.database,
+      user: this.DBConfigService.username,
+      password: this.DBConfigService.password,
+      host: this.DBConfigService.host,
+      database: DBConfigService.database,
       multipleStatements: true,
-      port: crmDBConfigService.port,
+      port: DBConfigService.port,
       connectionLimit: 20,
       enableKeepAlive: true,
       keepAliveInitialDelay: 10000,
