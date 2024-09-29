@@ -1,3 +1,10 @@
+const test = {
+  /** 打我啊笨蛋 */
+  punchMe: `/punchMe`,
+  /** getFireBase */
+  getFireBase: `/getFireBase`
+};
+
 const auth = {
   /** 登入 */
   login: '/login',
@@ -19,6 +26,7 @@ const common = {
 };
 
 export default {
+  test,
   common,
   auth
 };

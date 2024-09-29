@@ -1,22 +1,56 @@
-import { Controller, Get, Logger, VERSION_NEUTRAL } from '@nestjs/common';
-import { ServiceResponseStatus } from '../../../Definition/index';
+import {
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Req,
+  UsePipes
+} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import apiPath from 'src/Center/api.path';
+import { GlobalDTOValidationPipe } from 'src/Global/Pipes/global.dto.validation.pipe';
 
-@Controller({
-  version: VERSION_NEUTRAL,
-  path: '/v1/test',
-})
+import { FirebaseRepository } from 'src/Providers/Database/Firestore/firebase.repository';
+
+import configError from 'src/Config/error.message.config';
+import { CustomerException } from 'src/Global/ExceptionFilter/global.exception.handle.filter';
+
+@ApiTags('test')
+@Controller('test')
 export class TestController {
-  private readonly logger = new Logger(TestController.name);
-  constructor() {}
+  // constructor(private readonly testService: TestService) {}
+  constructor(private firebaseRepository: FirebaseRepository) {}
 
-  @Get()
-  async test(): Promise<any> {
+  /**
+   * test punch me
+   * @param body
+   * @returns
+   */
+  @Get(apiPath.test.punchMe)
+  async punchMe(@Req() req) {
     const result = {
-      status: ServiceResponseStatus.OK,
-      data: 'haha',
+      text: '打我啊笨蛋'
     };
-    this.logger.debug(result);
 
     return result;
+  }
+
+  /**
+   * test
+   * @param req
+   * @returns
+   */
+  @Post(apiPath.test.getFireBase)
+  @UsePipes(GlobalDTOValidationPipe)
+  async getFireBase(@Req() req) {
+    try {
+      console.log('getFireBase service');
+      // const testResult = await this.testDao.getFireBase();
+      const testResult = await this.firebaseRepository.getFireBase();
+
+      return testResult;
+    } catch (error) {
+      throw new CustomerException(configError._200002, HttpStatus.OK);
+    }
   }
 }

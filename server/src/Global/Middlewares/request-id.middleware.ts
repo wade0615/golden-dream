@@ -23,8 +23,8 @@ export class RequestIdMiddleware implements NestMiddleware {
     const apiPath = urlPath.split('/');
 
     // 白名單驗證
-    // const isValid = false; // 先永遠不驗證，待串接完成後再加上去
-    const isValid = await this._headerValid(apiPath);
+    const isValid = false; // 先永遠不驗證，待串接完成後再加上去
+    // const isValid = await this._headerValid(apiPath);
 
     if (isValid) {
       const accessToken = req.headers.authorization;
