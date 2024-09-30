@@ -48,7 +48,7 @@ const PostList = () => {
   /** 分頁資料 */
   const [pageMeta, setPageMeta] = useState({
     page: 1, //當前頁數
-    perPage: 20, // 每頁筆數
+    perPage: 10, // 每頁筆數
     totalCount: 0, //總筆數
     totalPages: 0 // 總頁數
   });
@@ -62,8 +62,9 @@ const PostList = () => {
         perPage: pageMeta.perPage,
         page: page
       };
-      // const res = await api.posts.getPostList(apiReq);
-      const apiRes = resPosts;
+      const res = await api.posts.getPostList(apiReq);
+      // const apiRes = resPosts;
+      const apiRes = res;
       if (apiRes) {
         const res = new GetPostsClass(apiRes);
         return res;

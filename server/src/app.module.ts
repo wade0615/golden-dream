@@ -28,6 +28,7 @@ import { RedisModule } from './Providers/Database/Redis/redis.module';
 // import { ConfigKafkaModule } from './Config/Database/Kafka/config.module';
 import { AuthModule } from './Models/V1/Auth/auth.module';
 // import { CommonModule } from './Models/V1/Common/common.module';
+import { PostsModule } from './Models/V1/Posts/posts.module';
 import { TestModule } from './Models/V1/Test/test.module';
 
 const moduleImport = [
@@ -38,6 +39,7 @@ const moduleImport = [
     storage: memoryStorage()
   }),
   TestModule,
+  PostsModule,
   AuthModule,
   // CommonModule,
   AuthModule,

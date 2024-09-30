@@ -27,8 +27,13 @@ const common = {
   setRedisData: `/setRedisData`
 };
 
+const posts = {
+  getPostList: `/getPostList`
+};
+
 export default {
   test,
   common,
-  auth
+  auth,
+  posts
 };
