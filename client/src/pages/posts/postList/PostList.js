@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import routerPath from 'routes/router.path';
 // import localStorageUtil from 'utils/localStorageUtil';
 // import LocalStorageKeys from 'constants/localStorageKeys';
-// import api from 'services/api';
+import api from 'services/api';
 
 import './postsListStyle.scss';
 
@@ -56,9 +56,13 @@ const PostList = () => {
   const navigate = useNavigate();
 
   /** 取得文章列表 */
-  const getPostList = useCallback(async (req) => {
+  const getPostList = useCallback(async (page = 1) => {
     try {
-      // const res = await api.post.getPosts();
+      const apiReq = {
+        perPage: pageMeta.perPage,
+        page: page
+      };
+      // const res = await api.posts.getPostList(apiReq);
       const apiRes = resPosts;
       if (apiRes) {
         const res = new GetPostsClass(apiRes);
@@ -73,7 +77,7 @@ const PostList = () => {
   const getInit = useCallback(async () => {
     try {
       console.log('Page Posts');
-      const postList = await getPostList();
+      const postList = await getPostList(pageMeta.page);
       const metaData = postList.metaData;
       const posts = postList.postList;
       setPageMeta(metaData);
