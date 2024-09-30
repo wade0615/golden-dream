@@ -1,0 +1,15 @@
+@import '../../../styles/defaultStyle.scss';
+
+#post_page_crud.post_container {
+  position: relative;
+  padding: 2rem 1rem;
+  .post_editor {
+    margin-bottom: 2rem;
+  }
+  h1 {
+    margin: 0 0 1rem 0;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: $danger;
+  }
+}

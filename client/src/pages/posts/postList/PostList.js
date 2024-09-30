@@ -5,7 +5,7 @@ import routerPath from 'routes/router.path';
 // import LocalStorageKeys from 'constants/localStorageKeys';
 // import api from 'services/api';
 
-import './postsStyle.scss';
+import './postsListStyle.scss';
 
 import ExceptionHandleService from 'utils/exceptionHandler';
 import { GetPostsClass } from './getPostsClass';
