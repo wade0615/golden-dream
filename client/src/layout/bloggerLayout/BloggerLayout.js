@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 import { routerConfig } from 'routes/router';
 import routerPath from 'routes/router.path';
 
 import Navbars from 'components/navbars/Navbars';
-import Avatar from 'components/avatar/Avatar';
+// import Avatar from 'components/avatar/Avatar';
 // import Breadcrumb from 'components/breadcrumb/Breadcrumb';
 // import IconButton from 'components/button/iconButton/IconButton';
 // import Nav from 'components/nav/Nav';
@@ -76,7 +76,7 @@ function BloggerLayout({ children, bannerHeight }) {
       <div
         className='blogger_layout_banner'
         style={{
-          height: currentRoute?.path?.length > 0 ? '30vh' : `${bannerHeight}vh`,
+          height: currentRoute?.path?.length > 1 ? '30vh' : `${bannerHeight}vh`,
           backgroundImage: `url(https://wallup.net/wp-content/uploads/2019/09/297559-mountains-taiwan-taipei-101.jpg)`
         }}
       >

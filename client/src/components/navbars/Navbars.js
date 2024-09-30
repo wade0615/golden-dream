@@ -3,6 +3,8 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
+import { useNavigate } from 'react-router-dom';
+
 /**
  * 部落格用 Navbars
  * @param {string} brand - 標題
@@ -11,6 +13,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
  * @returns <Navbars />
  */
 const Navbars = ({ brand = '', sideNavTitle = '', subPath = [] }) => {
+  const navigate = useNavigate();
   return (
     <>
       <Navbar key='md' expand='md' className='bg-body-tertiary'>
@@ -31,8 +34,9 @@ const Navbars = ({ brand = '', sideNavTitle = '', subPath = [] }) => {
               <Nav className='justify-content-end flex-grow-1 pe-3'>
                 {subPath.map((_subPath, index) => (
                   <Nav.Link
+                    // href={_subPath?.path}
                     key={`navbars_subPath_${index}`}
-                    href={_subPath?.path}
+                    onClick={() => navigate(_subPath?.path)}
                   >
                     {_subPath?.title}
                   </Nav.Link>

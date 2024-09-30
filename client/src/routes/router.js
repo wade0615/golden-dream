@@ -96,8 +96,8 @@ export const routerConfig = [
         children: [
           // 子路由的子路由的陣列
           {
-            index: true, // 預設路由，當訪問 '/member' 時，會自動導航到此路由
-            element: <Navigate to='list' />, // 自動導航到 'list' 子路由
+            index: true, // 預設路由，當訪問 '/posts' 時，會自動導航到此路由
+            element: <Navigate to='postList' />, // 自動導航到 'list' 子路由
             hiddenFromNav: true // 導航欄中是否隱藏
           },
           {

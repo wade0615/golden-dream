@@ -137,7 +137,7 @@ function Login() {
               </div>
             </div>
             <footer className='login-footer w-100'>
-              Copyright © 2023 17Life.
+              Copyright © 2023 19Life.
             </footer>
           </div>
         </Form>
