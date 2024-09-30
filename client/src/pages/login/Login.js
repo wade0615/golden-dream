@@ -87,7 +87,7 @@ function Login() {
               <div className='login-inner d-flex flex-column'>
                 <div className='login-content d-flex flex-column align-items-center'>
                   <img className='login-logo p-2' src={logo} alt='logo' />
-                  <h5 className='login-title'>CRM管理系統</h5>
+                  <h5 className='login-title'>管理系統</h5>
                 </div>
                 <div className='login-input-group w-100'>
                   {/* 帳號 */}

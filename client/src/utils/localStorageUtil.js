@@ -11,7 +11,7 @@ const _EHS = new ExceptionHandleService({
  * @param {and} value
  */
 
-const PRE_TEXT = 'crm_';
+const PRE_TEXT = 'personal_';
 
 const setItem = (key, value) => {
   try {

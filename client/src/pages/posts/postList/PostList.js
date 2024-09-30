@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import routerPath from 'routes/router.path';
 // import localStorageUtil from 'utils/localStorageUtil';
 // import LocalStorageKeys from 'constants/localStorageKeys';
 // import api from 'services/api';
@@ -41,7 +42,7 @@ const resPosts = {
 };
 
 /** 文章列表  */
-const Posts = () => {
+const PostList = () => {
   /** 文章列表 */
   const [listData, setListData] = useState([]);
   /** 分頁資料 */
@@ -51,6 +52,8 @@ const Posts = () => {
     totalCount: 0, //總筆數
     totalPages: 0 // 總頁數
   });
+
+  const navigate = useNavigate();
 
   /** 取得文章列表 */
   const getPostList = useCallback(async (req) => {
@@ -85,13 +88,23 @@ const Posts = () => {
     getInit();
   }, [getInit]);
 
+  /* 前往文章詳情頁 */
+  function handlePostDetail(id) {
+    console.log('handlePostDetail', id);
+    navigate(`/${routerPath.posts}/${routerPath.postPage}?id=${id}`, {});
+  }
+
   return (
     <div id='posts' className='posts_container'>
       {/* 列表 */}
       <div className='posts_list'>
         {listData?.length > 0 &&
           listData.map((post, index) => (
-            <div key={`post.id_${index}`} className='posts_item'>
+            <div
+              key={`post.id_${index}`}
+              className='posts_item'
+              onClick={() => handlePostDetail(post.id)}
+            >
               <h2 className='posts_item_title'>{post.title}</h2>
               <time className='posts_item_date'>{post.date}</time>
               <span className='posts_item_tag'>{post.tag}</span>
@@ -113,4 +126,4 @@ const Posts = () => {
   );
 };
 
-export default Posts;
+export default PostList;

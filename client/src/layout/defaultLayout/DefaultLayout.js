@@ -113,7 +113,7 @@ function SideMenu() {
         {isOpen && (
           <>
             <img src={logo} alt='logo' />
-            <h6 className='text-white mb-0 fw-bold'>CRM管理系統</h6>
+            <h6 className='text-white mb-0 fw-bold'>管理系統</h6>
           </>
         )}
         <div className={`icon-button-right-${classSuffix} `}>

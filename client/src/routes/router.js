@@ -2,7 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 import { RedisGui } from 'pages/redis';
 import { Login } from 'pages/login';
-import { Posts } from 'pages/posts';
+import { PostList, PostPage } from 'pages/posts';
 import { Categories } from 'pages/categories';
 import { About } from 'pages/about';
 import { Timeline } from 'pages/timeline';
@@ -74,10 +74,10 @@ export const routerConfig = [
        **/
       {
         index: true, // 表示當路徑為 '/' 時，這個路由會被使用
-        path: '', // 子路由的路徑
+        path: routerPath.home, // 子路由的路徑
         breadcrumbPath: '', // 頁面路由，用於麵包屑
         // element: <Home />,
-        element: <Posts />,
+        element: <PostList />,
         pageTitle: '首頁', // 可以添加首頁的標題
         tooltip: <p>首頁喔</p>
       },
@@ -87,12 +87,36 @@ export const routerConfig = [
       {
         path: routerPath.posts, // 子路由的路徑
         breadcrumbPath: routerPath.posts, // 頁面路由，用於麵包屑
-        element: <Posts />, // 當訪問 '/posts' 路由時要渲染的元件
+        // element: <PostList />, // 當訪問 '/posts' 路由時要渲染的元件
         errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
         sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
         pageTitle: '文章列表', // 此路由的頁面標題
         shortTitle: '文章列表', // 此路由的短標題
-        authCode: '' // 權限代碼
+        authCode: '', // 權限代碼
+        children: [
+          // 子路由的子路由的陣列
+          {
+            index: true, // 預設路由，當訪問 '/member' 時，會自動導航到此路由
+            element: <Navigate to='list' />, // 自動導航到 'list' 子路由
+            hiddenFromNav: true // 導航欄中是否隱藏
+          },
+          {
+            path: routerPath.postList,
+            pageTitle: '文章列表',
+            element: <PostList />,
+            authCode: '',
+            subPath: [routerPath.postPage] // 子路由的陣列
+          },
+          {
+            path: routerPath.postPage,
+            pageTitle: '文章頁',
+            element: <PostPage />,
+            authCode: '',
+            hiddenFromNav: true,
+            breadcrumbParentPath: routerPath.postList, // 前一層的頁面路由，用於麵包屑
+            breadcrumbParentTitle: '文章列表' // 前一層的頁面標題，用於麵包屑
+          }
+        ]
       },
       /**
        ** timeline 文章時間列表
