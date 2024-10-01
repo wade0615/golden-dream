@@ -20,7 +20,6 @@ export class PostsController {
   @Post(apiPath.posts.getPostList)
   async getPostList(@Body() body) {
     try {
-      console.log('getPostList controller');
       const result = await this.postsService.getPostList(body);
 
       return result;

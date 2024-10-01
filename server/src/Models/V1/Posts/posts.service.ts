@@ -1,4 +1,5 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
+import { v4 as ruuidv4 } from 'uuid';
 
 import configError from 'src/Config/error.message.config';
 import { CustomerException } from 'src/Global/ExceptionFilter/global.exception.handle.filter';
@@ -18,7 +19,6 @@ export class PostsService {
    */
   async getPostList(req): Promise<any> {
     try {
-      console.log('getPostList service');
       const postList = await this.postsRepository.getPostList(req);
 
       const result = {
@@ -30,7 +30,7 @@ export class PostsService {
         },
         postList: postList?.map((data) => {
           return {
-            id: data?.id ?? crypto.randomUUID(),
+            id: data?.id ?? ruuidv4(),
             title: data?.title ?? '未知的標題',
             date: data?.createdDate ?? '未知的時間',
             tag: data?.tag ?? '未知的分類',
