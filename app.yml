@@ -1,0 +1,5 @@
+runtime: custom
+env: flex
+manual_scaling:
+  instances: 1
+image: asia-east1-docker.pkg.dev/wade-personal/golden-dream/v0.1
