@@ -2,3 +2,7 @@ runtime: custom
 env: flex
 manual_scaling:
   instances: 1
+
+env_variables:
+  ClientBuildEnv: dev
+  ServerBuildEnv: dev
