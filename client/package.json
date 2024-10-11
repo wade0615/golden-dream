@@ -41,7 +41,7 @@
   },
   "scripts": {
     "start": "cross-env PORT=3001 react-scripts start",
-    "build": "env-cmd -f ./.env react-scripts build",
+    "build": "env-cmd -f ./.env.dev react-scripts build",
     "build:dev": "env-cmd -f ./.env.dev react-scripts build",
     "build:stage": "env-cmd -f ./.env.stage react-scripts build",
     "build:prod": "env-cmd -f ./.env.prod react-scripts build",
