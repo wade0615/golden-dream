@@ -4,7 +4,8 @@ WORKDIR /home/node
 COPY . .
 ARG ClientBuildEnv
 RUN apk add --update --no-cache make g++ libpng-dev cairo-dev pango-dev libtool
-RUN cd /home/node/client && npm install && npm run build:${ClientBuildEnv}
+# RUN cd /home/node/client && npm install && npm run build:${ClientBuildEnv}
+RUN cd /home/node/client && npm install && npm run build -- ${ClientBuildEnv}
 RUN cd /home/node/server && npm install && npm run build
 # Runtime image
 FROM node:18-alpine
