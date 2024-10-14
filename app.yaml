@@ -15,3 +15,5 @@ env_variables:
 # docker push asia-east1-docker.pkg.dev/wade-personal/golden-dream/v0.1.5
 # gcloud app deploy --verbosity=debug
 # gcloud app logs tail -s default
+# 透過Github 觸發 Google cloud build 部屬至 App engine
+# https://medium.com/%E7%A2%BC%E8%BE%B2%E8%83%8C%E5%8C%85%E5%AE%A2/%E9%80%8F%E9%81%8Egithub-%E8%A7%B8%E7%99%BC-google-cloud-build-%E9%83%A8%E5%B1%AC%E8%87%B3-app-engine-ce525561d28c
