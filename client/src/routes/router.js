@@ -65,7 +65,7 @@ export const routerConfig = [
   },
   {
     path: '/', // 路由的路徑
-    element: <BloggerLayout bannerHeight='80' />, // 訪問時要渲染的元件
+    element: <BloggerLayout bannerHeight='90' />, // 訪問時要渲染的元件
     errorElement: <Error404 />, // 有任何錯誤，例如無效的路由，就會渲染這個元件
     children: [
       // 子路由的陣列，它們會在訪問此路由時進一步導航

@@ -17,7 +17,7 @@ const Navbars = ({ brand = '', sideNavTitle = '', subPath = [] }) => {
   return (
     <>
       <Navbar key='md' expand='md' className='bg-body-tertiary'>
-        <Container fluid>
+        <Container fluid='lg'>
           <Navbar.Brand href='/'>{brand}</Navbar.Brand>
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
           <Navbar.Offcanvas

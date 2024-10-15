@@ -1,6 +1,11 @@
 @import '../../styles/defaultStyle.scss';
+@import url(https://fonts.googleapis.com/css2?family=DotGothic16&display=swap);
 
 #about.about_container {
   position: relative;
   padding: 2rem 1rem;
+  font-family: 'DotGothic16', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.25rem;
 }

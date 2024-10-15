@@ -47,8 +47,8 @@ function BloggerLayout({ children, bannerHeight }) {
       {/* Side Menu */}
       <div className='blogger_layout_side_menu'>
         <Navbars
-          brand='Wandering Spanner Wade'
-          sideNavTitle='Wandering Spanner Wade'
+          brand='Spanner Wade'
+          sideNavTitle='Spanner Wade'
           subPath={[
             {
               path: routerPath.posts,
@@ -77,11 +77,11 @@ function BloggerLayout({ children, bannerHeight }) {
         className='blogger_layout_banner'
         style={{
           height: currentRoute?.path?.length > 1 ? '30vh' : `${bannerHeight}vh`,
-          backgroundImage: `url(https://wallup.net/wp-content/uploads/2019/09/297559-mountains-taiwan-taipei-101.jpg)`
+          backgroundImage: `url(https://storage.cloud.google.com/personal_public/blog/iceland.webp)`
         }}
       >
         <div className='blogger_layout_banner_intro'>
-          <h1>扳手之前人人平等</h1>
+          <h1>板手之前人人平等</h1>
         </div>
       </div>
       {/* Main content */}
@@ -108,13 +108,13 @@ function BloggerLayoutAsideCard() {
     <div className='blogger_layout_aside_card'>
       <section className='blogger_layout_aside_card_avatar'>
         <img
-          alt='Wandering Spanner Wade'
+          alt='Spanner Wade'
           src='https://assets.juksy.com/files/articles/103935/800x_100_w-5f7d40d31d975.jpg'
         ></img>
       </section>
       <section className='blogger_layout_aside_card_name'>
         <h2>Wade Wu</h2>
-        <p>Wandering Spanner Wade</p>
+        <p>Spanner Wade</p>
       </section>
       <section className='blogger_layout_aside_card_counts'>
         <div>
