@@ -56,10 +56,10 @@ const PostList = () => {
   const navigate = useNavigate();
 
   /** 取得文章列表 */
-  const getPostList = useCallback(async (page = 1) => {
+  const getPostList = useCallback(async (page = 1, perPage = 10) => {
     try {
       const apiReq = {
-        perPage: pageMeta.perPage,
+        perPage: perPage,
         page: page
       };
       const res = await api.posts.getPostList(apiReq);
@@ -78,7 +78,7 @@ const PostList = () => {
   const getInit = useCallback(async () => {
     try {
       console.log('Page Posts');
-      const postList = await getPostList(pageMeta.page);
+      const postList = await getPostList(pageMeta.page, pageMeta.perPage);
       const metaData = postList.metaData;
       const posts = postList.postList;
       setPageMeta(metaData);
@@ -106,7 +106,7 @@ const PostList = () => {
         {listData?.length > 0 &&
           listData.map((post, index) => (
             <div
-              key={`post.id_${index}`}
+              key={`post_id_${index}`}
               className='posts_item'
               onClick={() => handlePostDetail(post.id)}
             >

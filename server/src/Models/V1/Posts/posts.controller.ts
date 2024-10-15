@@ -4,6 +4,8 @@ import apiPath from 'src/Center/api.path';
 
 import { PostsService } from './posts.service';
 
+import { GetPostListReq, GetPostListResp } from './Dto/get.post.list.dto';
+
 import configError from 'src/Config/error.message.config';
 import { CustomerException } from 'src/Global/ExceptionFilter/global.exception.handle.filter';
 
@@ -18,7 +20,7 @@ export class PostsController {
    * @returns
    */
   @Post(apiPath.posts.getPostList)
-  async getPostList(@Body() body) {
+  async getPostList(@Body() body: GetPostListReq): Promise<GetPostListResp> {
     try {
       const result = await this.postsService.getPostList(body);
 

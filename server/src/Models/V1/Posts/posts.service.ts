@@ -6,6 +6,8 @@ import { CustomerException } from 'src/Global/ExceptionFilter/global.exception.h
 
 import { PostsRepository } from './posts.repository';
 
+import { GetPostListReq, GetPostListResp } from './Dto/get.post.list.dto';
+
 import moment = require('moment-timezone');
 const crypto = require('crypto');
 
@@ -17,16 +19,17 @@ export class PostsService {
    * 取得文章列表
    * @returns
    */
-  async getPostList(req): Promise<any> {
+  async getPostList(req: GetPostListReq): Promise<GetPostListResp> {
     try {
       const postList = await this.postsRepository.getPostList(req);
+      const postListCount = await this.postsRepository.getPostListCount();
 
       const result = {
         metaData: {
           page: req?.page ?? 1,
           perPage: req?.perPage ?? 10,
-          totalCount: 66,
-          totalPages: 7
+          totalCount: postListCount,
+          totalPages: Math.ceil(postListCount / req?.perPage)
         },
         postList: postList?.map((data) => {
           return {

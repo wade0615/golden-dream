@@ -81,7 +81,7 @@ function BloggerLayout({ children, bannerHeight }) {
         }}
       >
         <div className='blogger_layout_banner_intro'>
-          <h1>板手之前人人平等</h1>
+          <h1>{currentRoute?.path?.length > 1 ? '' : `板手之前人人平等`}</h1>
         </div>
       </div>
       {/* Main content */}
