@@ -15,6 +15,14 @@ const _EHS = new ExceptionHandleService({
 
 /** 關於我  */
 const About = () => {
+  /** 分頁資料 */
+  const [aboutDescription, setAboutDescription] = useState({
+    title: '<title> About me </title>',
+    name: '<name> Wade WU </name>',
+    location: '<location> New Taipei City,TW </location>',
+    email: '<email> wsw0615@gmail.com </email>'
+  });
+
   /** 初次載入 */
   const getInit = useCallback(async () => {
     try {
@@ -31,7 +39,10 @@ const About = () => {
 
   return (
     <div id='about' className='about_container'>
-      About
+      <div>{aboutDescription.title}</div>
+      <div>{aboutDescription.name}</div>
+      <div>{aboutDescription.location}</div>
+      <div>{aboutDescription.email}</div>
     </div>
   );
 };
