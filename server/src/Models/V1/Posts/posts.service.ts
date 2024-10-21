@@ -6,6 +6,7 @@ import { CustomerException } from 'src/Global/ExceptionFilter/global.exception.h
 
 import { PostsRepository } from './posts.repository';
 
+import { GetPostByIdReq, GetPostByIdResp } from './Dto/get.post.by.id.dto';
 import { GetPostListReq, GetPostListResp } from './Dto/get.post.list.dto';
 
 import moment = require('moment-timezone');
@@ -45,6 +46,27 @@ export class PostsService {
       return result;
     } catch (error) {
       console.error('getPostList service error:', error);
+      throw new CustomerException(configError._200002, HttpStatus.OK);
+    }
+  }
+
+  /**
+   * 取得指定文章
+   * @returns
+   */
+  async getPostById(req: GetPostByIdReq): Promise<GetPostByIdResp> {
+    try {
+      const postInfo = await this.postsRepository.getPostById(req?.postId);
+
+      const result = {
+        content:
+          postInfo?.content.replace(/\\\\/g, '\\').replace(/\\n/g, '\n') ??
+          '未知的文章內容'
+      };
+
+      return result;
+    } catch (error) {
+      console.error('getPostById service error:', error);
       throw new CustomerException(configError._200002, HttpStatus.OK);
     }
   }

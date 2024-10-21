@@ -50,7 +50,7 @@ const PostList = () => {
   /** 初次載入 */
   const getInit = useCallback(async () => {
     try {
-      const postList = await getPostList(pageMeta.page, pageMeta.perPage);
+      const postList = await getPostList();
       const metaData = postList.metaData;
       const posts = postList.postList;
       setPageMeta(metaData);

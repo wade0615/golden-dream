@@ -20,6 +20,19 @@ const getPostList = async (params) => {
   }
 };
 
+/* [POST]取得指定文章 */
+const getPostById = async (params) => {
+  try {
+    const url = `${config.SERVER_POINT}${apiPath.posts.getPostById}`;
+    const result = await post(url, params);
+    return result;
+  } catch (error) {
+    _EHS.errorReport(error, 'getPostById', _EHS._LEVEL.ERROR);
+    return Promise.reject(error);
+  }
+};
+
 export default {
-  getPostList
+  getPostList,
+  getPostById
 };

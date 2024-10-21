@@ -28,7 +28,8 @@ const common = {
 };
 
 const posts = {
-  getPostList: `/getPostList`
+  getPostList: `/getPostList`,
+  getPostById: `/getPostById`
 };
 
 export default {

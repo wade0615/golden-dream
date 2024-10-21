@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { MetaDataCommon } from 'src/Definition/Dto';
 
 export class GetPostListReq {
@@ -10,7 +10,7 @@ export class GetPostListReq {
     required: false
   })
   @IsNumber()
-  @IsOptional()
+  @IsNotEmpty()
   page: number;
 
   @ApiProperty({
@@ -19,7 +19,7 @@ export class GetPostListReq {
     description: '每頁筆數',
     required: false
   })
-  @IsOptional()
+  @IsNotEmpty()
   perPage: number;
 }
 
