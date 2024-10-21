@@ -133,9 +133,11 @@ function BloggerLayoutAsideCard() {
 
 /** Footer */
 function BloggerLayoutFooter() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className='blogger_layout_footer'>
-      <p>© 2024 By Wade Wu</p>
+      <p>© {currentYear} By Wade Wu</p>
       <p>Theme From HEXO Butterfly</p>
     </footer>
   );

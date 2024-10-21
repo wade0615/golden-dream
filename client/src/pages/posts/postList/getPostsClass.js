@@ -1,3 +1,4 @@
+import { formatDefTimeNew } from 'utils/timeUtils';
 const GetPostsClass = class {
   constructor(data) {
     this.metaData = {
@@ -14,7 +15,10 @@ const Post = class {
   constructor(data) {
     this.id = data?.id ?? crypto.randomUUID();
     this.title = data?.title ?? '未知的標題';
-    this.date = data?.date ?? '';
+    this.date =
+      formatDefTimeNew(data?.date, {
+        formatString: 'yyyy/MM/dd HH:mm:ss'
+      }) ?? '';
     this.tag = data?.tag ?? '';
     this.content = data?.content ?? '';
   }
