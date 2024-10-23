@@ -6,6 +6,9 @@ import { CustomerException } from 'src/Global/ExceptionFilter/global.exception.h
 
 import { PostsRepository } from './posts.repository';
 
+import { GetPostByIdReq, GetPostByIdResp } from './Dto/get.post.by.id.dto';
+import { GetPostListReq, GetPostListResp } from './Dto/get.post.list.dto';
+
 import moment = require('moment-timezone');
 const crypto = require('crypto');
 
@@ -17,16 +20,17 @@ export class PostsService {
    * 取得文章列表
    * @returns
    */
-  async getPostList(req): Promise<any> {
+  async getPostList(req: GetPostListReq): Promise<GetPostListResp> {
     try {
       const postList = await this.postsRepository.getPostList(req);
+      const postListCount = await this.postsRepository.getPostListCount();
 
       const result = {
         metaData: {
           page: req?.page ?? 1,
           perPage: req?.perPage ?? 10,
-          totalCount: 66,
-          totalPages: 7
+          totalCount: postListCount,
+          totalPages: Math.ceil(postListCount / req?.perPage)
         },
         postList: postList?.map((data) => {
           return {
@@ -42,6 +46,27 @@ export class PostsService {
       return result;
     } catch (error) {
       console.error('getPostList service error:', error);
+      throw new CustomerException(configError._200002, HttpStatus.OK);
+    }
+  }
+
+  /**
+   * 取得指定文章
+   * @returns
+   */
+  async getPostById(req: GetPostByIdReq): Promise<GetPostByIdResp> {
+    try {
+      const postInfo = await this.postsRepository.getPostById(req?.postId);
+
+      const result = {
+        content:
+          postInfo?.content.replace(/\\\\/g, '\\').replace(/\\n/g, '\n') ??
+          '未知的文章內容'
+      };
+
+      return result;
+    } catch (error) {
+      console.error('getPostById service error:', error);
       throw new CustomerException(configError._200002, HttpStatus.OK);
     }
   }

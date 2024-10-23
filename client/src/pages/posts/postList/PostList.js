@@ -15,32 +15,6 @@ const _EHS = new ExceptionHandleService({
   _NOTICE: ''
 });
 
-// api 回傳的文章列表
-const resPosts = {
-  metaData: {
-    page: 1,
-    perPage: 10,
-    totalCount: 66,
-    totalPages: 7
-  },
-  postList: [
-    {
-      id: 1,
-      title: 'title 1',
-      date: '2021-10-01',
-      tag: 'tag 1',
-      content: 'content 1'
-    },
-    {
-      id: 1,
-      title: 'title 2',
-      date: '2021-11-11',
-      tag: 'tag 2',
-      content: 'content 2'
-    }
-  ]
-};
-
 /** 文章列表  */
 const PostList = () => {
   /** 文章列表 */
@@ -56,14 +30,13 @@ const PostList = () => {
   const navigate = useNavigate();
 
   /** 取得文章列表 */
-  const getPostList = useCallback(async (page = 1) => {
+  const getPostList = useCallback(async (page = 1, perPage = 10) => {
     try {
       const apiReq = {
-        perPage: pageMeta.perPage,
+        perPage: perPage,
         page: page
       };
       const res = await api.posts.getPostList(apiReq);
-      // const apiRes = resPosts;
       const apiRes = res;
       if (apiRes) {
         const res = new GetPostsClass(apiRes);
@@ -77,8 +50,7 @@ const PostList = () => {
   /** 初次載入 */
   const getInit = useCallback(async () => {
     try {
-      console.log('Page Posts');
-      const postList = await getPostList(pageMeta.page);
+      const postList = await getPostList();
       const metaData = postList.metaData;
       const posts = postList.postList;
       setPageMeta(metaData);
@@ -94,10 +66,19 @@ const PostList = () => {
   }, [getInit]);
 
   /* 前往文章詳情頁 */
-  function handlePostDetail(id) {
+  const handlePostDetail = (id) => {
     console.log('handlePostDetail', id);
     navigate(`/${routerPath.posts}/${routerPath.postPage}?id=${id}`, {});
-  }
+  };
+
+  /* 上下頁切換 */
+  const handlePageFetch = async (page) => {
+    const postList = await getPostList(page, pageMeta.perPage);
+    const metaData = postList.metaData;
+    const posts = postList.postList;
+    setPageMeta(metaData);
+    setListData(posts);
+  };
 
   return (
     <div id='posts' className='posts_container'>
@@ -106,7 +87,7 @@ const PostList = () => {
         {listData?.length > 0 &&
           listData.map((post, index) => (
             <div
-              key={`post.id_${index}`}
+              key={`post_id_${index}`}
               className='posts_item'
               onClick={() => handlePostDetail(post.id)}
             >
@@ -123,8 +104,26 @@ const PostList = () => {
           共 {pageMeta.totalCount} 筆，共 {pageMeta.totalPages} 頁
         </div>
         <div className='posts_pagination_page'>
-          <button>上一頁</button>
-          <button>下一頁</button>
+          <button
+            onClick={() =>
+              handlePageFetch(pageMeta.page > 1 ? pageMeta.page - 1 : 1)
+            }
+            disabled={pageMeta.page === 1}
+          >
+            上一頁
+          </button>
+          <button
+            onClick={() =>
+              handlePageFetch(
+                pageMeta.page < 2 && pageMeta.totalPages > 1
+                  ? pageMeta.page + 1
+                  : 1
+              )
+            }
+            disabled={pageMeta.page === pageMeta.totalPages}
+          >
+            下一頁
+          </button>
         </div>
       </div>
     </div>

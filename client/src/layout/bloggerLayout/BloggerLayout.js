@@ -81,7 +81,7 @@ function BloggerLayout({ children, bannerHeight }) {
         }}
       >
         <div className='blogger_layout_banner_intro'>
-          <h1>板手之前人人平等</h1>
+          <h1>{currentRoute?.path?.length > 1 ? '' : `板手之前人人平等`}</h1>
         </div>
       </div>
       {/* Main content */}
@@ -133,9 +133,11 @@ function BloggerLayoutAsideCard() {
 
 /** Footer */
 function BloggerLayoutFooter() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className='blogger_layout_footer'>
-      <p>© 2024 By Wade Wu</p>
+      <p>© {currentYear} By Wade Wu</p>
       <p>Theme From HEXO Butterfly</p>
     </footer>
   );

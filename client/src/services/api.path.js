@@ -23,7 +23,8 @@ const test = {
 };
 
 const posts = {
-  getPostList: `${category.posts}/getPostList`
+  getPostList: `${category.posts}/getPostList`,
+  getPostById: `${category.posts}/getPostById`
 };
 
 export default {
