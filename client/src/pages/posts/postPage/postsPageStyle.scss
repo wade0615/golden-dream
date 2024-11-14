@@ -3,13 +3,55 @@
 #post_page.post_container {
   position: relative;
   padding: 2rem 1rem;
+  line-height: 2;
   .post_editor {
     margin-bottom: 2rem;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-style: italic;
+    font-weight: bold;
   }
   h1 {
     margin: 0 0 1rem 0;
     font-size: 2.5rem;
+  }
+  h2 {
+    margin: 2rem 0 1rem;
     font-weight: bold;
-    color: $danger;
+    border-bottom: solid 1px;
+  }
+  h3 {
+    margin: 2rem 0 1rem;
+  }
+  h4 {
+    margin: 3rem 2rem;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  p {
+    margin: 0 0 1.5rem;
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
+  img {
+    padding: 0.5rem;
+  }
+  blockquote {
+    margin: 0 0 1rem;
+    padding: 0.6rem 0.8rem;
+    border-left: 0.3rem solid $base-font-color;
+    background-color: $blockquote;
+    color: $base-font-color;
+  }
+  ul {
+    margin-top: 0.4rem;
+    li {
+      position: relative;
+      margin: 0.3rem 0;
+      padding-left: 0.3rem;
+    }
   }
 }
