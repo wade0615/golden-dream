@@ -36,7 +36,18 @@
     font-size: 1rem;
     letter-spacing: 1px;
   }
-  img {
+  hr {
+    background-color: $main-color;
+  }
+  p:has(img) {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  p:has(img) img {
+    flex: 1;
+    max-width: 100%;
+    object-fit: contain;
     padding: 0.5rem;
   }
   blockquote {
