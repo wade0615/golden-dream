@@ -42,16 +42,19 @@
   hr {
     background-color: $main-color;
   }
-  p:has(img) {
+  p:has(div.img_container:has(img)) {
     display: flex;
     justify-content: space-between;
     width: 100%;
-  }
-  p:has(img) img {
-    flex: 1;
-    max-width: 100%;
-    object-fit: contain;
-    padding: 0.5rem;
+    div {
+      display: flex;
+      flex: 1;
+      padding: 0.5rem;
+      img {
+        max-width: 100%;
+        object-fit: contain;
+      }
+    }
   }
   blockquote {
     margin: 0 0 1rem;
