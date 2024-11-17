@@ -25,7 +25,8 @@ export class PostsRepository {
         bp.Create_Date AS createdDate, 
         bp.Short_Content AS shortContent
       FROM blog_post bp 
-      ORDER BY bp.Create_Date DESC
+      WHERE bp.Post_Type = 2
+      ORDER BY bp.Seq DESC
       LIMIT ${_start}, ${_limit}
     `;
 
