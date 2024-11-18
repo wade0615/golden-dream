@@ -44,6 +44,7 @@ export class PostsRepository {
       SELECT 
         COUNT(bp.Post_ID) AS count
       FROM blog_post bp 
+      WHERE bp.Post_Type = 2
     `;
 
     const result = (await this.internalConn.query(sqlStr, [])) ?? [];
