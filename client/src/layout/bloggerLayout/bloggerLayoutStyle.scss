@@ -10,10 +10,16 @@
     top: 0;
     z-index: 1;
     box-shadow: 0 4px 8px 6px rgba(7, 17, 27, 0.06);
+    background: $heavy-color-gradient;
+    .navbar-brand,
+    .nav-link {
+      color: $main-color;
+    }
   }
   .blogger_layout_banner {
     height: 30vh;
-    background-color: $base-bg-color;
+    background: $heavy-color-gradient;
+    color: $main-color;
     background-position: center;
     background-size: cover;
     .blogger_layout_banner_intro {
@@ -98,8 +104,8 @@
   }
   .blogger_layout_footer {
     padding: 2rem 1rem;
-    color: $base-font-color;
-    background-color: $base-bg-color;
+    color: $main-color;
+    background: $heavy-color-gradient;
     text-align: center;
   }
 }

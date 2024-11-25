@@ -114,7 +114,8 @@ export const routerConfig = [
             authCode: '',
             hiddenFromNav: true,
             breadcrumbParentPath: routerPath.postList, // 前一層的頁面路由，用於麵包屑
-            breadcrumbParentTitle: '文章列表' // 前一層的頁面標題，用於麵包屑
+            breadcrumbParentTitle: '文章列表', // 前一層的頁面標題，用於麵包屑
+            hiddenAsideCard: true // 是否隱藏側邊欄小卡
           }
         ]
       },

@@ -88,11 +88,21 @@ function BloggerLayout({ children, bannerHeight }) {
       <Container className='container'>
         <Row className='blogger_layout_main'>
           {/* Aside Card */}
-          <Col sm={0} md={3} className='blogger_layout_aside d-none d-md-block'>
-            <BloggerLayoutAsideCard />
-          </Col>
+          {currentRoute?.hiddenAsideCard ? null : (
+            <Col
+              sm={0}
+              md={3}
+              className='blogger_layout_aside d-none d-md-block'
+            >
+              <BloggerLayoutAsideCard />
+            </Col>
+          )}
           {/* Content */}
-          <Col sm='auto' md={9} className='blogger_layout_content'>
+          <Col
+            sm='auto'
+            md={currentRoute?.hiddenAsideCard ? 12 : 9}
+            className='blogger_layout_content'
+          >
             <Outlet>{children}</Outlet>
           </Col>
         </Row>

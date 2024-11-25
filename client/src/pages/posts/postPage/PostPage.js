@@ -6,6 +6,9 @@ import { useLocation } from 'react-router-dom';
 // import LocalStorageKeys from 'constants/localStorageKeys';
 import api from 'services/api';
 
+import { IoMdList } from 'react-icons/io';
+import { FaRegArrowAltCircleLeft } from 'react-icons/fa';
+import { FaRegArrowAltCircleRight } from 'react-icons/fa';
 import './postsPageStyle.scss';
 
 import { GetPostByIdClass } from './getPostByIdClass';
@@ -49,12 +52,92 @@ const PostPage = () => {
     }
   }, []);
 
+  /** 上下頁按鈕動畫 */
+  const btnAnimation = useCallback(() => {
+    var $btn = document.getElementsByClassName('button');
+    var mouseObj = {
+      mouseCoords: null,
+      mousetThreshold: 0.12,
+      manageMouseLeave: function (event) {
+        event.currentTarget.style.boxShadow = '0 0 0 rgba(0,0,0,0.2)';
+        // update btn gradient
+        event.currentTarget.style.background = '#233142';
+      },
+      manageMouseMove: function (event) {
+        var dot, eventDoc, doc, body, pageX, pageY;
+
+        event = event || window.event; // IE-ism
+        const target = event.currentTarget;
+        // (old IE)
+        if (event.pageX == null && event.clientX != null) {
+          eventDoc = (event.target && event.target.ownerDocument) || document;
+          doc = eventDoc.documentElement;
+          body = eventDoc.body;
+
+          event.pageX =
+            event.clientX +
+            ((doc && doc.scrollLeft) || (body && body.scrollLeft) || 0) -
+            ((doc && doc.clientLeft) || (body && body.clientLeft) || 0);
+          event.pageY =
+            event.clientY +
+            ((doc && doc.scrollTop) || (body && body.scrollTop) || 0) -
+            ((doc && doc.clientTop) || (body && body.clientTop) || 0);
+        }
+
+        // Use event.pageX / event.pageY here
+
+        //normalize
+        //bodyRect = document.body.getBoundingClientRect(),
+        var elemRect = target.getBoundingClientRect(), //$btn.getBoundingClientRect(),
+          mean = Math.round(elemRect.width / 2);
+        //offset   = elemRect.top - bodyRect.top;
+
+        //mouseObj.mouseCoords = {mouse_x: event.pageX - elemRect.left , mouse_y:event.pageY - elemRect.top}
+        mouseObj.mouseCoords = {
+          mouse_true_x: event.pageX - elemRect.left,
+          mouse_x:
+            (event.pageX - elemRect.left - mean) * mouseObj.mousetThreshold,
+          mouse_y: event.pageY - elemRect.top
+        };
+        mouseObj.manageButtonShadow(-1, target);
+      },
+      manageButtonShadow: function (direction, target) {
+        if (mouseObj.mouseCoords) {
+          mouseObj.mouseCoords.mouse_x = Math.floor(
+            mouseObj.mouseCoords.mouse_x
+          );
+          target.style.boxShadow =
+            direction * mouseObj.mouseCoords.mouse_x +
+            'px 10px 0 rgba(0,0,0,0.2)';
+
+          // update btn gradient
+          target.style.background =
+            'radial-gradient(at ' +
+            mouseObj.mouseCoords.mouse_true_x +
+            'px, #425265 0%, #233142 80%)';
+
+          //2a3d52
+
+          //45576e
+        }
+      }
+    };
+
+    // init listeners
+    for (let i = 0; i < $btn.length; i++) {
+      $btn[i].addEventListener('mousemove', mouseObj.manageMouseMove, false);
+      $btn[i].addEventListener('mouseleave', mouseObj.manageMouseLeave, false);
+    }
+  });
+
   /** 初次載入 */
   const getInit = useCallback(async () => {
     try {
       const postInfo = await getPostById(postId);
       const postContent = postInfo?.content;
       setMarkdown(postContent);
+
+      btnAnimation();
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
@@ -72,6 +155,25 @@ const PostPage = () => {
       <div className='post_editor' data-color-mode='light'>
         <MarkdownEditor.Markdown source={markdown} height='200px' />
       </div>
+
+      <hr />
+
+      <dev className='button_container mb-3 justify-content-start'>
+        <button class='px-4 button' id='button0'>
+          <IoMdList />
+          <span>Back to Post List</span>
+        </button>
+      </dev>
+      <dev className='button_container justify-content-end'>
+        <button class='px-4 button' id='button1'>
+          <FaRegArrowAltCircleLeft />
+          <span>Recent Post</span>
+        </button>
+        <button class='px-4 button' id='button2'>
+          <span>Earlier Post</span>
+          <FaRegArrowAltCircleRight />
+        </button>
+      </dev>
     </div>
   );
 };
