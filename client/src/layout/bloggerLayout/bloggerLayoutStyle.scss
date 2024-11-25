@@ -1,5 +1,6 @@
 @import '../../styles/defaultStyle.scss';
 @import url(https://fonts.googleapis.com/css2?family=DotGothic16&display=swap);
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Prata');
 
 #blogger_layout {
   display: flex;
@@ -14,6 +15,8 @@
     .navbar-brand,
     .nav-link {
       color: $main-color;
+      font-family: 'Prata', 'DotGothic16', serif;
+      letter-spacing: 1px;
     }
   }
   .blogger_layout_banner {
@@ -32,7 +35,8 @@
       h1 {
         font-size: 2.5rem;
         font-weight: 700;
-        font-family: 'DotGothic16', serif;
+        font-family: 'Prata', 'DotGothic16', serif;
+        letter-spacing: 1px;
         // background-color: rgba(0, 0, 0, 0.1);
         padding: 1rem 1.5rem;
         border-radius: 60px;
@@ -54,6 +58,8 @@
         border-radius: 10px;
         box-shadow: 0 4px 8px 6px rgba(7, 17, 27, 0.06);
         transition: box-shadow 0.3s ease;
+        font-family: 'Prata', 'DotGothic16', serif;
+        letter-spacing: 1px;
         &:hover {
           box-shadow: 0 4px 12px 12px rgba(7, 17, 27, 0.15);
         }
@@ -107,5 +113,7 @@
     color: $main-color;
     background: $heavy-color-gradient;
     text-align: center;
+    font-family: 'Prata', 'DotGothic16', serif;
+    letter-spacing: 1px;
   }
 }
