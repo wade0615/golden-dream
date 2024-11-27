@@ -64,7 +64,7 @@ const PostPage = () => {
         event.currentTarget.style.background = '#233142';
       },
       manageMouseMove: function (event) {
-        var dot, eventDoc, doc, body, pageX, pageY;
+        var eventDoc, doc, body;
 
         event = event || window.event; // IE-ism
         const target = event.currentTarget;
@@ -115,10 +115,6 @@ const PostPage = () => {
             'radial-gradient(at ' +
             mouseObj.mouseCoords.mouse_true_x +
             'px, #425265 0%, #233142 80%)';
-
-          //2a3d52
-
-          //45576e
         }
       }
     };
@@ -128,7 +124,7 @@ const PostPage = () => {
       $btn[i].addEventListener('mousemove', mouseObj.manageMouseMove, false);
       $btn[i].addEventListener('mouseleave', mouseObj.manageMouseLeave, false);
     }
-  });
+  }, []);
 
   /** 初次載入 */
   const getInit = useCallback(async () => {
@@ -141,7 +137,7 @@ const PostPage = () => {
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
-  }, [getPostById, postId]);
+  }, [getPostById, postId, btnAnimation]);
 
   /** 初始化 */
   useEffect(() => {

@@ -115,7 +115,7 @@ const PostList = () => {
           <button
             onClick={() =>
               handlePageFetch(
-                pageMeta.page < 2 && pageMeta.totalPages > 1
+                pageMeta.page < pageMeta.totalPages && pageMeta.totalPages > 1
                   ? pageMeta.page + 1
                   : 1
               )
