@@ -418,4 +418,27 @@ VALUES(?,?,?, @email,?,?,?);
 
     return;
   }
+
+  async getAsideCardDetail(): Promise<{
+    postCount: number;
+    categoriesCount: number;
+  }> {
+    const sqlStr = `
+      SELECT 
+          COUNT(bp.Post_ID) AS postCount
+      FROM blog_post bp 
+      WHERE bp.Post_Type = 2;
+
+      SELECT 
+          COUNT(*) AS categoriesCount
+      FROM blog_category bc ;
+    `;
+
+    const result = (await this.internalConn.query(sqlStr, [])) ?? [];
+
+    const postCount = result?.[0]?.[0]?.postCount;
+    const categoriesCount = result?.[1]?.[0]?.categoriesCount;
+
+    return { postCount, categoriesCount };
+  }
 }

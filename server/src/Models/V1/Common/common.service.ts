@@ -1,18 +1,18 @@
 import { Storage } from '@google-cloud/storage';
 import { HttpStatus, Injectable } from '@nestjs/common';
-import config from 'src/Config/config';
+// import config from 'src/Config/config';
 import configError from 'src/Config/error.message.config';
-import { BELONG_TO } from 'src/Definition/Enum/code.center.belong.enum';
+// import { BELONG_TO } from 'src/Definition/Enum/code.center.belong.enum';
 import {
   IMAGE_UPLOAD_TYPE,
   IMAGE_UPLOAD_TYPE_CONFIG
 } from 'src/Definition/Enum/image.upload.type.enum';
 import { CustomerException } from 'src/Global/ExceptionFilter/global.exception.handle.filter';
 import { MysqlProvider } from 'src/Providers/Database/DatabaseMysql/mysql.provider';
-import { RedisService } from 'src/Providers/Database/Redis/redis.service';
+// import { RedisService } from 'src/Providers/Database/Redis/redis.service';
 import { checkImageType, validateImage } from 'src/Utils/tools';
 import { v4 as ruuidv4 } from 'uuid';
-import { GetTownshipCityDataResp } from './Dto/get.town.ship.city.data.dto';
+// import { GetTownshipCityDataResp } from './Dto/get.town.ship.city.data.dto';
 import { UploadImageDto, UploadImageResp } from './Dto/upload.image.dto';
 import { ImageUrlPath } from './Interface/image.url.path.interface';
 import { CommonRepository } from './common.repository';
@@ -23,7 +23,7 @@ const storage = new Storage({
   projectId: process.env.GCP_PK_PROJECT_ID,
   scopes: process.env.GCP_PK_SCOPES,
   credentials: {
-    private_key: process.env.GCP_PK_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    private_key: process.env.GCP_PK_PRIVATE_KEY?.replace(/\\n/g, '\n'),
     client_email: process.env.GCP_PK_CLIENT_EMAIL
   }
 });
@@ -32,77 +32,77 @@ const storage = new Storage({
 export class CommonService {
   constructor(
     private commonRepository: CommonRepository,
-    private readonly redisService: RedisService,
+    // private readonly redisService: RedisService,
     private internalConn: MysqlProvider
   ) {}
 
   /**
    * 更新 code center
    */
-  async updateCodeCenter(): Promise<{}> {
-    await this.redisService.delCacheData(config.REDIS_KEY.CONFIG);
-    const data = await this.commonRepository.getCodeCenterList();
-    await this.redisService.setCacheData(
-      config.REDIS_KEY.CONFIG,
-      data,
-      null,
-      false
-    );
-    return {};
-  }
+  // async updateCodeCenter(): Promise<{}> {
+  //   await this.redisService.delCacheData(config.REDIS_KEY.CONFIG);
+  //   const data = await this.commonRepository.getCodeCenterList();
+  //   await this.redisService.setCacheData(
+  //     config.REDIS_KEY.CONFIG,
+  //     data,
+  //     null,
+  //     false
+  //   );
+  //   return {};
+  // }
 
   /**
    * 取出鄉鎮市資料
    * @param req
    * @returns
    */
-  async getTownshipCityData(): Promise<GetTownshipCityDataResp> {
-    // 快取取出鄉鎮市資料
-    let townshipCache = await this.redisService.getCacheData(
-      config.REDIS_KEY.CONFIG
-    );
+  // async getTownshipCityData(): Promise<GetTownshipCityDataResp> {
+  //   // 快取取出鄉鎮市資料
+  //   let townshipCache = await this.redisService.getCacheData(
+  //     config.REDIS_KEY.CONFIG
+  //   );
 
-    // 娶不到快取資料，改從database取
-    if (!townshipCache) {
-      townshipCache = await this.commonRepository.getCodeCenterList();
-      await this.redisService.setCacheData(
-        config.REDIS_KEY.CONFIG,
-        townshipCache,
-        null,
-        false
-      );
-    }
+  //   // 娶不到快取資料，改從database取
+  //   if (!townshipCache) {
+  //     townshipCache = await this.commonRepository.getCodeCenterList();
+  //     await this.redisService.setCacheData(
+  //       config.REDIS_KEY.CONFIG,
+  //       townshipCache,
+  //       null,
+  //       false
+  //     );
+  //   }
 
-    // 市資料整理
-    const township = townshipCache
-      .filter((town) => town.belongTo === BELONG_TO.CITY_CODE)
-      .map((town) => {
-        return {
-          cityCode: town.code,
-          cityName: town.codeName,
-          zips: []
-        };
-      });
+  //   // 市資料整理
+  //   const township = townshipCache
+  //     .filter((town) => town.belongTo === BELONG_TO.CITY_CODE)
+  //     .map((town) => {
+  //       return {
+  //         cityCode: town.code,
+  //         cityName: town.codeName,
+  //         zips: []
+  //       };
+  //     });
 
-    // 抓鄉鎮資料
-    const townshipZip = townshipCache.filter(
-      (town) => town.belongTo === BELONG_TO.ZIP_CODE
-    );
+  //   // 抓鄉鎮資料
+  //   const townshipZip = townshipCache.filter(
+  //     (town) => town.belongTo === BELONG_TO.ZIP_CODE
+  //   );
 
-    // 組合鄉鎮市
-    township.forEach((city) => {
-      townshipZip.forEach((zip) => {
-        if (city.cityCode === zip.previousCode) {
-          city.zips.push({
-            zipCode: zip.code,
-            zipName: zip.codeName
-          });
-        }
-      });
-    });
+  //   // 組合鄉鎮市
+  //   township.forEach((city) => {
+  //     townshipZip.forEach((zip) => {
+  //       if (city.cityCode === zip.previousCode) {
+  //         city.zips.push({
+  //           zipCode: zip.code,
+  //           zipName: zip.codeName
+  //         });
+  //       }
+  //     });
+  //   });
 
-    return township;
-  }
+  //   return township;
+  // }
 
   /**
    * 上傳圖片
@@ -320,33 +320,51 @@ export class CommonService {
    * 取得存在的 table
    * @param tableNames
    */
-  async getExistedTable(tableNames: string[]): Promise<string[]> {
-    // 1. 先找 redis 是否有相符的 table
-    // 2. 若 tableNames 有部分不存在在 result => 把沒有的整合在 notIncludeTable，送進資料庫問是否存在
-    // 3. 整合原本的 result+newExistedTable 再丟進 redis update
+  // async getExistedTable(tableNames: string[]): Promise<string[]> {
+  //   // 1. 先找 redis 是否有相符的 table
+  //   // 2. 若 tableNames 有部分不存在在 result => 把沒有的整合在 notIncludeTable，送進資料庫問是否存在
+  //   // 3. 整合原本的 result+newExistedTable 再丟進 redis update
 
-    let result =
-      (await this.redisService.getCacheData(
-        config.REDIS_KEY.MEMBER_POINT_LOG
-      )) ?? [];
+  //   let result =
+  //     (await this.redisService.getCacheData(
+  //       config.REDIS_KEY.MEMBER_POINT_LOG
+  //     )) ?? [];
 
-    const notIncludeTable = tableNames.filter((t) => !result.includes(t));
+  //   const notIncludeTable = tableNames.filter((t) => !result.includes(t));
 
-    if (notIncludeTable?.length) {
-      const newExistedTable =
-        (await this.commonRepository.getExistedTable(notIncludeTable)) ?? [];
+  //   if (notIncludeTable?.length) {
+  //     const newExistedTable =
+  //       (await this.commonRepository.getExistedTable(notIncludeTable)) ?? [];
 
-      // 整合原本的 result+newExistedTable
-      result = result.concat(newExistedTable);
+  //     // 整合原本的 result+newExistedTable
+  //     result = result.concat(newExistedTable);
 
-      // 放一天
-      this.redisService.setCacheData(
-        config.REDIS_KEY.MEMBER_POINT_LOG,
-        result,
-        60 * 60 * 24
-      );
+  //     // 放一天
+  //     this.redisService.setCacheData(
+  //       config.REDIS_KEY.MEMBER_POINT_LOG,
+  //       result,
+  //       60 * 60 * 24
+  //     );
+  //   }
+
+  //   return result;
+  // }
+
+  /**
+   * 取得左邊卡片資訊
+   * @returns
+   */
+  async getAsideCardDetail(): Promise<{
+    postCount: number;
+    categoriesCount: number;
+  }> {
+    try {
+      const data = await this.commonRepository.getAsideCardDetail();
+
+      return data;
+    } catch (error) {
+      console.error('getAsideCardDetail service error:', error);
+      throw new CustomerException(configError._200002, HttpStatus.OK);
     }
-
-    return result;
   }
 }
