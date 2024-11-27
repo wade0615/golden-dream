@@ -11,7 +11,7 @@ function Loading({ isLoading = true }) {
         style={{ width: '3rem', height: '3rem' }}
       />
       <p> Loading...</p> */}
-      <div class='loader'>
+      <div className='loader'>
         <span></span>
         <span></span>
         <span></span>

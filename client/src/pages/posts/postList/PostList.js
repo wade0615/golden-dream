@@ -67,7 +67,6 @@ const PostList = () => {
 
   /* 前往文章詳情頁 */
   const handlePostDetail = (id) => {
-    console.log('handlePostDetail', id);
     navigate(`/${routerPath.posts}/${routerPath.postPage}?id=${id}`, {});
   };
 

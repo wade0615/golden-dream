@@ -57,11 +57,17 @@ export class PostsService {
   async getPostById(req: GetPostByIdReq): Promise<GetPostByIdResp> {
     try {
       const postInfo = await this.postsRepository.getPostById(req?.postId);
+      const postPrevAndNextId = await this.postsRepository.getPostPrevAndNextId(
+        req?.postId
+      );
+      console.log('getPostById postPrevAndNextId:', postPrevAndNextId);
 
       const result = {
         content:
           postInfo?.content.replace(/\\\\/g, '\\').replace(/\\n/g, '\n') ??
-          '未知的文章內容'
+          '未知的文章內容',
+        prevPostId: postPrevAndNextId?.prevId ?? '',
+        nextPostId: postPrevAndNextId?.nextId ?? ''
       };
 
       return result;

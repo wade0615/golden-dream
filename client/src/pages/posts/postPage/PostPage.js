@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 // import '@wcj/dark-mode';
 import MarkdownEditor from '@uiw/react-markdown-editor';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import routerPath from 'routes/router.path';
 // import localStorageUtil from 'utils/localStorageUtil';
 // import LocalStorageKeys from 'constants/localStorageKeys';
 import api from 'services/api';
@@ -25,8 +26,12 @@ const PostPage = () => {
   // const mdStr = `# H1\n## H2 \n## H3 \n## H4 \n## H5 \n## H6 \n\n**bold** \n*italic* \n~~strikethrough~~ \n\n[link](https://www.google.com) \n\n\`inline code\` \n\`\`\` \nblock code \n\`\`\` \n\n- list \n- list \n- list \n\n1. list \n2. list \n3. list \n\n> blockquote \n\n--- \n\n![image](https://www.google.com) \n\n| table | table | \n| ----- | ----- | \n| table | table | \n\n`;
   const mdStr = ``;
 
+  const navigate = useNavigate();
+
   const location = useLocation();
   const [markdown, setMarkdown] = useState(mdStr);
+  const [earlierPostId, setEarlierPostId] = useState(null);
+  const [recentPostId, setRecentPostId] = useState(null);
   const postId = useMemo(
     () => new URLSearchParams(location.search).get('id'),
     [location.search]
@@ -126,12 +131,26 @@ const PostPage = () => {
     }
   }, []);
 
+  /* 回到文章列表 */
+  const handleBackToPostList = () => {
+    navigate(`/${routerPath.posts}/${routerPath.postList}`, {});
+  };
+
+  /* 前往文章詳情頁 */
+  const handlePostDetail = (id) => {
+    navigate(`/${routerPath.posts}/${routerPath.postPage}?id=${id}`, {});
+  };
+
   /** 初次載入 */
   const getInit = useCallback(async () => {
     try {
       const postInfo = await getPostById(postId);
       const postContent = postInfo?.content;
+      const postEarlierPostId = postInfo?.prevPostId;
+      const postRecentPostId = postInfo?.nextPostId;
       setMarkdown(postContent);
+      setEarlierPostId(postEarlierPostId);
+      setRecentPostId(postRecentPostId);
 
       btnAnimation();
     } catch (error) {
@@ -155,17 +174,29 @@ const PostPage = () => {
       <hr />
 
       <div className='button_container mb-3 justify-content-start'>
-        <button class='px-4 button' id='button0'>
+        <button
+          className='px-4 button'
+          id='button0'
+          onClick={() => handleBackToPostList()}
+        >
           <IoMdList />
           <span>Back to Post List</span>
         </button>
       </div>
       <div className='button_container justify-content-end'>
-        <button class='px-4 button' id='button1'>
+        <button
+          className='px-4 button'
+          id='button1'
+          onClick={() => handlePostDetail(recentPostId)}
+        >
           <FaRegArrowAltCircleLeft />
           <span>Recent Post</span>
         </button>
-        <button class='px-4 button' id='button2'>
+        <button
+          className='px-4 button'
+          id='button2'
+          onClick={() => handlePostDetail(earlierPostId)}
+        >
           <span>Earlier Post</span>
           <FaRegArrowAltCircleRight />
         </button>
