@@ -154,13 +154,13 @@ const PostPage = () => {
 
       <hr />
 
-      <dev className='button_container mb-3 justify-content-start'>
+      <div className='button_container mb-3 justify-content-start'>
         <button class='px-4 button' id='button0'>
           <IoMdList />
           <span>Back to Post List</span>
         </button>
-      </dev>
-      <dev className='button_container justify-content-end'>
+      </div>
+      <div className='button_container justify-content-end'>
         <button class='px-4 button' id='button1'>
           <FaRegArrowAltCircleLeft />
           <span>Recent Post</span>
@@ -169,7 +169,7 @@ const PostPage = () => {
           <span>Earlier Post</span>
           <FaRegArrowAltCircleRight />
         </button>
-      </dev>
+      </div>
     </div>
   );
 };
