@@ -22,4 +22,18 @@ export class GetPostByIdResp {
   @IsString()
   @IsNotEmpty()
   content: string;
+
+  @ApiProperty({
+    title: '前一篇文章 id',
+    example: 'post_id_005'
+  })
+  @IsString()
+  prevPostId: string;
+
+  @ApiProperty({
+    title: '後一篇文章 id',
+    example: 'post_id_007'
+  })
+  @IsString()
+  nextPostId: string;
 }

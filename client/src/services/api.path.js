@@ -3,7 +3,8 @@ const category = {
   auth: 'auth',
   member: 'member',
   test: 'test',
-  posts: 'posts'
+  posts: 'posts',
+  common: 'common'
 };
 
 const template = {
@@ -27,9 +28,14 @@ const posts = {
   getPostById: `${category.posts}/getPostById`
 };
 
+const common = {
+  getAsideCardDetail: `${category.common}/getAsideCardDetail`
+};
+
 export default {
   template,
   auth,
   test,
-  posts
+  posts,
+  common
 };

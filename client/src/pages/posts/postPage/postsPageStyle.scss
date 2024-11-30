@@ -1,11 +1,16 @@
 @import '../../../styles/defaultStyle.scss';
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Prata');
 
 #post_page.post_container {
   position: relative;
-  padding: 2rem 1rem;
+  padding: 6rem 1rem 2rem;
   line-height: 2;
+  @include PC {
+    padding: 6rem 10rem 2rem;
+    max-width: 1440px;
+  }
   .post_editor {
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
   }
   h1,
   h2,
@@ -79,6 +84,29 @@
       margin: 0.3rem 0;
       padding-left: 0.3rem;
       font-size: 1.2rem;
+    }
+  }
+  .button_container {
+    display: flex;
+    gap: 1rem;
+    button {
+      background: $heavy-color-gradient;
+      border: none;
+      border-radius: 10px;
+      color: $button-text-color;
+      font-size: 1.2rem;
+      font-family: 'Prata';
+      letter-spacing: 2px;
+      svg {
+        height: 1.5rem;
+        vertical-align: text-top;
+      }
+    }
+    button:has(svg:first-child) svg {
+      margin-right: 0.5rem;
+    }
+    button:has(svg:last-child) svg {
+      margin-left: 0.5rem;
     }
   }
 }

@@ -1,3 +1,14 @@
+@mixin pad {
+  @media (min-width: 768px) {
+    @content;
+  }
+}
+@mixin PC {
+  @media (min-width: 1024px) {
+    @content;
+  }
+}
+
 $primary: #2d4059;
 $secondary: #5e6366;
 $success: #50b847;
@@ -13,3 +24,12 @@ $base-bg-color: #e9ecef;
 $blockquote: #dbdbdb;
 
 $main-color: #ffd400;
+$sub-color: #ff7e00;
+$main-color-gradient: linear-gradient(to right, #ffd400, #ff7e00);
+$heavy-color: #0b141f;
+$heavy-color-gradient: linear-gradient(to bottom, #2d4059, #0b141f);
+// $heavy-color-gradient: linear-gradient(to bottom, #2d4059, #233142);
+$section-color: #fff8e1;
+
+$button-bg: $heavy-color;
+$button-text-color: #ccc;

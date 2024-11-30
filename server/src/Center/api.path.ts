@@ -24,7 +24,9 @@ const common = {
   /** 刪除redis key */
   delRedisKey: `/delRedisKey`,
   /** 設置redis 資料 */
-  setRedisData: `/setRedisData`
+  setRedisData: `/setRedisData`,
+  /** 取得側邊欄小卡資訊 */
+  getAsideCardDetail: `/getAsideCardDetail`
 };
 
 const posts = {

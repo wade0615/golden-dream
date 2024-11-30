@@ -74,4 +74,51 @@ export class PostsRepository {
 
     return result?.[0];
   }
+
+  /**
+   * 取得前一篇文章與後一篇文章的ID
+   * @returns
+   */
+  async getPostPrevAndNextId(
+    postId: string
+  ): Promise<{ prevId: string; nextId: string }> {
+    const _postId = this.internalConn.escape(postId);
+
+    const sqlStr = `
+      -- 前一個 Seq 的 Post_ID
+      SELECT 
+          bp.Post_ID AS prevPostId 
+      FROM blog_post bp
+      WHERE bp.Seq < (
+          SELECT Seq
+          FROM blog_post
+          WHERE Post_ID = ${_postId} AND Post_Type = 2
+      )
+      AND Post_Type = 2
+      ORDER BY bp.Seq DESC
+      LIMIT 1;
+
+      -- 後一個 Seq 的 Post_ID
+      SELECT 
+          bp.Post_ID AS nextPostId 
+      FROM blog_post bp
+      WHERE bp.Seq > (
+          SELECT Seq
+          FROM blog_post
+          WHERE Post_ID = ${_postId} AND Post_Type = 2
+      )
+      AND Post_Type = 2
+      ORDER BY bp.Seq ASC
+      LIMIT 1;
+    `;
+
+    const result = (await this.internalConn.query(sqlStr, [])) ?? [];
+
+    console.log(result);
+
+    const prevId = result?.[0]?.[0]?.prevPostId;
+    const nextId = result?.[1]?.[0]?.nextPostId;
+
+    return { prevId, nextId };
+  }
 }

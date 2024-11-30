@@ -1,4 +1,4 @@
-import { post, get } from './sub_services/base';
+import { post } from './sub_services/base';
 import apiPath from './api.path';
 import config from 'config/config';
 import ExceptionHandleService from 'utils/exceptionHandler';

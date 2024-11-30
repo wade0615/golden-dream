@@ -67,7 +67,6 @@ const PostList = () => {
 
   /* 前往文章詳情頁 */
   const handlePostDetail = (id) => {
-    console.log('handlePostDetail', id);
     navigate(`/${routerPath.posts}/${routerPath.postPage}?id=${id}`, {});
   };
 
@@ -115,7 +114,7 @@ const PostList = () => {
           <button
             onClick={() =>
               handlePageFetch(
-                pageMeta.page < 2 && pageMeta.totalPages > 1
+                pageMeta.page < pageMeta.totalPages && pageMeta.totalPages > 1
                   ? pageMeta.page + 1
                   : 1
               )

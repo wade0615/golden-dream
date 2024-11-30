@@ -10,9 +10,9 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import apiPath from 'src/Center/api.path';
-import { RedisService } from 'src/Providers/Database/Redis/redis.service';
-import { DelRedisKey } from './Dto/del.redis.key.dto';
-import { SetRedisKey } from './Dto/set.redis.data.dto';
+// import { RedisService } from 'src/Providers/Database/Redis/redis.service';
+// import { DelRedisKey } from './Dto/del.redis.key.dto';
+// import { SetRedisKey } from './Dto/set.redis.data.dto';
 import { UploadImageDto, UploadImageResp } from './Dto/upload.image.dto';
 import { CommonService } from './common.service';
 
@@ -23,7 +23,7 @@ import { CommonService } from './common.service';
 })
 export class CommonController {
   constructor(
-    private readonly redisService: RedisService,
+    // private readonly redisService: RedisService,
     private readonly commonService: CommonService
   ) {}
 
@@ -40,7 +40,7 @@ export class CommonController {
     description: '更新 code center.'
   })
   async updateCodeCenter(): Promise<{}> {
-    await this.commonService.updateCodeCenter();
+    // await this.commonService.updateCodeCenter();
 
     return {};
   }
@@ -71,33 +71,47 @@ export class CommonController {
     return result;
   }
 
-  @Post(apiPath.common.getRedisKeys)
-  async getRedisKeys() {
-    const result = await this.redisService.scan();
+  // @Post(apiPath.common.getRedisKeys)
+  // async getRedisKeys() {
+  //   const result = await this.redisService.scan();
+
+  //   return result;
+  // }
+
+  // @Post(apiPath.common.delRedisKey)
+  // async delRedisKey(@Body() body: DelRedisKey): Promise<Record<string, never>> {
+  //   await this.redisService.delCacheData(body.key);
+
+  //   return {};
+  // }
+
+  // @Post(apiPath.common.setRedisData)
+  // async setRedisData(
+  //   @Body() body: SetRedisKey
+  // ): Promise<Record<string, never>> {
+  //   const isExpired = body.ttl ? true : false;
+
+  //   await this.redisService.setCacheData(
+  //     body.key,
+  //     body.data,
+  //     body.ttl,
+  //     isExpired
+  //   );
+
+  //   return {};
+  // }
+
+  /**
+   * 取得側邊欄小卡資訊
+   * @returns
+   */
+  @Get(apiPath.common.getAsideCardDetail)
+  async getAsideCardDetail(): Promise<{
+    postCount: number;
+    categoriesCount: number;
+  }> {
+    const result = await this.commonService.getAsideCardDetail();
 
     return result;
-  }
-
-  @Post(apiPath.common.delRedisKey)
-  async delRedisKey(@Body() body: DelRedisKey): Promise<Record<string, never>> {
-    await this.redisService.delCacheData(body.key);
-
-    return {};
-  }
-
-  @Post(apiPath.common.setRedisData)
-  async setRedisData(
-    @Body() body: SetRedisKey
-  ): Promise<Record<string, never>> {
-    const isExpired = body.ttl ? true : false;
-
-    await this.redisService.setCacheData(
-      body.key,
-      body.data,
-      body.ttl,
-      isExpired
-    );
-
-    return {};
   }
 }
