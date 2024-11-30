@@ -18,7 +18,7 @@ import {
 import { Error404 } from 'pages/errors';
 import { RedirectUrl } from 'pages/redirectUrl';
 
-import { BloggerLayout } from 'layout';
+import { BloggerLayout, BackStageLayout } from 'layout';
 import { PersonOutlineIcon } from 'assets/icons';
 
 import AUTH_CODE from 'config/auth.code.config';
@@ -225,7 +225,31 @@ export const routerConfig = [
   },
   {
     path: routerPath.secretDoor, // 路由的路徑
-    element: <div>我是尚未建立的後台，你想要幹嘛 (•̀へ •́ ╮ )</div> // 當訪問 '/secretDoor' 路由時要渲染的元件
+    // element: <div>我是尚未建立的後台，你想要幹嘛 (•̀へ •́ ╮ )</div> // 當訪問 '/secretDoor' 路由時要渲染的元件
+    element: <BackStageLayout />, // 訪問時要渲染的元件
+    errorElement: <Error404 />, // 有任何錯誤，例如無效的路由，就會渲染這個元件
+    children: [
+      /**
+       ** 會員管理
+       **/
+      {
+        path: 'member', // 子路由的路徑
+        breadcrumbPath: 'member', // 頁面路由，用於麵包屑
+        errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
+        sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 側邊欄中對應此路由的圖標
+        pageTitle: '會員管理', // 此路由的頁面標題
+        shortTitle: '會員', // 此路由的短標題
+        authCode: AUTH_CODE.MEMBER.MODULE, // 權限代碼
+        children: [
+          // 子路由的子路由的陣列
+          {
+            index: true, // 預設路由，當訪問 '/member' 時，會自動導航到此路由
+            element: <Navigate to='list' />, // 自動導航到 'list' 子路由
+            hiddenFromNav: true // 導航欄中是否隱藏
+          }
+        ]
+      }
+    ]
   },
   {
     path: '*', // 匹配任何未在前面定義的路徑

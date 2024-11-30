@@ -71,6 +71,10 @@
             width: 80px;
             height: 80px;
             border-radius: 50%;
+            transition: transform 1s ease-in-out;
+            &:hover {
+              transform: scale(1.1); /* 放大 1.2 倍 */
+            }
           }
         }
         .blogger_layout_aside_card_name {
@@ -95,10 +99,15 @@
           > div {
             flex: 1;
             text-align: center;
+            cursor: pointer;
+            color: $base-font-color;
+            transition: color 0.3s ease;
+            &:hover {
+              color: $main-color;
+            }
             p {
               margin: 0;
               font-size: 1rem;
-              color: $base-font-color;
             }
           }
         }

@@ -20,6 +20,10 @@
         font-size: 2rem;
         font-weight: bold;
         cursor: pointer;
+        transition: color 0.3s ease;
+        &:hover {
+          color: $main-color;
+        }
       }
       .posts_item_date {
         padding: 0 0.5rem 0 0;

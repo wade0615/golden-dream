@@ -19,7 +19,7 @@ import './bloggerLayoutStyle.scss';
 import ExceptionHandleService from 'utils/exceptionHandler';
 
 const _EHS = new ExceptionHandleService({
-  _NAME: 'pages/posts/PostPage.js',
+  _NAME: 'layout/BloggerLayout.js',
   _NOTICE: ''
 });
 
@@ -161,7 +161,7 @@ function BloggerLayoutAsideCard() {
       <section className='blogger_layout_aside_card_avatar'>
         <img
           alt='Spanner Wade'
-          src='https://assets.juksy.com/files/articles/103935/800x_100_w-5f7d40d31d975.jpg'
+          src='https://storage.cloud.google.com/personal_public/blog/post_images/common/avatar.jpg'
         ></img>
       </section>
       <section className='blogger_layout_aside_card_name'>

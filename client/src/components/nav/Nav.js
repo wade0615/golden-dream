@@ -210,7 +210,7 @@ const Nav = memo(function Nav({ isOpen }) {
       }
     >
       {/* <NavAccordion /> */}
-      {routerConfig[2].children
+      {routerConfig[1].children
         .filter((route) => hasAuth(route.authCode)) // 透過 filter 過濾掉沒有權限的路由
         .map((route, index) => (
           <NavAccordion
