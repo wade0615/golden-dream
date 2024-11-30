@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { routerConfig } from 'routes/router';
 import routerPath from 'routes/router.path';
@@ -46,7 +46,7 @@ function BloggerLayout({ children, bannerHeight }) {
     return null;
   };
   let currentRoute = getMatchedRoute(
-    routerConfig[2].children,
+    routerConfig[0].children,
     location.pathname
   );
   // console.log('currentRoute', currentRoute, currentRoute?.path?.length);

@@ -6,7 +6,8 @@ const routerPath = {
   timeline: 'timeline',
   categories: 'categories',
   about: 'about',
-  backstage: 'backstage'
+  // backstage: 'backstage'
+  secretDoor: 'secretDoor'
 };
 
 export default routerPath;

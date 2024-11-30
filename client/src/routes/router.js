@@ -1,6 +1,6 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter, Navigate, redirect } from 'react-router-dom';
 
-import { RedisGui } from 'pages/redis';
+// import { RedisGui } from 'pages/redis';
 import { Login } from 'pages/login';
 import { PostList, PostPage } from 'pages/posts';
 import { Categories } from 'pages/categories';
@@ -55,14 +55,14 @@ function applyHasAuth(route) {
 }
 
 export const routerConfig = [
-  {
-    path: '/login', // 路由的路徑
-    element: <Login /> // 當訪問 '/login' 路由時要渲染的元件
-  },
-  {
-    path: '/redis-gui', // 路由的路徑
-    element: <RedisGui /> // 當訪問 '/redis-gui' 路由時要渲染的元件
-  },
+  // {
+  //   path: '/login', // 路由的路徑
+  //   element: <Login /> // 當訪問 '/login' 路由時要渲染的元件
+  // },
+  // {
+  //   path: '/redis-gui', // 路由的路徑
+  //   element: <RedisGui /> // 當訪問 '/redis-gui' 路由時要渲染的元件
+  // },
   {
     path: '/', // 路由的路徑
     element: <BloggerLayout bannerHeight='90' />, // 訪問時要渲染的元件
@@ -224,8 +224,8 @@ export const routerConfig = [
     ]
   },
   {
-    path: routerPath.backstage, // 路由的路徑
-    element: <div>我是尚未建立的後台，你想要幹嘛 (•̀へ •́ ╮ )</div> // 當訪問 '/backstage' 路由時要渲染的元件
+    path: routerPath.secretDoor, // 路由的路徑
+    element: <div>我是尚未建立的後台，你想要幹嘛 (•̀へ •́ ╮ )</div> // 當訪問 '/secretDoor' 路由時要渲染的元件
   },
   {
     path: '*', // 匹配任何未在前面定義的路徑

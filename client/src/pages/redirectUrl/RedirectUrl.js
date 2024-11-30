@@ -14,7 +14,7 @@ function RedirectUrl() {
     const userInfo = localStorageUtil.getItem(LocalStorageKeys.UserInfo);
     if (checkLogin) {
       if (!userInfo && location.pathname !== '/login') {
-        navigate('/login');
+        navigate('/');
       } else {
         // 根據使用者權限 跳轉頁面
         if (userInfo.homePage) {
