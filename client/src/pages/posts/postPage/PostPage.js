@@ -184,22 +184,26 @@ const PostPage = () => {
         </button>
       </div>
       <div className='button_container justify-content-end'>
-        <button
-          className='px-4 button'
-          id='button1'
-          onClick={() => handlePostDetail(recentPostId)}
-        >
-          <FaRegArrowAltCircleLeft />
-          <span>Recent Post</span>
-        </button>
-        <button
-          className='px-4 button'
-          id='button2'
-          onClick={() => handlePostDetail(earlierPostId)}
-        >
-          <span>Earlier Post</span>
-          <FaRegArrowAltCircleRight />
-        </button>
+        {recentPostId ? (
+          <button
+            className='px-4 button'
+            id='button1'
+            onClick={() => handlePostDetail(recentPostId)}
+          >
+            <FaRegArrowAltCircleLeft />
+            <span>Recent Post</span>
+          </button>
+        ) : null}
+        {earlierPostId ? (
+          <button
+            className='px-4 button'
+            id='button2'
+            onClick={() => handlePostDetail(earlierPostId)}
+          >
+            <span>Earlier Post</span>
+            <FaRegArrowAltCircleRight />
+          </button>
+        ) : null}
       </div>
     </div>
   );
