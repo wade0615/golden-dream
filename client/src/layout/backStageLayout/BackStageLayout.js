@@ -12,7 +12,7 @@ import { Stack } from 'react-bootstrap';
 import DefaultOutlet from './sub_defaultLayout/DefaultOutlet';
 import DefaultFooter from './sub_defaultLayout/DefaultFooter';
 import { MenuIcon } from 'assets/icons';
-import logo from 'assets/images/logo.svg';
+// import logo from 'assets/images/logo.svg';
 import './backStageLayoutStyle.scss';
 import localStorageUtil from 'utils/localStorageUtil';
 import LocalStorageKeys from 'constants/localStorageKeys';
@@ -30,14 +30,14 @@ function BackStageLayout({ children }) {
     [location.search]
   );
 
-  // 檢查使用者登入狀態，未登入則導向login
+  // 有人直闖後台時，檢查使用者登入狀態，未登入則導向login
   useEffect(() => {
-    if (checkLogin) {
-      const userInfo = localStorageUtil.getItem(LocalStorageKeys.UserInfo);
-      if (!userInfo && location.pathname !== '/login') {
-        navigate('/login');
-      }
-    }
+    // if (checkLogin) {
+    //   const userInfo = localStorageUtil.getItem(LocalStorageKeys.UserInfo);
+    //   if (!userInfo && location.pathname !== '/login') {
+    //     navigate('/secretDoor/login');
+    //   }
+    // }
   }, [checkLogin, location, navigate]);
 
   // 遞迴獲取最深層次且最匹配當前路徑的路由配置 反向遍歷
@@ -62,19 +62,19 @@ function BackStageLayout({ children }) {
     location.pathname
   );
   return (
-    <div className='container-fluid d-flex g-0'>
+    <div id='backstage_layout' className='container-fluid d-flex g-0'>
       {/* Side Menu */}
       <SideMenu />
-      <div className='main-section'>
+      <div className='backstage_main_section'>
         {/* Header */}
-        <div className='default-header'>
+        <div className='backstage_header'>
           <Breadcrumb />
           <Stack direction='horizontal'>
             <Avatar isDropDown />
           </Stack>
         </div>
         {/* Title */}
-        <div className='default-title'>
+        <div className='backstage_title'>
           <h5>{urlTitle ? urlTitle : currentRoute?.pageTitle}</h5>
           {!!currentRoute?.tooltip && (
             <ToolTip placement='bottom'>{currentRoute?.tooltip}</ToolTip>
@@ -108,15 +108,15 @@ function SideMenu() {
   };
   const classSuffix = isOpen ? 'open' : 'closed';
   return (
-    <div className={`side-menu side-menu-${classSuffix}`}>
-      <div className={`side-menu__top side-menu__top-${classSuffix}`}>
+    <div className={`side_menu side_menu_${classSuffix}`}>
+      <div className={`side_menu_top side_menu_top_${classSuffix}`}>
         {isOpen && (
           <>
-            <img src={logo} alt='logo' />
-            <h6 className='text-white mb-0 fw-bold'>管理系統</h6>
+            {/* <img src={logo} alt='logo' /> */}
+            <h6 className='text-white mb-0 fw-bold'>後台管理</h6>
           </>
         )}
-        <div className={`icon-button-right-${classSuffix} `}>
+        <div className={`icon_button_right_${classSuffix} `}>
           <IconButton hoverBackground='transparent' onClick={toggleMenu}>
             <MenuIcon />
           </IconButton>

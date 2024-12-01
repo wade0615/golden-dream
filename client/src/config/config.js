@@ -1,7 +1,7 @@
 import _configValueSwitch from './config.value';
 
 /** 檢查使用者登入狀態控制開關 */
-export const CHECK_LOGIN = false;
+export const CHECK_LOGIN = true;
 /** 頁面 檢查使用者權限 控制開關 */
 export const PAGE_CHECK_AUTH = false;
 /** 功能 檢查使用者權限 控制開關 */

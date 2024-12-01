@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate, redirect } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 // import { RedisGui } from 'pages/redis';
 import { Login } from 'pages/login';
