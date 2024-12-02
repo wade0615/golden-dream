@@ -18,11 +18,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setOption } from 'store/slice/globalOptionsSlice';
 import { optionType } from 'constants/optionType';
 
-import alertService from 'utils/alertService';
+// import alertService from 'utils/alertService';
 import IndeterminateCheckbox from 'components/indeterminateCheckbox/IndeterminateCheckbox';
 import Table, { Actions } from 'components/table/Table';
 import AdvanceSearch from 'features/advanceSearch/AdvanceSearch';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import BaseTable from 'features/table/baseTable/BaseTable';
 import TextField from 'features/textField/TextField';
 import FieldGroup from 'features/textField/sub_textField/FieldGroup';
@@ -31,7 +31,7 @@ import './postListStyle.scss';
 import PermissionAction from 'components/permissionAction/PermissionAction';
 import AUTH_CODE from 'config/auth.code.config';
 import AddItemButton from 'components/button/addItemButton/AddItemButton';
-import exportCsvType from 'constants/exportCsvType';
+// import exportCsvType from 'constants/exportCsvType';
 
 import ExceptionHandleService from 'utils/exceptionHandler';
 
@@ -66,7 +66,7 @@ const _defaultSearch = {
 /** 後台文章列表 */
 function PostList() {
   const [listData, setListData] = useState([]); // table original datarestValues
-  const [searchData, setSearchData] = useState(_defaultSearch);
+  // const [searchData, setSearchData] = useState(_defaultSearch);
   const [pageMeta, setPageMeta] = useState({
     totalCount: 0, //總筆數
     totalPage: 0, // 總頁數
@@ -109,37 +109,33 @@ function PostList() {
         </PermissionAction>
       )
     }),
-    columnHelper.accessor('cardNO', {
-      header: '卡號',
+    columnHelper.accessor('postId', {
+      header: '文章編號',
       enableSorting: false
     }),
-    columnHelper.accessor('name', {
-      header: '姓名',
+    columnHelper.accessor('title', {
+      header: '文章標題',
       enableSorting: false
     }),
-    columnHelper.accessor('mobile', {
-      header: '手機',
-      enableSorting: false,
-      cell: (info) => (
-        <>
-          {info.row.original.isDelete !== 0 && (
-            <div className='deleteTag'>Delete</div>
-          )}
-          {info.getValue()}
-        </>
-      )
+    columnHelper.accessor('category', {
+      header: '文章分類',
+      enableSorting: false
+      // cell: (info) => (
+      //   <>
+      //     {info.row.original.isDelete !== 0 && (
+      //       <div className='deleteTag'>Delete</div>
+      //     )}
+      //     {info.getValue()}
+      //   </>
+      // )
     }),
-    columnHelper.accessor('level', {
-      header: '會籍',
+    columnHelper.accessor('isPublish', {
+      header: '是否發佈',
       cell: (info) => <Table.Tag>{info.getValue()}</Table.Tag>,
       enableSorting: false
     }),
-    columnHelper.accessor('birthday', {
-      header: '生日',
-      enableSorting: false
-    }),
-    columnHelper.accessor('registerDate', {
-      header: '註冊時間'
+    columnHelper.accessor('createDate', {
+      header: '建立時間'
     }),
     columnHelper.accessor('updateDate', {
       header: '更新時間'
@@ -166,7 +162,7 @@ function PostList() {
   /* table list */
   const table = useReactTable({
     data: listData,
-    getRowId: (row) => row?.memberId,
+    getRowId: (row) => row?.postId,
     columns,
     initialState: {
       pagination: {
@@ -227,7 +223,7 @@ function PostList() {
         setListData(formatList);
         setPageMeta((prev) => ({ ...prev, ...res.metaData }));
         setIsDefaultEmpty(false);
-        setSearchData(req);
+        // setSearchData(req); // 批次匯出用，暫存此次搜尋條件
       }
     } catch (error) {
       _EHS.errorReport(error, 'getMemberList', _EHS._LEVEL.ERROR);
@@ -292,81 +288,81 @@ function PostList() {
   };
 
   /* 批次匯出  */
-  const handleExportAll = async () => {
-    // const { registerRange, ...restValues } = methods.getValues();
-    const reqBody = {
-      action: exportCsvType.memberInfo,
-      params: searchData
-      // params: {
-      //   ...restValues,
-      //   memberSpecialType: Number(restValues.memberSpecialType),
-      //   startDate: startOfTheDay(restValues.startDate),
-      //   endDate: endOfTheDay(restValues.endDate)
-      // }
-    };
-    const res = await api.common.exportCsvData(reqBody);
-    if (!!res?.msg) {
-      console.log(res?.msg);
-      return;
-    }
-    if (res) {
-      await alertService.toast({
-        title: '檔案匯出中，請稍候~<br>完成時會發送Email通知。',
-        time: 5000
-      });
-    }
-    // const { registerRange, ...restValues } = methods.getValues();
-    // const reqBody = {
-    //   ...restValues,
-    //   memberSpecialType: Number(restValues.memberSpecialType),
-    //   startDate: startOfTheDay(restValues.startDate),
-    //   endDate: endOfTheDay(restValues.endDate)
-    // };
-    // const blob = await api.member.exportMemberList(reqBody);
-    // // Set the suggested filename (if available) for the downloaded file
-    // const url = URL.createObjectURL(blob);
-    // const link = document.createElement('a');
-    // link.href = url;
-    // const fileDate = format(new Date(), 'yyyyMMdd');
-    // link.setAttribute('download', `${fileDate}-會員資料.zip`);
-    // document.body.appendChild(link);
-    // link.click();
-    // URL.revokeObjectURL(url);
-  };
+  // const handleExportAll = async () => {
+  //   // const { registerRange, ...restValues } = methods.getValues();
+  //   const reqBody = {
+  //     action: exportCsvType.memberInfo,
+  //     params: searchData
+  //     // params: {
+  //     //   ...restValues,
+  //     //   memberSpecialType: Number(restValues.memberSpecialType),
+  //     //   startDate: startOfTheDay(restValues.startDate),
+  //     //   endDate: endOfTheDay(restValues.endDate)
+  //     // }
+  //   };
+  //   const res = await api.common.exportCsvData(reqBody);
+  //   if (!!res?.msg) {
+  //     console.log(res?.msg);
+  //     return;
+  //   }
+  //   if (res) {
+  //     await alertService.toast({
+  //       title: '檔案匯出中，請稍候~<br>完成時會發送Email通知。',
+  //       time: 5000
+  //     });
+  //   }
+  //   // const { registerRange, ...restValues } = methods.getValues();
+  //   // const reqBody = {
+  //   //   ...restValues,
+  //   //   memberSpecialType: Number(restValues.memberSpecialType),
+  //   //   startDate: startOfTheDay(restValues.startDate),
+  //   //   endDate: endOfTheDay(restValues.endDate)
+  //   // };
+  //   // const blob = await api.member.exportMemberList(reqBody);
+  //   // // Set the suggested filename (if available) for the downloaded file
+  //   // const url = URL.createObjectURL(blob);
+  //   // const link = document.createElement('a');
+  //   // link.href = url;
+  //   // const fileDate = format(new Date(), 'yyyyMMdd');
+  //   // link.setAttribute('download', `${fileDate}-會員資料.zip`);
+  //   // document.body.appendChild(link);
+  //   // link.click();
+  //   // URL.revokeObjectURL(url);
+  // };
 
-  const handleExportSome = async () => {
-    const selectedIdArr = Object.keys(table.getState().rowSelection);
-    const reqBody = {
-      action: exportCsvType.memberInfo,
-      params: {
-        memberId: selectedIdArr
-      }
-    };
-    const res = await api.common.exportCsvData(reqBody);
-    if (!!res?.msg) {
-      console.log(res?.msg);
-      return;
-    }
-    if (res) {
-      await alertService.toast({
-        title: '檔案匯出中，請稍候~<br>完成時會發送Email通知。',
-        time: 5000
-      });
-    }
-    // const selectedIdArr = Object.keys(table.getState().rowSelection);
-    // const blob = await api.member.exportMemberList({
-    //   memberIds: selectedIdArr
-    // });
-    // // Set the suggested filename (if available) for the downloaded file
-    // const url = URL.createObjectURL(blob);
-    // const link = document.createElement('a');
-    // link.href = url;
-    // const fileDate = format(new Date(), 'yyyyMMdd');
-    // link.setAttribute('download', `${fileDate}-會員資料.zip`);
-    // document.body.appendChild(link);
-    // link.click();
-    // URL.revokeObjectURL(url);
-  };
+  // const handleExportSome = async () => {
+  //   const selectedIdArr = Object.keys(table.getState().rowSelection);
+  //   const reqBody = {
+  //     action: exportCsvType.memberInfo,
+  //     params: {
+  //       memberId: selectedIdArr
+  //     }
+  //   };
+  //   const res = await api.common.exportCsvData(reqBody);
+  //   if (!!res?.msg) {
+  //     console.log(res?.msg);
+  //     return;
+  //   }
+  //   if (res) {
+  //     await alertService.toast({
+  //       title: '檔案匯出中，請稍候~<br>完成時會發送Email通知。',
+  //       time: 5000
+  //     });
+  //   }
+  //   // const selectedIdArr = Object.keys(table.getState().rowSelection);
+  //   // const blob = await api.member.exportMemberList({
+  //   //   memberIds: selectedIdArr
+  //   // });
+  //   // // Set the suggested filename (if available) for the downloaded file
+  //   // const url = URL.createObjectURL(blob);
+  //   // const link = document.createElement('a');
+  //   // link.href = url;
+  //   // const fileDate = format(new Date(), 'yyyyMMdd');
+  //   // link.setAttribute('download', `${fileDate}-會員資料.zip`);
+  //   // document.body.appendChild(link);
+  //   // link.click();
+  //   // URL.revokeObjectURL(url);
+  // };
 
   /* search submit */
   const onSubmit = (data, e) => {
@@ -400,7 +396,7 @@ function PostList() {
   }
 
   return (
-    <div id='member-list-E9D1F10D-827B-45BF-9A8B-F0DEF5A9CD73'>
+    <div id='backstage_post_list'>
       <AdvanceSearch
         searchBarName='search'
         searchBarOptionsName='searchType'
@@ -410,9 +406,8 @@ function PostList() {
         totalCount={pageMeta.totalCount}
         placeholder='請輸入關鍵字'
         searchTypeOptions={[
-          { value: 'mobile', label: '手機' },
-          { value: 'member_name', label: '姓名' },
-          { value: 'member_card', label: '卡號' }
+          { value: 'title', label: '文章標題' },
+          { value: 'post_type', label: '分類' }
         ]}
       >
         <Container fluid>
@@ -481,7 +476,7 @@ function PostList() {
         </Container>
       </AdvanceSearch>
       <div className='section-actions'>
-        <PermissionAction authCode={AUTH_CODE.MEMBER.INFO.EXPORT}>
+        {/* <PermissionAction authCode={AUTH_CODE.MEMBER.INFO.EXPORT}>
           {(table.getIsSomeRowsSelected() || table.getIsAllRowsSelected()) && (
             <Button
               type='button'
@@ -492,9 +487,8 @@ function PostList() {
               匯出選取資料
             </Button>
           )}
-        </PermissionAction>
-        <PermissionAction authCode={AUTH_CODE.MEMBER.INFO.EXPORT}>
-          {/* {pageMeta.totalCount !== 0 && ( */}
+        </PermissionAction> */}
+        {/* <PermissionAction authCode={AUTH_CODE.MEMBER.INFO.EXPORT}>
           <Button
             type='button'
             variant='info'
@@ -505,8 +499,7 @@ function PostList() {
           >
             匯出CSV
           </Button>
-          {/* )} */}
-        </PermissionAction>
+        </PermissionAction> */}
         <PermissionAction authCode={AUTH_CODE.MEMBER.INFO.CREATE_UPDATE}>
           <AddItemButton className='text-white' onClick={handleNewMember} />
         </PermissionAction>
