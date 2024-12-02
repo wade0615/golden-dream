@@ -27,7 +27,7 @@ const SearchBar = ({
   toggleOpen = (f) => f,
   onSearch = null,
   right = false,
-  minWidth = '304px',
+  minWidth = '204px',
   ...rest
 }) => {
   const { register, watch, resetField } = useFormContext();
