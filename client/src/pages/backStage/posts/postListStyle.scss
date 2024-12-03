@@ -1,0 +1,22 @@
+/* scope css: 該頁面專用的樣式 */
+#backstage_post_list {
+  .section-actions {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    margin-top: 0.5rem;
+    background: var(--bs-gray-100);
+  }
+  .deleteTag {
+    display: inline-flex;
+    background: rgba(black, 0.1);
+    border-radius: 4px;
+    padding: 4px 6px;
+    color: black;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 2px;
+  }
+}

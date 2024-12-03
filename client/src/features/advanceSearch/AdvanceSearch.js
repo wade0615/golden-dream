@@ -14,7 +14,7 @@ function AdvanceSearch({
   onSubmit = (f) => f,
   onError = (f) => f,
   totalCount = null,
-  placeholder = '手機 / 姓名 / 卡號',
+  placeholder = '請輸入些什麼',
   searchTypeOptions = []
 }) {
   const [open, setOpen] = useState(false);
@@ -30,30 +30,34 @@ function AdvanceSearch({
       <FormProvider {...methods}>
         <Form noValidate onSubmit={methods.handleSubmit(onSubmit, onError)}>
           <div>
-            <div className='d-flex justify-content-end align-items-center me-3'>
-              {totalCount !== null && (
-                <p className='mb-0 me-3' style={{ fontSize: '14px' }}>
-                  搜尋結果 {totalCount} 筆
-                </p>
-              )}
-              {searchTypeOptions.length > 0 && (
-                <TextField
-                  className='me-2'
-                  variant='select'
-                  name={searchBarOptionsName}
-                  isPlaceholder={false}
-                  options={searchTypeOptions}
-                  fieldHeight='2.5rem'
-                  fieldBorder='1px solid var(--bs-gray-400)'
+            <div className='d-flex flex-md-row flex-column justify-content-end align-items-end gap-2 me-3'>
+              <div className='order-md-3 order-1'>
+                <SearchBar
+                  placeholder={placeholder}
+                  name={searchBarName}
+                  isAdvanceSearchBtn={true}
+                  isAdvanceOpen={open}
+                  toggleOpen={handleToggle}
                 />
-              )}
-              <SearchBar
-                placeholder={placeholder}
-                name={searchBarName}
-                isAdvanceSearchBtn={true}
-                isAdvanceOpen={open}
-                toggleOpen={handleToggle}
-              />
+              </div>
+              <div className='order-md-1 order-2 d-flex justify-content-end align-items-center'>
+                {totalCount !== null && (
+                  <p className='mb-0 me-3' style={{ fontSize: '14px' }}>
+                    搜尋結果 {totalCount} 筆
+                  </p>
+                )}
+                {searchTypeOptions.length > 0 && (
+                  <TextField
+                    className='me-2'
+                    variant='select'
+                    name={searchBarOptionsName}
+                    isPlaceholder={false}
+                    options={searchTypeOptions}
+                    fieldHeight='2.5rem'
+                    fieldBorder='1px solid var(--bs-gray-400)'
+                  />
+                )}
+              </div>
             </div>
             <AdvanceSection
               isOpen={open}

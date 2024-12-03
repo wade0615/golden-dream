@@ -42,7 +42,7 @@ function Breadcrumb() {
 
   // 獲取所有麵包屑路由配置
   const breadcrumbItems = getBreadcrumbItems(
-    routerConfig[2].children,
+    routerConfig[1].children,
     location.pathname
   );
   const items = [];

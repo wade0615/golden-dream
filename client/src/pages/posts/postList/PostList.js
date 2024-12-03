@@ -92,7 +92,7 @@ const PostList = () => {
             >
               <h2 className='posts_item_title'>{post.title}</h2>
               <time className='posts_item_date'>{post.date}</time>
-              <span className='posts_item_tag'>{post.tag}</span>
+              <span className='posts_item_category'>{post.category}</span>
               <div className='posts_item_content'>{post.content}</div>
             </div>
           ))}

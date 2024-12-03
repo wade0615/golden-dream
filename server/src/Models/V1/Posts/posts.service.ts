@@ -37,7 +37,8 @@ export class PostsService {
             id: data?.id ?? ruuidv4(),
             title: data?.title ?? '未知的標題',
             date: data?.createdDate ?? '未知的時間',
-            tag: data?.tag ?? '未知的分類',
+            category: data?.categoryName ?? '未知的分類',
+            tag: data?.tag ?? '未知的標籤',
             content: data?.shortContent ?? '未知的簡介'
           };
         })
@@ -60,9 +61,11 @@ export class PostsService {
       const postPrevAndNextId = await this.postsRepository.getPostPrevAndNextId(
         req?.postId
       );
-      console.log('getPostById postPrevAndNextId:', postPrevAndNextId);
 
       const result = {
+        title: postInfo?.title ?? '未知的標題',
+        category: postInfo?.categoryName ?? '未知的分類',
+        createdDate: moment(postInfo?.createdDate).format('YYYY-MM-DD') ?? '',
         content:
           postInfo?.content.replace(/\\\\/g, '\\').replace(/\\n/g, '\n') ??
           '未知的文章內容',

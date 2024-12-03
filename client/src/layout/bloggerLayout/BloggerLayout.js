@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { routerConfig } from 'routes/router';
 import routerPath from 'routes/router.path';
@@ -19,7 +19,7 @@ import './bloggerLayoutStyle.scss';
 import ExceptionHandleService from 'utils/exceptionHandler';
 
 const _EHS = new ExceptionHandleService({
-  _NAME: 'pages/posts/PostPage.js',
+  _NAME: 'layout/BloggerLayout.js',
   _NOTICE: ''
 });
 
@@ -46,7 +46,7 @@ function BloggerLayout({ children, bannerHeight }) {
     return null;
   };
   let currentRoute = getMatchedRoute(
-    routerConfig[2].children,
+    routerConfig[0].children,
     location.pathname
   );
   // console.log('currentRoute', currentRoute, currentRoute?.path?.length);
@@ -89,7 +89,7 @@ function BloggerLayout({ children, bannerHeight }) {
         }}
       >
         <div className='blogger_layout_banner_intro'>
-          <h1>{currentRoute?.path?.length > 1 ? '' : `板手之前人人平等`}</h1>
+          <h1>{currentRoute?.path?.length > 1 ? '' : `I'm Wade Wu`}</h1>
         </div>
       </div>
       {/* Main content */}
@@ -161,7 +161,7 @@ function BloggerLayoutAsideCard() {
       <section className='blogger_layout_aside_card_avatar'>
         <img
           alt='Spanner Wade'
-          src='https://assets.juksy.com/files/articles/103935/800x_100_w-5f7d40d31d975.jpg'
+          src='https://storage.cloud.google.com/personal_public/blog/post_images/common/avatar.jpg'
         ></img>
       </section>
       <section className='blogger_layout_aside_card_name'>

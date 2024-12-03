@@ -1,5 +1,5 @@
 @import '../../styles/defaultStyle.scss';
-@import url(https://fonts.googleapis.com/css2?family=DotGothic16&display=swap);
+// @import url(https://fonts.googleapis.com/css2?family=DotGothic16&display=swap);
 @import url('https://fonts.googleapis.com/css?family=Open+Sans|Prata');
 
 #blogger_layout {
@@ -15,7 +15,7 @@
     .navbar-brand,
     .nav-link {
       color: $main-color;
-      font-family: 'Prata', 'DotGothic16', serif;
+      font-family: 'Prata', serif;
       letter-spacing: 1px;
     }
   }
@@ -58,7 +58,7 @@
         border-radius: 10px;
         box-shadow: 0 4px 8px 6px rgba(7, 17, 27, 0.06);
         transition: box-shadow 0.3s ease;
-        font-family: 'Prata', 'DotGothic16', serif;
+        font-family: 'Prata', serif;
         letter-spacing: 1px;
         &:hover {
           box-shadow: 0 4px 12px 12px rgba(7, 17, 27, 0.15);
@@ -71,6 +71,10 @@
             width: 80px;
             height: 80px;
             border-radius: 50%;
+            transition: transform 1s ease-in-out;
+            &:hover {
+              transform: scale(1.1); /* 放大 1.2 倍 */
+            }
           }
         }
         .blogger_layout_aside_card_name {
@@ -95,10 +99,15 @@
           > div {
             flex: 1;
             text-align: center;
+            cursor: pointer;
+            color: $base-font-color;
+            transition: color 0.3s ease;
+            &:hover {
+              color: $main-color;
+            }
             p {
               margin: 0;
               font-size: 1rem;
-              color: $base-font-color;
             }
           }
         }
@@ -113,7 +122,7 @@
     color: $main-color;
     background: $heavy-color-gradient;
     text-align: center;
-    font-family: 'Prata', 'DotGothic16', serif;
+    font-family: 'Prata', serif;
     letter-spacing: 1px;
   }
 }

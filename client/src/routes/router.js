@@ -1,24 +1,17 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
-import { RedisGui } from 'pages/redis';
+// import { RedisGui } from 'pages/redis';
 import { Login } from 'pages/login';
 import { PostList, PostPage } from 'pages/posts';
 import { Categories } from 'pages/categories';
 import { About } from 'pages/about';
 import { Timeline } from 'pages/timeline';
 
-import {
-  MemberList,
-  AddMember,
-  MemberInfo,
-  SpecialTypeMember,
-  BatchMembers,
-  MemberInfoDownload
-} from 'pages/member';
+import { PostList as BackStagePostList } from 'pages/backStage';
 import { Error404 } from 'pages/errors';
 import { RedirectUrl } from 'pages/redirectUrl';
 
-import { BloggerLayout } from 'layout';
+import { BloggerLayout, BackStageLayout } from 'layout';
 import { PersonOutlineIcon } from 'assets/icons';
 
 import AUTH_CODE from 'config/auth.code.config';
@@ -55,14 +48,14 @@ function applyHasAuth(route) {
 }
 
 export const routerConfig = [
-  {
-    path: '/login', // 路由的路徑
-    element: <Login /> // 當訪問 '/login' 路由時要渲染的元件
-  },
-  {
-    path: '/redis-gui', // 路由的路徑
-    element: <RedisGui /> // 當訪問 '/redis-gui' 路由時要渲染的元件
-  },
+  // {
+  //   path: '/login', // 路由的路徑
+  //   element: <Login /> // 當訪問 '/login' 路由時要渲染的元件
+  // },
+  // {
+  //   path: '/redis-gui', // 路由的路徑
+  //   element: <RedisGui /> // 當訪問 '/redis-gui' 路由時要渲染的元件
+  // },
   {
     path: '/', // 路由的路徑
     element: <BloggerLayout bannerHeight='90' />, // 訪問時要渲染的元件
@@ -157,75 +150,106 @@ export const routerConfig = [
         pageTitle: '關於我', // 此路由的頁面標題
         shortTitle: '關於我', // 此路由的短標題
         authCode: '' // 權限代碼
-      },
+      }
       /**
        ** 會員管理
        **/
+      // {
+      //   path: 'member', // 子路由的路徑
+      //   breadcrumbPath: 'member', // 頁面路由，用於麵包屑
+      //   errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
+      //   sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 側邊欄中對應此路由的圖標
+      //   pageTitle: '會員管理', // 此路由的頁面標題
+      //   shortTitle: '會員', // 此路由的短標題
+      //   authCode: AUTH_CODE.MEMBER.MODULE, // 權限代碼
+      //   children: [
+      //     // 子路由的子路由的陣列
+      //     {
+      //       index: true, // 預設路由，當訪問 '/member' 時，會自動導航到此路由
+      //       element: <Navigate to='list' />, // 自動導航到 'list' 子路由
+      //       hiddenFromNav: true // 導航欄中是否隱藏
+      //     },
+      //     {
+      //       path: 'list',
+      //       pageTitle: '會員資料',
+      //       element: <MemberList />,
+      //       authCode: AUTH_CODE.MEMBER.INFO.PAGE,
+      //       subPath: ['list/add', 'list/info'] // 子路由的陣列
+      //     },
+      //     {
+      //       path: 'list/add',
+      //       pageTitle: '新增會員',
+      //       element: <AddMember />,
+      //       authCode: AUTH_CODE.MEMBER.INFO.PAGE,
+      //       hiddenFromNav: true,
+      //       breadcrumbParentPath: 'member/list', // 前一層的頁面路由，用於麵包屑
+      //       breadcrumbParentTitle: '會員資料' // 前一層的頁面標題，用於麵包屑
+      //     },
+      //     {
+      //       path: 'list/info',
+      //       pageTitle: '會員詳情',
+      //       element: <MemberInfo />,
+      //       authCode: AUTH_CODE.MEMBER.INFO.PAGE,
+      //       hiddenFromNav: true,
+      //       breadcrumbParentPath: 'member/list',
+      //       breadcrumbParentTitle: '會員資料'
+      //     },
+      //     {
+      //       path: 'downloadInfo',
+      //       pageTitle: '會員資料下載',
+      //       element: <MemberInfoDownload />,
+      //       authCode: AUTH_CODE.MEMBER.DOWNLOAD_INFO.PAGE
+      //     },
+      //     {
+      //       path: 'special-type',
+      //       pageTitle: '特殊會員類型',
+      //       element: <SpecialTypeMember />,
+      //       authCode: AUTH_CODE.MEMBER.SPECIAL.PAGE
+      //     },
+      //     {
+      //       path: 'batch',
+      //       pageTitle: '批量設定特殊會員',
+      //       element: <BatchMembers />,
+      //       authCode: AUTH_CODE.MEMBER.BATCH_SETTING.PAGE
+      //     }
+      //   ]
+      // }
+    ]
+  },
+  {
+    path: routerPath.secretDoor, // 路由的路徑
+    // element: <div>我是尚未建立的後台，你想要幹嘛 (•̀へ •́ ╮ )</div> // 當訪問 '/secretDoor' 路由時要渲染的元件
+    element: <BackStageLayout />, // 訪問時要渲染的元件
+    errorElement: <Error404 />, // 有任何錯誤，例如無效的路由，就會渲染這個元件
+    children: [
+      /**
+       ** 文章管理
+       **/
       {
-        path: 'member', // 子路由的路徑
-        breadcrumbPath: 'member', // 頁面路由，用於麵包屑
+        path: 'post', // 子路由的路徑
+        breadcrumbPath: 'post', // 頁面路由，用於麵包屑
         errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
         sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 側邊欄中對應此路由的圖標
-        pageTitle: '會員管理', // 此路由的頁面標題
-        shortTitle: '會員', // 此路由的短標題
-        authCode: AUTH_CODE.MEMBER.MODULE, // 權限代碼
+        pageTitle: '文章管理', // 此路由的頁面標題
+        shortTitle: '文章', // 此路由的短標題
+        // authCode: AUTH_CODE.MEMBER.MODULE, // 權限代碼
         children: [
           // 子路由的子路由的陣列
           {
-            index: true, // 預設路由，當訪問 '/member' 時，會自動導航到此路由
-            element: <Navigate to='list' />, // 自動導航到 'list' 子路由
+            index: true, // 預設路由，當訪問 '/post' 時，會自動導航到此路由
+            element: <Navigate to='postList' />, // 自動導航到 'postList' 子路由
             hiddenFromNav: true // 導航欄中是否隱藏
           },
           {
-            path: 'list',
-            pageTitle: '會員資料',
-            element: <MemberList />,
-            authCode: AUTH_CODE.MEMBER.INFO.PAGE,
-            subPath: ['list/add', 'list/info'] // 子路由的陣列
-          },
-          {
-            path: 'list/add',
-            pageTitle: '新增會員',
-            element: <AddMember />,
-            authCode: AUTH_CODE.MEMBER.INFO.PAGE,
-            hiddenFromNav: true,
-            breadcrumbParentPath: 'member/list', // 前一層的頁面路由，用於麵包屑
-            breadcrumbParentTitle: '會員資料' // 前一層的頁面標題，用於麵包屑
-          },
-          {
-            path: 'list/info',
-            pageTitle: '會員詳情',
-            element: <MemberInfo />,
-            authCode: AUTH_CODE.MEMBER.INFO.PAGE,
-            hiddenFromNav: true,
-            breadcrumbParentPath: 'member/list',
-            breadcrumbParentTitle: '會員資料'
-          },
-          {
-            path: 'downloadInfo',
-            pageTitle: '會員資料下載',
-            element: <MemberInfoDownload />,
-            authCode: AUTH_CODE.MEMBER.DOWNLOAD_INFO.PAGE
-          },
-          {
-            path: 'special-type',
-            pageTitle: '特殊會員類型',
-            element: <SpecialTypeMember />,
-            authCode: AUTH_CODE.MEMBER.SPECIAL.PAGE
-          },
-          {
-            path: 'batch',
-            pageTitle: '批量設定特殊會員',
-            element: <BatchMembers />,
-            authCode: AUTH_CODE.MEMBER.BATCH_SETTING.PAGE
+            path: 'postList',
+            pageTitle: '文章列表',
+            element: <BackStagePostList />
+            // authCode: AUTH_CODE.MEMBER.INFO.PAGE,
+            // subPath: ['list/add', 'list/info'] // 子路由的陣列
           }
         ]
       }
     ]
-  },
-  {
-    path: routerPath.backstage, // 路由的路徑
-    element: <div>我是尚未建立的後台，你想要幹嘛 (•̀へ •́ ╮ )</div> // 當訪問 '/backstage' 路由時要渲染的元件
   },
   {
     path: '*', // 匹配任何未在前面定義的路徑

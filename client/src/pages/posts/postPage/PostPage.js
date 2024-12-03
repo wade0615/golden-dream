@@ -10,6 +10,8 @@ import api from 'services/api';
 import { IoMdList } from 'react-icons/io';
 import { FaRegArrowAltCircleLeft } from 'react-icons/fa';
 import { FaRegArrowAltCircleRight } from 'react-icons/fa';
+import { BsCalendar3 } from 'react-icons/bs';
+import { FaRegFolderOpen } from 'react-icons/fa6';
 import './postsPageStyle.scss';
 
 import { GetPostByIdClass } from './getPostByIdClass';
@@ -29,6 +31,9 @@ const PostPage = () => {
   const navigate = useNavigate();
 
   const location = useLocation();
+  const [postTitle, setPostTitle] = useState(null);
+  const [postCategory, setPostCategory] = useState(null);
+  const [postCreateDate, setPostCreateDate] = useState(null);
   const [markdown, setMarkdown] = useState(mdStr);
   const [earlierPostId, setEarlierPostId] = useState(null);
   const [recentPostId, setRecentPostId] = useState(null);
@@ -145,9 +150,15 @@ const PostPage = () => {
   const getInit = useCallback(async () => {
     try {
       const postInfo = await getPostById(postId);
+      const postTitle = postInfo?.title;
+      const postCategory = postInfo?.category;
+      const postCreatedDate = postInfo?.createdDate;
       const postContent = postInfo?.content;
       const postEarlierPostId = postInfo?.prevPostId;
       const postRecentPostId = postInfo?.nextPostId;
+      setPostTitle(postTitle);
+      setPostCategory(postCategory);
+      setPostCreateDate(postCreatedDate);
       setMarkdown(postContent);
       setEarlierPostId(postEarlierPostId);
       setRecentPostId(postRecentPostId);
@@ -165,46 +176,56 @@ const PostPage = () => {
 
   return (
     <div id='post_page' className='post_container'>
-      <dark-mode light='Light' dark='Dark'></dark-mode>
+      <header className='post_header'>
+        <h1 className='post_title'>{postTitle}</h1>
+        <BsCalendar3 />
+        <span className='post_createDate'>{postCreateDate}</span>
+        <FaRegFolderOpen />
+        <span className='post_category'>{postCategory}</span>
+      </header>
 
-      <div className='post_editor' data-color-mode='light'>
-        <MarkdownEditor.Markdown source={markdown} height='200px' />
-      </div>
+      <section className='post_content'>
+        <dark-mode light='Light' dark='Dark'></dark-mode>
 
-      <hr />
+        <div className='post_editor' data-color-mode='light'>
+          <MarkdownEditor.Markdown source={markdown} height='200px' />
+        </div>
 
-      <div className='button_container mb-3 justify-content-start'>
-        <button
-          className='px-4 button'
-          id='button0'
-          onClick={() => handleBackToPostList()}
-        >
-          <IoMdList />
-          <span>Back to Post List</span>
-        </button>
-      </div>
-      <div className='button_container justify-content-end'>
-        {recentPostId ? (
+        <hr />
+
+        <div className='button_container mb-3 justify-content-start'>
           <button
             className='px-4 button'
-            id='button1'
-            onClick={() => handlePostDetail(recentPostId)}
+            id='button0'
+            onClick={() => handleBackToPostList()}
           >
-            <FaRegArrowAltCircleLeft />
-            <span>Recent Post</span>
+            <IoMdList />
+            <span>Back to Post List</span>
           </button>
-        ) : null}
-        {earlierPostId ? (
-          <button
-            className='px-4 button'
-            id='button2'
-            onClick={() => handlePostDetail(earlierPostId)}
-          >
-            <span>Earlier Post</span>
-            <FaRegArrowAltCircleRight />
-          </button>
-        ) : null}
-      </div>
+        </div>
+        <div className='button_container justify-content-end'>
+          {recentPostId ? (
+            <button
+              className='px-4 button'
+              id='button1'
+              onClick={() => handlePostDetail(recentPostId)}
+            >
+              <FaRegArrowAltCircleLeft />
+              <span>Recent Post</span>
+            </button>
+          ) : null}
+          {earlierPostId ? (
+            <button
+              className='px-4 button'
+              id='button2'
+              onClick={() => handlePostDetail(earlierPostId)}
+            >
+              <span>Earlier Post</span>
+              <FaRegArrowAltCircleRight />
+            </button>
+          ) : null}
+        </div>
+      </section>
     </div>
   );
 };
