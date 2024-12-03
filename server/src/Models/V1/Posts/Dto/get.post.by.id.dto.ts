@@ -15,6 +15,22 @@ export class GetPostByIdReq {
 
 export class GetPostByIdResp {
   @ApiProperty({
+    title: '標題',
+    example: '測試文章2',
+    description: '標題'
+  })
+  @IsString()
+  title: string;
+
+  @ApiProperty({
+    title: '分類',
+    example: '測試分類',
+    description: '分類'
+  })
+  @IsString()
+  category: string;
+
+  @ApiProperty({
     title: '簡介',
     example: '這是一篇測試文章',
     description: '簡介'
@@ -22,6 +38,14 @@ export class GetPostByIdResp {
   @IsString()
   @IsNotEmpty()
   content: string;
+
+  @ApiProperty({
+    title: '日期',
+    example: '2021-10-01',
+    description: '日期'
+  })
+  @IsString()
+  createdDate: string;
 
   @ApiProperty({
     title: '前一篇文章 id',

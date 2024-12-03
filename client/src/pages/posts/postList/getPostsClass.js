@@ -17,7 +17,7 @@ const Post = class {
     this.title = data?.title ?? '未知的標題';
     this.date =
       formatDefTimeNew(data?.date, {
-        formatString: 'yyyy/MM/dd HH:mm:ss'
+        formatString: 'yyyy/MM/dd'
       }) ?? '';
     this.category = data?.category ?? '';
     this.tag = data?.tag ?? '';

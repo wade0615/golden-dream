@@ -9,6 +9,19 @@
     padding: 6rem 10rem 2rem;
     max-width: 1440px;
   }
+
+  .post_header {
+    margin: 0 0 4rem;
+    .post_title {
+    }
+    span.post_category,
+    span.post_createDate {
+      font-size: 1.2rem;
+      color: $base-font-color;
+      margin: 0 1rem 0 0.5rem;
+      vertical-align: middle;
+    }
+  }
   .post_editor {
     margin-bottom: 4rem;
   }
