@@ -23,8 +23,13 @@ export class PostsRepository {
         bp.Post_ID AS id, 
         bp.Post_Name AS title, 
         bp.Create_Date AS createdDate, 
-        bp.Short_Content AS shortContent
+        bp.Short_Content AS shortContent,
+        bc.Category_Name AS categoryName
       FROM blog_post bp 
+      LEFT JOIN blog_map_post_category bmpc 
+        ON bmpc.Post_ID = bp.Post_ID
+      LEFT JOIN blog_category bc 
+        ON bc.Category_ID = bmpc.Category_ID 
       WHERE bp.Post_Type = 2
       ORDER BY bp.Seq DESC
       LIMIT ${_start}, ${_limit}

@@ -54,6 +54,14 @@ export class PostList {
     description: '分類'
   })
   @IsString()
+  category: string;
+
+  @ApiProperty({
+    title: '標籤',
+    example: '測試標籤',
+    description: '標籤'
+  })
+  @IsString()
   tag: string;
 
   @ApiProperty({

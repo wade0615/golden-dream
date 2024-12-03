@@ -19,6 +19,7 @@ const Post = class {
       formatDefTimeNew(data?.date, {
         formatString: 'yyyy/MM/dd HH:mm:ss'
       }) ?? '';
+    this.category = data?.category ?? '';
     this.tag = data?.tag ?? '';
     this.content = data?.content ?? '';
   }
