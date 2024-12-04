@@ -27,6 +27,7 @@ import { RedisModule } from './Providers/Database/Redis/redis.module';
 // Service
 // import { ConfigKafkaModule } from './Config/Database/Kafka/config.module';
 import { AuthModule } from './Models/V1/Auth/auth.module';
+import { PostsModule as BackStagePostsModule } from './Models/V1/BackStage/Posts/posts.module';
 import { CommonModule } from './Models/V1/Common/common.module';
 import { PostsModule } from './Models/V1/Posts/posts.module';
 import { TestModule } from './Models/V1/Test/test.module';
@@ -43,6 +44,7 @@ const moduleImport = [
   AuthModule,
   CommonModule,
   AuthModule,
+  BackStagePostsModule,
   RedisModule
   // FirebaseModule
   // SmsModule,

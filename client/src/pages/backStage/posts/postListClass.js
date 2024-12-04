@@ -1,31 +1,28 @@
 import { formatDefTimeNew } from 'utils/timeUtils';
-
-const MemberListDataClass = class {
+const GetPostsClass = class {
   constructor(data) {
-    this.memberId = data?.memberId ?? crypto.randomUUID();
-    this.name = data?.memberName ?? '';
-    this.isDelete = data?.isDelete ?? 0;
-    this.cardNO = data?.memberCardId ?? '';
-    this.mobile =
-      data?.mobileCountryCode && data?.phone
-        ? `${data?.mobileCountryCode}-${data?.phone}`
-        : '';
-    this.level = data?.membershipStatus ?? '';
-    this.birthday = data?.birthday
-      ? formatDefTimeNew(new Date(data?.birthday))
-      : '';
-    this.registerDate = data?.registerTime
-      ? formatDefTimeNew(new Date(data?.registerTime), {
-          formatString: 'yyyy/MM/dd HH:mm'
-        })
-      : '';
-    this.updateDate = data?.alterTime
-      ? formatDefTimeNew(new Date(data?.alterTime), {
-          formatString: 'yyyy/MM/dd HH:mm'
-        })
-      : '';
-    this.updatePerson = data?.alterName ?? '';
+    this.metaData = {
+      page: data?.metaData?.page ?? 1,
+      perPage: data?.metaData?.perPage ?? 10,
+      totalCount: data?.metaData?.totalCount ?? 66,
+      totalPages: data?.metaData?.totalPages ?? 7
+    };
+    this.postList = data?.postList?.map((_post) => new Post(_post)) ?? [];
   }
 };
 
-export { MemberListDataClass };
+const Post = class {
+  constructor(data) {
+    this.id = data?.id ?? crypto.randomUUID();
+    this.title = data?.title ?? '未知的標題';
+    this.date =
+      formatDefTimeNew(data?.date, {
+        formatString: 'yyyy/MM/dd'
+      }) ?? '';
+    this.category = data?.category ?? '';
+    this.tag = data?.tag ?? '';
+    this.content = data?.content ?? '';
+  }
+};
+
+export { GetPostsClass };

@@ -11,12 +11,12 @@ import {
   getPaginationRowModel
 } from '@tanstack/react-table';
 
-import { MemberListDataClass } from './postListClass';
+import { GetPostsClass } from './postListClass';
 import api from 'services/api';
 import { formatDefTimeNew, formatStartEndDate } from 'utils/timeUtils';
-import { useSelector, useDispatch } from 'react-redux';
-import { setOption } from 'store/slice/globalOptionsSlice';
-import { optionType } from 'constants/optionType';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { setOption } from 'store/slice/globalOptionsSlice';
+// import { optionType } from 'constants/optionType';
 
 // import alertService from 'utils/alertService';
 import IndeterminateCheckbox from 'components/indeterminateCheckbox/IndeterminateCheckbox';
@@ -75,11 +75,11 @@ function PostList() {
   });
   const [isDefaultEmpty, setIsDefaultEmpty] = useState(true); // table empty string type
   const [sorting, setSorting] = useState(); // table sorting
-  const [memberStatusOptions, setMemberStatusOptions] = useState([]);
-  const specialMemberTypeOption = useSelector(
-    (state) => state.options.specialMemberType
-  );
-  const dispatch = useDispatch();
+  // const [memberStatusOptions, setMemberStatusOptions] = useState([]);
+  // const specialMemberTypeOption = useSelector(
+  //   (state) => state.options.specialMemberType
+  // );
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
 
   /* table config */
@@ -189,38 +189,36 @@ function PostList() {
   const getInit = useCallback(async () => {
     try {
       // 取得 會籍, 特殊會員類型下拉式選項
-      const [specialTypeMemberData, memberStatusData] = await Promise.all([
-        api.member.getMemberSpecialTypeMenu(),
-        api.memberShip.getMemberShipMenu()
-      ]);
-      if (specialTypeMemberData) {
-        const formatType = specialTypeMemberData.list.map((item) => ({
-          value: item.seq,
-          label: item.name
-        }));
-        dispatch(
-          setOption({
-            type: optionType.specialMemberType,
-            payload: formatType
-          })
-        );
-      }
-      if (memberStatusData) {
-        setMemberStatusOptions(memberStatusData.memberShipList);
-      }
+      // const [specialTypeMemberData, memberStatusData] = await Promise.all([
+      //   api.member.getMemberSpecialTypeMenu(),
+      //   api.memberShip.getMemberShipMenu()
+      // ]);
+      // if (specialTypeMemberData) {
+      //   const formatType = specialTypeMemberData.list.map((item) => ({
+      //     value: item.seq,
+      //     label: item.name
+      //   }));
+      //   dispatch(
+      //     setOption({
+      //       type: optionType.specialMemberType,
+      //       payload: formatType
+      //     })
+      //   );
+      // }
+      // if (memberStatusData) {
+      //   setMemberStatusOptions(memberStatusData.memberShipList);
+      // }
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
-  }, [dispatch]);
+  }, []);
 
   const getMemberList = useCallback(async (req) => {
     try {
-      const res = await api.member.getMemberList(req);
-      if (res) {
-        const formatList = res.memberList.map(
-          (m) => new MemberListDataClass(m)
-        );
-        setListData(formatList);
+      const apiRes = await api.backStage.getBackStagePostList(req);
+      if (apiRes) {
+        const res = new GetPostsClass(apiRes);
+        setListData(res.postList);
         setPageMeta((prev) => ({ ...prev, ...res.metaData }));
         setIsDefaultEmpty(false);
         // setSearchData(req); // 批次匯出用，暫存此次搜尋條件
@@ -366,6 +364,7 @@ function PostList() {
 
   /* search submit */
   const onSubmit = (data, e) => {
+    console.log('onSubmit', data);
     e.preventDefault();
     const { registerRange, ...restValues } = methods.getValues();
     getMemberList({
@@ -373,7 +372,7 @@ function PostList() {
       memberSpecialType: Number(restValues.memberSpecialType),
       startDate: formatStartEndDate(data?.startDate ?? '', true),
       endDate: formatStartEndDate(data?.endDate ?? '', false),
-      perPage: pageMeta.perPage,
+      perPage: pageMeta.perPage ?? 20,
       page: 1
     });
   };
@@ -412,7 +411,7 @@ function PostList() {
       >
         <Container fluid>
           <Row className='gx-5'>
-            <Col sm={6}>
+            {/* <Col sm={6}>
               <FieldGroup htmlFor='membershipStatus' title='會員會籍'>
                 <TextField
                   variant='select'
@@ -431,13 +430,13 @@ function PostList() {
                   options={specialMemberTypeOption}
                 />
               </FieldGroup>
-            </Col>
+            </Col> */}
 
             <Col sm={6}>
-              <FieldGroup title='註冊時間'>
+              <FieldGroup title='建立時間'>
                 <TextField
                   variant='radio'
-                  name='registerRange'
+                  name='createRange'
                   options={[
                     { value: 'all', label: '不限' },
                     { value: '30', label: '近一個月' },

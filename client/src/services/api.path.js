@@ -1,5 +1,6 @@
 const category = {
   template: 'v1',
+  backStagePosts: 'backStage/posts',
   auth: 'auth',
   member: 'member',
   test: 'test',
@@ -32,10 +33,16 @@ const common = {
   getAsideCardDetail: `${category.common}/getAsideCardDetail`
 };
 
+const backStage = {
+  getBackStagePostList: `${category.backStagePosts}/getBackStagePostList`,
+  getBackStagePostById: `${category.backStagePosts}/getBackStagePostById`
+};
+
 export default {
   template,
   auth,
   test,
   posts,
-  common
+  common,
+  backStage
 };
