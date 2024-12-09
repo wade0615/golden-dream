@@ -14,6 +14,7 @@ import {
 import { GetPostsClass } from './postListClass';
 import api from 'services/api';
 import { formatDefTimeNew, formatStartEndDate } from 'utils/timeUtils';
+import routerPath from 'routes/router.path';
 // import { useSelector, useDispatch } from 'react-redux';
 // import { setOption } from 'store/slice/globalOptionsSlice';
 // import { optionType } from 'constants/optionType';
@@ -27,6 +28,7 @@ import BaseTable from 'features/table/baseTable/BaseTable';
 import TextField from 'features/textField/TextField';
 import FieldGroup from 'features/textField/sub_textField/FieldGroup';
 import { Col, Row, Container, Stack } from 'react-bootstrap';
+
 import './postListStyle.scss';
 import PermissionAction from 'components/permissionAction/PermissionAction';
 import AUTH_CODE from 'config/auth.code.config';
@@ -69,8 +71,8 @@ function PostList() {
   // const [searchData, setSearchData] = useState(_defaultSearch);
   const [pageMeta, setPageMeta] = useState({
     totalCount: 0, //總筆數
-    totalPage: 0, // 總頁數
-    perPage: 20, // 每頁筆數
+    totalPages: 0, // 總頁數
+    perPage: 10, // 每頁筆數
     page: 1 //當前頁數
   });
   const [isDefaultEmpty, setIsDefaultEmpty] = useState(true); // table empty string type
@@ -166,7 +168,7 @@ function PostList() {
     columns,
     initialState: {
       pagination: {
-        pageSize: 20
+        pageSize: 10
       }
     },
     state: {
@@ -372,7 +374,7 @@ function PostList() {
       memberSpecialType: Number(restValues.memberSpecialType),
       startDate: formatStartEndDate(data?.startDate ?? '', true),
       endDate: formatStartEndDate(data?.endDate ?? '', false),
-      perPage: pageMeta.perPage ?? 20,
+      perPage: pageMeta.perPage ?? 10,
       page: 1
     });
   };
@@ -382,16 +384,21 @@ function PostList() {
 
   /* 前往新增頁 */
   const handleNewMember = () => {
-    navigate('/member/list/add');
+    navigate(
+      `/${routerPath.secretDoor_Post}/${routerPath.secretDoor_Post_PostPage}`
+    );
   };
 
   /* 前往會員基本資料頁 */
   function handleMemberInfo(id, panel = 0) {
-    navigate(`/member/list/info?id=${id}`, {
-      state: {
-        panel
+    navigate(
+      `/${routerPath.secretDoor}/${routerPath.secretDoor_Post}/${routerPath.secretDoor_Post_PostPage}?id=${id}`,
+      {
+        state: {
+          panel
+        }
       }
-    });
+    );
   }
 
   return (
@@ -507,11 +514,11 @@ function PostList() {
         table={table}
         isDefaultEmpty={isDefaultEmpty}
         totalCounts={pageMeta.totalCount}
-        totalPages={pageMeta.totalPage}
+        totalPages={pageMeta.totalPages}
         currentPage={pageMeta.page}
         handlePageFetch={handlePageFetch}
         handleCountFetch={handleCountFetch}
-        pageCountConfig={[20, 40, 60, 80, 100, 500]}
+        pageCountConfig={[10, 20, 40, 60, 80, 100, 500]}
       />
     </div>
   );

@@ -1,3 +1,4 @@
-import PostList from './posts/postList';
+import PostList from './posts/postList/postList';
+import PostPageCRUD from './posts/postPageCRUD/postPageCRUD';
 
-export { PostList };
+export { PostList, PostPageCRUD };

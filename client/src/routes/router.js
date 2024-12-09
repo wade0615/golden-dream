@@ -1,20 +1,23 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 // import { RedisGui } from 'pages/redis';
-import { Login } from 'pages/login';
+// import { Login } from 'pages/login';
 import { PostList, PostPage } from 'pages/posts';
 import { Categories } from 'pages/categories';
 import { About } from 'pages/about';
 import { Timeline } from 'pages/timeline';
 
-import { PostList as BackStagePostList } from 'pages/backStage';
+import {
+  PostList as BackStagePostList,
+  PostPageCRUD as BackStagePostPageCRUD
+} from 'pages/backStage';
 import { Error404 } from 'pages/errors';
 import { RedirectUrl } from 'pages/redirectUrl';
 
 import { BloggerLayout, BackStageLayout } from 'layout';
 import { PersonOutlineIcon } from 'assets/icons';
 
-import AUTH_CODE from 'config/auth.code.config';
+// import AUTH_CODE from 'config/auth.code.config';
 import localStorageUtil from 'utils/localStorageUtil';
 import LocalStorageKeys from 'constants/localStorageKeys';
 import NonAccess from './other/NonAccess';
@@ -226,7 +229,7 @@ export const routerConfig = [
        ** 文章管理
        **/
       {
-        path: 'post', // 子路由的路徑
+        path: routerPath.secretDoor_Post, // 子路由的路徑
         breadcrumbPath: 'post', // 頁面路由，用於麵包屑
         errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
         sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 側邊欄中對應此路由的圖標
@@ -241,9 +244,17 @@ export const routerConfig = [
             hiddenFromNav: true // 導航欄中是否隱藏
           },
           {
-            path: 'postList',
+            path: routerPath.secretDoor_Post_PostList,
             pageTitle: '文章列表',
             element: <BackStagePostList />
+            // authCode: AUTH_CODE.MEMBER.INFO.PAGE,
+            // subPath: ['list/add', 'list/info'] // 子路由的陣列
+          },
+          {
+            path: routerPath.secretDoor_Post_PostPage,
+            pageTitle: '文章檢視編輯頁',
+            element: <BackStagePostPageCRUD />,
+            hiddenFromNav: true
             // authCode: AUTH_CODE.MEMBER.INFO.PAGE,
             // subPath: ['list/add', 'list/info'] // 子路由的陣列
           }

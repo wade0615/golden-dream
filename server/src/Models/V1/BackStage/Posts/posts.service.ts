@@ -36,7 +36,8 @@ export class PostsService {
           return {
             id: data?.id ?? ruuidv4(),
             title: data?.title ?? '未知的標題',
-            date: data?.createdDate ?? '未知的時間',
+            createDate: data?.createdDate ?? '未知的時間',
+            alterDate: data?.alterDate ?? '未知的時間',
             category: data?.categoryName ?? '未知的分類',
             tag: data?.tag ?? '未知的標籤',
             content: data?.shortContent ?? '未知的簡介'

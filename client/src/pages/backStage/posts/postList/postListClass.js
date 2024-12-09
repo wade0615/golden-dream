@@ -13,15 +13,20 @@ const GetPostsClass = class {
 
 const Post = class {
   constructor(data) {
-    this.id = data?.id ?? crypto.randomUUID();
+    this.postId = data?.id ?? crypto.randomUUID();
     this.title = data?.title ?? '未知的標題';
-    this.date =
-      formatDefTimeNew(data?.date, {
+    this.createDate =
+      formatDefTimeNew(data?.createDate, {
+        formatString: 'yyyy/MM/dd'
+      }) ?? '';
+    this.updateDate =
+      formatDefTimeNew(data?.alterDate, {
         formatString: 'yyyy/MM/dd'
       }) ?? '';
     this.category = data?.category ?? '';
     this.tag = data?.tag ?? '';
     this.content = data?.content ?? '';
+    this.updatePerson = data?.alterPerson ?? 'Owner';
   }
 };
 

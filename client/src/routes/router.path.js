@@ -7,7 +7,10 @@ const routerPath = {
   categories: 'categories',
   about: 'about',
   // backstage: 'backstage'
-  secretDoor: 'secretDoor'
+  secretDoor: 'secretDoor',
+  secretDoor_Post: 'post',
+  secretDoor_Post_PostList: 'postList',
+  secretDoor_Post_PostPage: 'postPage'
 };
 
 export default routerPath;

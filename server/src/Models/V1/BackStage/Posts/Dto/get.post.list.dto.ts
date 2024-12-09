@@ -41,12 +41,20 @@ export class PostList {
   title: string;
 
   @ApiProperty({
-    title: '日期',
+    title: '建立日期',
     example: '2021-10-01',
     description: '日期'
   })
   @IsString()
-  date: string;
+  createDate: string;
+
+  @ApiProperty({
+    title: '編輯日期',
+    example: '2021-10-01',
+    description: '日期'
+  })
+  @IsString()
+  alterDate: string;
 
   @ApiProperty({
     title: '分類',
