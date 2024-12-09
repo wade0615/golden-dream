@@ -2,14 +2,87 @@
 
 #post_page_crud.post_container {
   position: relative;
-  padding: 2rem 1rem;
+  padding: 6rem 1rem 2rem;
+  line-height: 2;
+  @include PC {
+    padding: 6rem 10rem 2rem;
+    max-width: 1440px;
+  }
   .post_editor {
     margin-bottom: 2rem;
-  }
-  h1 {
-    margin: 0 0 1rem 0;
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: $danger;
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-weight: bold;
+      font-family: Noto Sans TC, Lato, Helvetica Neue For Number, -apple-system,
+        BlinkMacSystemFont, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB,
+        MicrMicrosoft YaHei;
+    }
+    h1 {
+      margin: 0 0 1rem 0;
+      font-size: 2.5rem;
+    }
+    h2 {
+      margin: 2rem 0 1rem;
+      font-size: 1.8rem;
+      font-weight: bold;
+      border-bottom: solid 1px;
+    }
+    h3 {
+      font-size: 1.5rem;
+      margin: 2rem 0 1rem;
+    }
+    h4 {
+      font-style: italic;
+      margin: 3rem 2rem;
+      font-size: 1.5rem;
+      text-align: center;
+      line-height: 3rem;
+    }
+    p {
+      margin: 0 0 1.5rem;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+    }
+    hr {
+      background-color: $main-color;
+    }
+    p:has(img) {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 1rem;
+      width: 100%;
+      padding: 1rem;
+    }
+    p:has(img) img {
+      width: 100%;
+      height: auto;
+      max-height: 60vh;
+      object-fit: contain;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    blockquote {
+      margin: 0 0 1rem;
+      padding: 1.5rem 1.2rem;
+      border-left: 0.3rem solid $base-font-color;
+      background-color: $blockquote;
+      color: $base-font-color;
+      font-weight: bold;
+      p {
+        margin: 0;
+      }
+    }
+    ul,
+    ol {
+      margin-top: 0.4rem;
+      li {
+        position: relative;
+        margin: 0.3rem 0;
+        padding-left: 0.3rem;
+        font-size: 1.2rem;
+      }
+    }
   }
 }
