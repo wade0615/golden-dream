@@ -2,14 +2,70 @@
 
 #post_page_crud.post_container {
   position: relative;
-  padding: 6rem 1rem 2rem;
-  line-height: 2;
-  @include PC {
-    padding: 6rem 10rem 2rem;
-    max-width: 1440px;
+  // line-height: 2;
+  > form {
+    height: 100%;
   }
+
+  .form-grid {
+    display: grid;
+    grid-row-gap: 1.5em;
+    grid-column-gap: 7.5em;
+    > * {
+      margin: 0;
+    }
+    &.form-grid-md-2 {
+      grid-template-columns: repeat(1, 1fr);
+      @include PC {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    &__address {
+      display: grid;
+      grid-template-columns: 3fr 3fr 96px;
+      //   grid-row-gap: 1em;
+      grid-column-gap: 0.5em;
+
+      &--code {
+        color: var(--bs-primary);
+        border: 1px solid var(--bs-primary);
+        border-radius: 0.5rem;
+        white-space: nowrap;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        user-select: none;
+        height: 38px;
+      }
+    }
+    &__mobile {
+      display: grid;
+      grid-template-columns: 1fr 3fr;
+      grid-column-gap: 0.5em;
+    }
+    &__invoice {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      grid-column-gap: 0.5em;
+    }
+    &--error {
+      grid-column-start: 1;
+      grid-column-end: 3;
+      width: 100%;
+      font-size: 0.875em;
+      color: var(--bs-form-invalid-color);
+    }
+  }
+
   .post_editor {
     margin-bottom: 2rem;
+    margin: 0 auto;
+    width: 80vw;
+    padding: 2rem 1rem 2rem;
+    @include PC {
+      width: 90vw;
+      padding: 3rem 3rem 2rem;
+    }
     h1,
     h2,
     h3,
