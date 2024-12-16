@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { MysqlProvider } from 'src/Providers/Database/DatabaseMysql/mysql.provider';
 
 import { GetPostListReq } from './Dto/get.post.list.dto';
+import { AddPostInterface } from './Interface/add.post.interface';
 import { GetPostByIdInterface } from './Interface/get.post.by.id.interface';
 import { GetPostListInterface } from './Interface/get.post.list.interface';
 
@@ -20,10 +21,10 @@ export class PostsRepository {
 
     const sqlStr = `
       SELECT 
-        bp.Post_ID AS id, 
-        bp.Post_Name AS title, 
-        bp.Create_Date AS createdDate, 
-        bp.Alter_Date AS alterDate, 
+        bp.Post_ID AS id,
+        bp.Post_Name AS title,
+        bp.Create_Date AS createdDate,
+        bp.Alter_Date AS alterDate,
         bp.Short_Content AS shortContent,
         bc.Category_Name AS categoryName
       FROM blog_post bp 
@@ -129,5 +130,38 @@ export class PostsRepository {
     const nextId = result?.[1]?.[0]?.nextPostId;
 
     return { prevId, nextId };
+  }
+
+  /**
+   * 新增文章
+   * @returns
+   */
+  async addPost(postData: AddPostInterface): Promise<any> {
+    const _postId = this.internalConn.escape(postData?.postId);
+    const _postName = this.internalConn.escape(postData?.postName);
+    const _createId = this.internalConn.escape(postData?.createId);
+    const _alterId = this.internalConn.escape(postData?.alterId);
+    const _content = this.internalConn.escape(postData?.content);
+    const _shortContent = this.internalConn.escape(postData?.shortContent);
+    const _postType = this.internalConn.escape(postData?.postType);
+    const _isPublish = this.internalConn.escape(postData?.isPublish);
+
+    const sqlStr = `
+      INSERT INTO blog_post 
+        (
+          Post_ID, Post_Name, Create_ID, Alter_ID, 
+          Content, Short_Content, 
+          Post_Type, Is_Publish, Is_Active)
+      VALUES
+        (
+          ${_postId}, ${_postName}, ${_createId}, ${_alterId},
+          ${_content}, ${_shortContent},
+          ${_postType}, ${_isPublish}, 1
+        );
+    `;
+
+    await this.internalConn.query(sqlStr, []);
+
+    return true;
   }
 }

@@ -1,9 +1,10 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Headers, HttpStatus, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import apiPath from 'src/Center/api.path';
 
 import { PostsService } from './posts.service';
 
+import { AddPostReq } from './Dto/add.post.dto';
 import { GetPostByIdReq, GetPostByIdResp } from './Dto/get.post.by.id.dto';
 import { GetPostListReq, GetPostListResp } from './Dto/get.post.list.dto';
 
@@ -42,6 +43,42 @@ export class PostsController {
   async getPostById(@Body() body: GetPostByIdReq): Promise<GetPostByIdResp> {
     try {
       const result = await this.postsService.getBackStagePostById(body);
+
+      return result;
+    } catch (error) {
+      throw new CustomerException(configError._200002, HttpStatus.OK);
+    }
+  }
+
+  /**
+   * 新增文章
+   * @param body
+   * @returns
+   */
+  @Post(apiPath.backStage.posts.addPost)
+  async addPost(
+    @Headers() headers: any,
+    @Body() body: AddPostReq
+  ): Promise<any> {
+    try {
+      const userId = headers['authMemberId'] ?? 'system';
+      const result = await this.postsService.addPost(body, userId);
+
+      return result;
+    } catch (error) {
+      throw new CustomerException(configError._200002, HttpStatus.OK);
+    }
+  }
+
+  /**
+   * 編輯文章
+   * @param body
+   * @returns
+   */
+  @Post(apiPath.backStage.posts.editPost)
+  async editPost(@Body() body: GetPostByIdReq): Promise<any> {
+    try {
+      const result = await this.postsService.editPost();
 
       return result;
     } catch (error) {

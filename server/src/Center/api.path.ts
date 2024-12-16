@@ -41,7 +41,11 @@ const backStage = {
     /** 取得後台文章列表 */
     getBackStagePostList: `/getBackStagePostList`,
     /** 取得後台指定文章 */
-    getBackStagePostById: `/getBackStagePostById`
+    getBackStagePostById: `/getBackStagePostById`,
+    /** 新增文章 */
+    addPost: `/addPost`,
+    /** 編輯文章 */
+    editPost: `/editPost`
   }
 };
 

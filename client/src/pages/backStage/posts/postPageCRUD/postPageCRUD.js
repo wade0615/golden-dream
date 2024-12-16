@@ -50,6 +50,11 @@ const PostPageCRUD = () => {
   const [markdown, setMarkdown] = useState(mdStr);
   const [formData, setFormData] = useState({});
 
+  // 頁面狀態狀態 add/edit/view
+  const pageMode = location?.state?.pageMode;
+  const isAddMode = pageMode === 'add';
+  const isViewMode = pageMode === 'view';
+
   const methods = useForm({
     mode: 'onBlur',
     defaultValues: _defaultValues,
@@ -85,23 +90,26 @@ const PostPageCRUD = () => {
   /** 初次載入 */
   const getInit = useCallback(async () => {
     try {
-      const postInfo = await getPostById(postId);
-      const postTitle = postInfo?.title;
-      const postCategory = postInfo?.category;
-      const postCreatedDate = postInfo?.createdDate;
-      const postContent = postInfo?.content;
-      setPostTitle(postTitle);
-      setPostCategory(postCategory);
-      setPostCreateDate(postCreatedDate);
-      setMarkdown(postContent);
+      if (isAddMode) {
+      } else {
+        const postInfo = await getPostById(postId);
+        const postTitle = postInfo?.title;
+        const postCategory = postInfo?.category;
+        const postCreatedDate = postInfo?.createdDate;
+        const postContent = postInfo?.content;
+        setPostTitle(postTitle);
+        setPostCategory(postCategory);
+        setPostCreateDate(postCreatedDate);
+        setMarkdown(postContent);
 
-      const formateData = {
-        title: postTitle ?? '',
-        category: postCategory ?? ''
-      };
+        const formateData = {
+          title: postTitle ?? '',
+          category: postCategory ?? ''
+        };
 
-      reset(formateData);
-      setFormData(formateData);
+        reset(formateData);
+        setFormData(formateData);
+      }
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
@@ -143,11 +151,15 @@ const PostPageCRUD = () => {
             <div className='form-grid form-grid-md-2'>
               {/* 文章標題 */}
               <FieldGroup title='文章標題' required htmlFor='title'>
-                <TextField name='title' maxLength='50' />
+                <TextField name='title' maxLength='50' disabled={isViewMode} />
               </FieldGroup>
               {/* 文章分類 */}
               <FieldGroup title='文章分類'>
-                <TextField name='category' disabled readOnly maxLength='50' />
+                <TextField
+                  name='category'
+                  disabled={isViewMode}
+                  maxLength='50'
+                />
               </FieldGroup>
             </div>
             <div className='post_editor' data-color-mode='light'>
@@ -155,6 +167,7 @@ const PostPageCRUD = () => {
                 value={markdown}
                 height='60vh'
                 visible={true}
+                visibleEditor={true}
                 onChange={(value, viewUpdate) => {
                   setMarkdown(value);
                 }}

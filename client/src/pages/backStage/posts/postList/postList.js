@@ -150,10 +150,14 @@ function PostList() {
           {info.getValue()}{' '}
           <Actions>
             <PermissionAction authCode={AUTH_CODE.MEMBER.INFO.CREATE_UPDATE}>
-              <Actions.Edit onClick={() => handleMemberInfo(info.row.id, 1)} />
+              <Actions.Edit
+                onClick={() => handleMemberInfo(info.row.id, 'edit')}
+              />
             </PermissionAction>
             <PermissionAction authCode={AUTH_CODE.MEMBER.INFO.READ}>
-              <Actions.View onClick={() => handleMemberInfo(info.row.id, 0)} />
+              <Actions.View
+                onClick={() => handleMemberInfo(info.row.id, 'view')}
+              />
             </PermissionAction>
           </Actions>{' '}
         </>
@@ -385,17 +389,22 @@ function PostList() {
   /* 前往新增頁 */
   const handleNewMember = () => {
     navigate(
-      `/${routerPath.secretDoor_Post}/${routerPath.secretDoor_Post_PostPage}`
+      `/${routerPath.secretDoor}/${routerPath.secretDoor_Post}/${routerPath.secretDoor_Post_PostPage}`,
+      {
+        state: {
+          pageMode: 'add'
+        }
+      }
     );
   };
 
   /* 前往會員基本資料頁 */
-  function handleMemberInfo(id, panel = 0) {
+  function handleMemberInfo(id, panel = 'view') {
     navigate(
       `/${routerPath.secretDoor}/${routerPath.secretDoor_Post}/${routerPath.secretDoor_Post_PostPage}?id=${id}`,
       {
         state: {
-          panel
+          pageMode: panel
         }
       }
     );

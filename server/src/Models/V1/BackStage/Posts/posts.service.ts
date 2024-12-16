@@ -6,8 +6,14 @@ import { CustomerException } from 'src/Global/ExceptionFilter/global.exception.h
 
 import { PostsRepository } from './posts.repository';
 
+import { AddPostReq } from './Dto/add.post.dto';
 import { GetPostByIdReq, GetPostByIdResp } from './Dto/get.post.by.id.dto';
 import { GetPostListReq, GetPostListResp } from './Dto/get.post.list.dto';
+
+import {
+  POST_PUBLISH_CODE,
+  POST_TYPE_CODE
+} from 'src/Definition/Enum/post.enum';
 
 import moment = require('moment-timezone');
 const crypto = require('crypto');
@@ -80,4 +86,39 @@ export class PostsService {
       throw new CustomerException(configError._200002, HttpStatus.OK);
     }
   }
+
+  /**
+   * 新增文章
+   * @returns
+   */
+  async addPost(req: AddPostReq, userId: string): Promise<any> {
+    try {
+      const postData = {
+        postId: ruuidv4(),
+        postName: req?.postName,
+        createId: userId,
+        alterId: userId,
+        content: req?.content,
+        shortContent: req?.shortContent,
+        postType: req?.postType
+          ? POST_TYPE_CODE?.SPECIAL_POST
+          : POST_TYPE_CODE?.NORMAL_POST,
+        isPublish: req?.isPublish
+          ? POST_PUBLISH_CODE?.PUBLISH
+          : POST_PUBLISH_CODE?.UNPUBLISH
+      };
+      await this.postsRepository.addPost(postData);
+
+      return true;
+    } catch (error) {
+      console.error('getPostById service error:', error);
+      throw new CustomerException(configError._200002, HttpStatus.OK);
+    }
+  }
+
+  /**
+   * 編輯文章
+   * @returns
+   */
+  async editPost() {}
 }
