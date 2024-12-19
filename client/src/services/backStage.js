@@ -1,4 +1,4 @@
-import { post } from './sub_services/base';
+import { get, post } from './sub_services/base';
 import apiPath from './api.path';
 import config from 'config/config';
 import ExceptionHandleService from 'utils/exceptionHandler';
@@ -20,6 +20,32 @@ const getBackStagePostList = async (req) => {
   }
 };
 
+/** [POST]取得後台指定文章 */
+const getBackStagePostById = async (req) => {
+  try {
+    const url = `${config.SERVER_POINT}${apiPath.backStage.getBackStagePostById}`;
+    const result = await post(url, req);
+    return result;
+  } catch (error) {
+    _EHS.errorReport(error, 'getBackStagePostById', _EHS._LEVEL.ERROR);
+    return Promise.reject(error);
+  }
+};
+
+/** [GET]取得後台分類下拉選單 */
+const getBackStageCategoryOptions = async () => {
+  try {
+    const url = `${config.SERVER_POINT}${apiPath.backStage.getBackStageCategoryOptions}`;
+    const result = await get(url);
+    return result;
+  } catch (error) {
+    _EHS.errorReport(error, 'getBackStageCategoryOptions', _EHS._LEVEL.ERROR);
+    return Promise.reject(error);
+  }
+};
+
 export default {
-  getBackStagePostList
+  getBackStagePostList,
+  getBackStagePostById,
+  getBackStageCategoryOptions
 };

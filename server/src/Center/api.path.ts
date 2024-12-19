@@ -46,6 +46,10 @@ const backStage = {
     addPost: `/addPost`,
     /** 編輯文章 */
     editPost: `/editPost`
+  },
+  category: {
+    /** 取得後台分類下拉選單 */
+    getBackStageCategoryOptions: `/getBackStageCategoryOptions`
   }
 };
 

@@ -1,6 +1,7 @@
 const category = {
   template: 'v1',
   backStagePosts: 'backStage/posts',
+  backStageCategory: 'backStage/category',
   auth: 'auth',
   member: 'member',
   test: 'test',
@@ -35,7 +36,8 @@ const common = {
 
 const backStage = {
   getBackStagePostList: `${category.backStagePosts}/getBackStagePostList`,
-  getBackStagePostById: `${category.backStagePosts}/getBackStagePostById`
+  getBackStagePostById: `${category.backStagePosts}/getBackStagePostById`,
+  getBackStageCategoryOptions: `${category.backStageCategory}/getBackStageCategoryOptions`
 };
 
 export default {

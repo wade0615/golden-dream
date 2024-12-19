@@ -16,6 +16,7 @@ import routerPath from 'routes/router.path';
 
 import './postsPageCRUDStyle.scss';
 import { GetBackstagePostByIdClass } from './getBackstagePostByIdClass';
+import { GetBackstageCategoryOptionsClass } from './getBackstageCategoryOptionsClass';
 
 import ExceptionHandleService from 'utils/exceptionHandler';
 
@@ -48,6 +49,7 @@ const PostPageCRUD = () => {
   const [postCategory, setPostCategory] = useState(null);
   const [postCreateDate, setPostCreateDate] = useState(null);
   const [markdown, setMarkdown] = useState(mdStr);
+  const [categoryOptions, setCategoryOptions] = useState([]);
   const [formData, setFormData] = useState({});
 
   // 頁面狀態狀態 add/edit/view
@@ -68,7 +70,7 @@ const PostPageCRUD = () => {
   );
 
   /** 取得指定文章 */
-  const getPostById = useCallback(async (postId) => {
+  const getBackStagePostById = useCallback(async (postId) => {
     try {
       if (!postId) {
         throw new Error('postId is required');
@@ -76,23 +78,40 @@ const PostPageCRUD = () => {
       const apiReq = {
         postId: postId
       };
-      const res = await api.posts.getPostById(apiReq);
-      const apiRes = res;
+      const apiRes = await api.backStage.getBackStagePostById(apiReq);
       if (apiRes) {
         const res = new GetBackstagePostByIdClass(apiRes);
         return res;
       }
     } catch (error) {
-      _EHS.errorReport(error, 'getPostById', _EHS._LEVEL.ERROR);
+      _EHS.errorReport(error, 'getBackStagePostById', _EHS._LEVEL.ERROR);
+    }
+  }, []);
+
+  /** 取得分類下拉選單 */
+  const getBackStageCategoryOptions = useCallback(async () => {
+    try {
+      const apiRes = await api.backStage.getBackStageCategoryOptions();
+      if (apiRes) {
+        const res = apiRes?.map((_apiRes) => {
+          return new GetBackstageCategoryOptionsClass(_apiRes);
+        });
+        return res;
+      }
+    } catch (error) {
+      _EHS.errorReport(error, 'getBackStageCategoryOptions', _EHS._LEVEL.ERROR);
     }
   }, []);
 
   /** 初次載入 */
   const getInit = useCallback(async () => {
     try {
+      const categoryOptions = await getBackStageCategoryOptions();
+      setCategoryOptions(categoryOptions);
+
       if (isAddMode) {
       } else {
-        const postInfo = await getPostById(postId);
+        const postInfo = await getBackStagePostById(postId);
         const postTitle = postInfo?.title;
         const postCategory = postInfo?.category;
         const postCreatedDate = postInfo?.createdDate;
@@ -113,7 +132,13 @@ const PostPageCRUD = () => {
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
-  }, [getPostById, postId, reset]);
+  }, [
+    isAddMode,
+    postId,
+    getBackStagePostById,
+    getBackStageCategoryOptions,
+    reset
+  ]);
 
   /** 初始化 */
   useEffect(() => {
@@ -157,8 +182,11 @@ const PostPageCRUD = () => {
               <FieldGroup title='文章分類'>
                 <TextField
                   name='category'
+                  variant='select'
                   disabled={isViewMode}
                   maxLength='50'
+                  placeholder='全部'
+                  options={categoryOptions}
                 />
               </FieldGroup>
             </div>
