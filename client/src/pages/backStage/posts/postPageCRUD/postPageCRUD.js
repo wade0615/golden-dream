@@ -18,6 +18,7 @@ import './postsPageCRUDStyle.scss';
 import { GetBackstagePostByIdClass } from './getBackstagePostByIdClass';
 import { GetBackstageCategoryOptionsClass } from './getBackstageCategoryOptionsClass';
 
+import alert from 'utils/alertService';
 import ExceptionHandleService from 'utils/exceptionHandler';
 
 const _EHS = new ExceptionHandleService({
@@ -27,7 +28,9 @@ const _EHS = new ExceptionHandleService({
 
 const _defaultValues = {
   title: '',
-  category: ''
+  category: '',
+  shortContent: '',
+  isPublish: '0'
 };
 // form 驗證
 const _schema = yup.object({
@@ -36,7 +39,13 @@ const _schema = yup.object({
     .required('請輸入正確標題格式')
     // .matches(/^[\u4E00-\u9FFFa-zA-Z]+$/, '請輸入正確標題格式')
     .min(2, '請輸入大於2位中英字')
-    .max(50, '請輸入小於50位中英字')
+    .max(50, '請輸入小於50位中英字'),
+  category: yup.string().required('請選擇分類'),
+  shortContent: yup
+    .string()
+    .required('請給我一點內容')
+    .min(2, '請輸入大於2位中英字')
+    .max(100, '請輸入小於100位中英字')
 });
 
 /** 文章編輯頁  */
@@ -149,17 +158,23 @@ const PostPageCRUD = () => {
   const handleSubmit = async (data, e) => {
     e.preventDefault();
     const reqBody = {
-      title: data.title,
+      postName: data.title,
       category: data.category,
-      content: markdown
+      content: markdown,
+      shortContent: data.shortContent,
+      // postType: 2,
+      isPublish: data.isPublish
     };
-    console.log(reqBody);
-    // const res = await api.member.addMemberDetail(reqBody);
-    // if (res) {
-    //   await alert
-    //     .toast({ title: '新增會員成功' })
-    //     .then(() => navigate('/member/list'));
-    // }
+    const res = await api.backStage.postBackStageAddPost(reqBody);
+    if (res) {
+      await alert
+        .toast({ title: '新增文章成功' })
+        .then(() =>
+          navigate(
+            `/${routerPath.secretDoor}/${routerPath.secretDoor_Post}/${routerPath.secretDoor_Post_PostList}`
+          )
+        );
+    }
   };
   const handleGoBack = () => {
     navigate(
@@ -173,7 +188,7 @@ const PostPageCRUD = () => {
         {/* <DevTool control={methods.control} /> */}
         <Form onSubmit={methods.handleSubmit(handleSubmit)}>
           <DefaultLayout.Outlet onCancel={handleGoBack}>
-            <div className='form-grid form-grid-md-2'>
+            <div className='form-grid form-grid-md-2 mb-4'>
               {/* 文章標題 */}
               <FieldGroup title='文章標題' required htmlFor='title'>
                 <TextField name='title' maxLength='50' disabled={isViewMode} />
@@ -188,6 +203,25 @@ const PostPageCRUD = () => {
                   placeholder='全部'
                   options={categoryOptions}
                 />
+              </FieldGroup>
+            </div>
+            <div className='mb-2'>
+              {/* 文章是否發布 */}
+              <FieldGroup title='是否發布' htmlFor='isPublish'>
+                <TextField
+                  variant='radio'
+                  name='isPublish'
+                  options={[
+                    { label: '發布', value: '1' },
+                    { label: '不發布', value: '0' }
+                  ]}
+                />
+              </FieldGroup>
+            </div>
+            <div className='mb-2'>
+              {/* 文章短敘述 */}
+              <FieldGroup title='短敘述' htmlFor='shortContent'>
+                <TextField variant='textarea' name='shortContent' />
               </FieldGroup>
             </div>
             <div className='post_editor' data-color-mode='light'>

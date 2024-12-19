@@ -71,7 +71,8 @@ export class PostsService {
 
       const result = {
         title: postInfo?.title ?? '未知的標題',
-        category: postInfo?.categoryName ?? '未知的分類',
+        category: postInfo?.categoryId ?? '未知的分類ID',
+        categoryName: postInfo?.categoryName ?? '未知的分類',
         createdDate: moment(postInfo?.createdDate).format('YYYY-MM-DD') ?? '',
         content:
           postInfo?.content.replace(/\\\\/g, '\\').replace(/\\n/g, '\n') ??
@@ -91,7 +92,7 @@ export class PostsService {
    * 新增文章
    * @returns
    */
-  async addPost(req: AddPostReq, userId: string): Promise<any> {
+  async postBackStageAddPost(req: AddPostReq, userId: string): Promise<any> {
     try {
       const postData = {
         postId: ruuidv4(),
@@ -101,17 +102,22 @@ export class PostsService {
         content: req?.content,
         shortContent: req?.shortContent,
         postType: req?.postType
-          ? POST_TYPE_CODE?.SPECIAL_POST
+          ? parseInt(req?.postType, 10)
           : POST_TYPE_CODE?.NORMAL_POST,
         isPublish: req?.isPublish
-          ? POST_PUBLISH_CODE?.PUBLISH
+          ? parseInt(req?.isPublish, 10)
           : POST_PUBLISH_CODE?.UNPUBLISH
       };
-      await this.postsRepository.addPost(postData);
+      await this.postsRepository.postBackStageAddPost(postData);
+
+      await this.postsRepository.mappingPostCategory(
+        postData.postId,
+        req?.category
+      );
 
       return true;
     } catch (error) {
-      console.error('getPostById service error:', error);
+      console.error('postBackStageAddPost service error:', error);
       throw new CustomerException(configError._200002, HttpStatus.OK);
     }
   }

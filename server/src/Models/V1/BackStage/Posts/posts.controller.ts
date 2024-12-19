@@ -55,14 +55,14 @@ export class PostsController {
    * @param body
    * @returns
    */
-  @Post(apiPath.backStage.posts.addPost)
+  @Post(apiPath.backStage.posts.postBackStageAddPost)
   async addPost(
     @Headers() headers: any,
     @Body() body: AddPostReq
   ): Promise<any> {
     try {
       const userId = headers['authMemberId'] ?? 'system';
-      const result = await this.postsService.addPost(body, userId);
+      const result = await this.postsService.postBackStageAddPost(body, userId);
 
       return result;
     } catch (error) {

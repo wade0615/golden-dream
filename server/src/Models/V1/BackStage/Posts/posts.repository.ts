@@ -73,6 +73,7 @@ export class PostsRepository {
         bp.Post_Name AS title, 
         bp.Create_Date AS createdDate, 
         bp.Content AS content,
+        bc.Category_ID AS categoryId,
         bc.Category_Name AS categoryName
       FROM blog_post bp 
       LEFT JOIN blog_map_post_category bmpc 
@@ -136,7 +137,7 @@ export class PostsRepository {
    * 新增文章
    * @returns
    */
-  async addPost(postData: AddPostInterface): Promise<any> {
+  async postBackStageAddPost(postData: AddPostInterface): Promise<any> {
     const _postId = this.internalConn.escape(postData?.postId);
     const _postName = this.internalConn.escape(postData?.postName);
     const _createId = this.internalConn.escape(postData?.createId);
@@ -158,6 +159,23 @@ export class PostsRepository {
           ${_content}, ${_shortContent},
           ${_postType}, ${_isPublish}, 1
         );
+    `;
+
+    await this.internalConn.query(sqlStr, []);
+
+    return true;
+  }
+
+  /** 關聯文章&分類 */
+  async mappingPostCategory(postId: string, category: string): Promise<any> {
+    const _postId = this.internalConn.escape(postId);
+    const _category = this.internalConn.escape(category);
+
+    const sqlStr = `
+      INSERT INTO blog_map_post_category 
+        (Post_ID, Category_ID)
+      VALUES
+        (${_postId}, ${_category});
     `;
 
     await this.internalConn.query(sqlStr, []);

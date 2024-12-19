@@ -23,12 +23,20 @@ export class GetPostByIdResp {
   title: string;
 
   @ApiProperty({
-    title: '分類',
-    example: '測試分類',
+    title: '分類ID',
+    example: '測試分類ID',
     description: '分類'
   })
   @IsString()
   category: string;
+
+  @ApiProperty({
+    title: '分類名稱',
+    example: '測試分類名稱',
+    description: '分類'
+  })
+  @IsString()
+  categoryName: string;
 
   @ApiProperty({
     title: '簡介',

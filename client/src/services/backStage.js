@@ -44,8 +44,21 @@ const getBackStageCategoryOptions = async () => {
   }
 };
 
+/** [POST]後台新增文章 */
+const postBackStageAddPost = async (req) => {
+  try {
+    const url = `${config.SERVER_POINT}${apiPath.backStage.postBackStageAddPost}`;
+    const result = await post(url, req);
+    return result;
+  } catch (error) {
+    _EHS.errorReport(error, 'postBackStageAddPost', _EHS._LEVEL.ERROR);
+    return Promise.reject(error);
+  }
+};
+
 export default {
   getBackStagePostList,
   getBackStagePostById,
+  postBackStageAddPost,
   getBackStageCategoryOptions
 };

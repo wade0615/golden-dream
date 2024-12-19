@@ -37,6 +37,7 @@ const common = {
 const backStage = {
   getBackStagePostList: `${category.backStagePosts}/getBackStagePostList`,
   getBackStagePostById: `${category.backStagePosts}/getBackStagePostById`,
+  postBackStageAddPost: `${category.backStagePosts}/postBackStageAddPost`,
   getBackStageCategoryOptions: `${category.backStageCategory}/getBackStageCategoryOptions`
 };
 
