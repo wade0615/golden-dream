@@ -2,13 +2,16 @@ import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+
 import api from 'services/api';
+import routerPath from 'routes/router.path';
+
 import { Form, Button } from 'react-bootstrap';
-import loginBg from 'assets/images/loginBg.png';
-import logo from 'assets/images/logo.svg';
+// import loginBg from 'assets/images/loginBg.png';
+// import logo from 'assets/images/logo.svg';
 import './loginStyle.scss';
 import TextField from 'features/textField/TextField';
-import homePageType from 'constants/homePageType';
+// import homePageType from 'constants/homePageType';
 import localStorageUtil from 'utils/localStorageUtil';
 import LocalStorageKeys from 'constants/localStorageKeys';
 
@@ -45,27 +48,30 @@ function Login() {
         .then((res) => {
           if (!res) throw new Error('Login failed');
           localStorageUtil.setItem(LocalStorageKeys.UserInfo, res);
-          return api.auth.getAuthInfo(values);
+          navigate(
+            `/${routerPath.secretDoor}/${routerPath.secretDoor_Post}/${routerPath.secretDoor_Post_PostList}`
+          );
+          // return api.auth.getAuthInfo(values);
         })
-        .then((resAuthInfo) => {
-          if (!resAuthInfo) return;
-          const authItems = resAuthInfo.authItems;
-          const homePage = resAuthInfo.homePage;
-          const isAdmin = resAuthInfo.isAdmin;
-          const userInfo = localStorageUtil.getItem(LocalStorageKeys.UserInfo);
-          localStorageUtil.setItem(LocalStorageKeys.UserInfo, {
-            ...userInfo,
-            authItems,
-            homePage, // home, member
-            isAdmin
-          });
-          // 根據使用者權限 跳轉頁面
-          if (homePage) {
-            navigate(homePageType[homePage]);
-          } else {
-            navigate('/');
-          }
-        })
+        // .then((resAuthInfo) => {
+        //   if (!resAuthInfo) return;
+        //   const authItems = resAuthInfo.authItems;
+        //   const homePage = resAuthInfo.homePage;
+        //   const isAdmin = resAuthInfo.isAdmin;
+        //   const userInfo = localStorageUtil.getItem(LocalStorageKeys.UserInfo);
+        //   localStorageUtil.setItem(LocalStorageKeys.UserInfo, {
+        //     ...userInfo,
+        //     authItems,
+        //     homePage, // home, member
+        //     isAdmin
+        //   });
+        //   // 根據使用者權限 跳轉頁面
+        //   if (homePage) {
+        //     navigate(homePageType[homePage]);
+        //   } else {
+        //     navigate('/');
+        //   }
+        // })
         .catch((error) => {
           console.error(error.message);
         });
@@ -76,22 +82,16 @@ function Login() {
   };
 
   return (
-    <div id='reward-list-7c7d9de4-a36d-434a-a42d-43ce647f437a'>
+    <div id='login'>
       <FormProvider {...methods}>
         <Form onSubmit={methods.handleSubmit(handleSubmit)}>
-          <div
-            className='login-container d-flex'
-            style={{ backgroundImage: `url(${loginBg})` }}
-          >
-            <div className='login-modal d-flex'>
+          <div className='login-container d-flex'>
+            <div className='login-modal d-flex card'>
+              <span>Aparecium!</span>
               <div className='login-inner d-flex flex-column'>
-                <div className='login-content d-flex flex-column align-items-center'>
-                  <img className='login-logo p-2' src={logo} alt='logo' />
-                  <h5 className='login-title'>管理系統</h5>
-                </div>
                 <div className='login-input-group w-100'>
                   {/* 帳號 */}
-                  <label className='input-label'>帳號</label>
+                  <label className='input-label'>Who are u?</label>
                   <Controller
                     name='act'
                     control={methods.control}
@@ -101,7 +101,7 @@ function Login() {
                         {...inputProps}
                         className='flex-fill'
                         maxLength={20}
-                        placeholder='請輸入帳號'
+                        placeholder='Write your name'
                         size='lg'
                         autoComplete='off'
                       />
@@ -110,7 +110,7 @@ function Login() {
                 </div>
                 <div className='login-input-group w-100'>
                   {/* 密碼 */}
-                  <label className='input-label'>密碼</label>
+                  <label className='input-label'>Prove it!</label>
                   <Controller
                     name='pwd'
                     control={methods.control}
@@ -122,7 +122,7 @@ function Login() {
                         variant='password'
                         className='flex-fill'
                         maxLength={20}
-                        placeholder='請輸入密碼'
+                        placeholder='Tell me your secret'
                         size='lg'
                         autoComplete='off'
                       />
@@ -131,13 +131,13 @@ function Login() {
                 </div>
                 <div className='login-button-group'>
                   <Button className='login-btn w-100' type='submit'>
-                    登入
+                    Alohomora!
                   </Button>
                 </div>
               </div>
             </div>
             <footer className='login-footer w-100'>
-              Copyright © 2023 19Life.
+              Copyright © 2024 W.S.Wade
             </footer>
           </div>
         </Form>

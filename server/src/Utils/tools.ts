@@ -251,12 +251,12 @@ export const genSalt = () => {
  */
 export const cryptoPwd = (password: string, salt: string) => {
   const hashPassword = crypto
-    .createHash('SHA256')
+    .createHash(config._HASH_METHOD._SHA256)
     .update(password)
-    .digest('hex')
+    .digest(config._HASH_METHOD._HEX)
     .toUpperCase();
-
-  return salt + hashPassword;
+  const saltPassword = salt + hashPassword;
+  return saltPassword;
 };
 
 /**

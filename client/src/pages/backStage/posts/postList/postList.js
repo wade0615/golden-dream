@@ -11,12 +11,14 @@ import {
   getPaginationRowModel
 } from '@tanstack/react-table';
 
-import { MemberListDataClass } from './postListClass';
+import { GetPostsClass } from './postListClass';
 import api from 'services/api';
+import { varifyLoginToken } from 'utils/commonUtil';
 import { formatDefTimeNew, formatStartEndDate } from 'utils/timeUtils';
-import { useSelector, useDispatch } from 'react-redux';
-import { setOption } from 'store/slice/globalOptionsSlice';
-import { optionType } from 'constants/optionType';
+import routerPath from 'routes/router.path';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { setOption } from 'store/slice/globalOptionsSlice';
+// import { optionType } from 'constants/optionType';
 
 // import alertService from 'utils/alertService';
 import IndeterminateCheckbox from 'components/indeterminateCheckbox/IndeterminateCheckbox';
@@ -27,6 +29,7 @@ import BaseTable from 'features/table/baseTable/BaseTable';
 import TextField from 'features/textField/TextField';
 import FieldGroup from 'features/textField/sub_textField/FieldGroup';
 import { Col, Row, Container, Stack } from 'react-bootstrap';
+
 import './postListStyle.scss';
 import PermissionAction from 'components/permissionAction/PermissionAction';
 import AUTH_CODE from 'config/auth.code.config';
@@ -69,17 +72,17 @@ function PostList() {
   // const [searchData, setSearchData] = useState(_defaultSearch);
   const [pageMeta, setPageMeta] = useState({
     totalCount: 0, //總筆數
-    totalPage: 0, // 總頁數
-    perPage: 20, // 每頁筆數
+    totalPages: 0, // 總頁數
+    perPage: 10, // 每頁筆數
     page: 1 //當前頁數
   });
   const [isDefaultEmpty, setIsDefaultEmpty] = useState(true); // table empty string type
   const [sorting, setSorting] = useState(); // table sorting
-  const [memberStatusOptions, setMemberStatusOptions] = useState([]);
-  const specialMemberTypeOption = useSelector(
-    (state) => state.options.specialMemberType
-  );
-  const dispatch = useDispatch();
+  // const [memberStatusOptions, setMemberStatusOptions] = useState([]);
+  // const specialMemberTypeOption = useSelector(
+  //   (state) => state.options.specialMemberType
+  // );
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
 
   /* table config */
@@ -148,10 +151,14 @@ function PostList() {
           {info.getValue()}{' '}
           <Actions>
             <PermissionAction authCode={AUTH_CODE.MEMBER.INFO.CREATE_UPDATE}>
-              <Actions.Edit onClick={() => handleMemberInfo(info.row.id, 1)} />
+              <Actions.Edit
+                onClick={() => handleMemberInfo(info.row.id, 'edit')}
+              />
             </PermissionAction>
             <PermissionAction authCode={AUTH_CODE.MEMBER.INFO.READ}>
-              <Actions.View onClick={() => handleMemberInfo(info.row.id, 0)} />
+              <Actions.View
+                onClick={() => handleMemberInfo(info.row.id, 'view')}
+              />
             </PermissionAction>
           </Actions>{' '}
         </>
@@ -166,7 +173,7 @@ function PostList() {
     columns,
     initialState: {
       pagination: {
-        pageSize: 20
+        pageSize: 10
       }
     },
     state: {
@@ -189,38 +196,36 @@ function PostList() {
   const getInit = useCallback(async () => {
     try {
       // 取得 會籍, 特殊會員類型下拉式選項
-      const [specialTypeMemberData, memberStatusData] = await Promise.all([
-        api.member.getMemberSpecialTypeMenu(),
-        api.memberShip.getMemberShipMenu()
-      ]);
-      if (specialTypeMemberData) {
-        const formatType = specialTypeMemberData.list.map((item) => ({
-          value: item.seq,
-          label: item.name
-        }));
-        dispatch(
-          setOption({
-            type: optionType.specialMemberType,
-            payload: formatType
-          })
-        );
-      }
-      if (memberStatusData) {
-        setMemberStatusOptions(memberStatusData.memberShipList);
-      }
+      // const [specialTypeMemberData, memberStatusData] = await Promise.all([
+      //   api.member.getMemberSpecialTypeMenu(),
+      //   api.memberShip.getMemberShipMenu()
+      // ]);
+      // if (specialTypeMemberData) {
+      //   const formatType = specialTypeMemberData.list.map((item) => ({
+      //     value: item.seq,
+      //     label: item.name
+      //   }));
+      //   dispatch(
+      //     setOption({
+      //       type: optionType.specialMemberType,
+      //       payload: formatType
+      //     })
+      //   );
+      // }
+      // if (memberStatusData) {
+      //   setMemberStatusOptions(memberStatusData.memberShipList);
+      // }
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
-  }, [dispatch]);
+  }, []);
 
   const getMemberList = useCallback(async (req) => {
     try {
-      const res = await api.member.getMemberList(req);
-      if (res) {
-        const formatList = res.memberList.map(
-          (m) => new MemberListDataClass(m)
-        );
-        setListData(formatList);
+      const apiRes = await api.backStage.getBackStagePostList(req);
+      if (apiRes) {
+        const res = new GetPostsClass(apiRes);
+        setListData(res.postList);
         setPageMeta((prev) => ({ ...prev, ...res.metaData }));
         setIsDefaultEmpty(false);
         // setSearchData(req); // 批次匯出用，暫存此次搜尋條件
@@ -230,7 +235,9 @@ function PostList() {
     }
   }, []);
 
+  // 初始化
   useEffect(() => {
+    varifyLoginToken();
     getInit();
   }, [getInit]);
 
@@ -366,6 +373,7 @@ function PostList() {
 
   /* search submit */
   const onSubmit = (data, e) => {
+    console.log('onSubmit', data);
     e.preventDefault();
     const { registerRange, ...restValues } = methods.getValues();
     getMemberList({
@@ -373,7 +381,7 @@ function PostList() {
       memberSpecialType: Number(restValues.memberSpecialType),
       startDate: formatStartEndDate(data?.startDate ?? '', true),
       endDate: formatStartEndDate(data?.endDate ?? '', false),
-      perPage: pageMeta.perPage,
+      perPage: pageMeta.perPage ?? 10,
       page: 1
     });
   };
@@ -383,16 +391,26 @@ function PostList() {
 
   /* 前往新增頁 */
   const handleNewMember = () => {
-    navigate('/member/list/add');
+    navigate(
+      `/${routerPath.secretDoor}/${routerPath.secretDoor_Post}/${routerPath.secretDoor_Post_PostPage}`,
+      {
+        state: {
+          pageMode: 'add'
+        }
+      }
+    );
   };
 
   /* 前往會員基本資料頁 */
-  function handleMemberInfo(id, panel = 0) {
-    navigate(`/member/list/info?id=${id}`, {
-      state: {
-        panel
+  function handleMemberInfo(id, panel = 'view') {
+    navigate(
+      `/${routerPath.secretDoor}/${routerPath.secretDoor_Post}/${routerPath.secretDoor_Post_PostPage}?id=${id}`,
+      {
+        state: {
+          pageMode: panel
+        }
       }
-    });
+    );
   }
 
   return (
@@ -412,7 +430,7 @@ function PostList() {
       >
         <Container fluid>
           <Row className='gx-5'>
-            <Col sm={6}>
+            {/* <Col sm={6}>
               <FieldGroup htmlFor='membershipStatus' title='會員會籍'>
                 <TextField
                   variant='select'
@@ -431,13 +449,13 @@ function PostList() {
                   options={specialMemberTypeOption}
                 />
               </FieldGroup>
-            </Col>
+            </Col> */}
 
             <Col sm={6}>
-              <FieldGroup title='註冊時間'>
+              <FieldGroup title='建立時間'>
                 <TextField
                   variant='radio'
-                  name='registerRange'
+                  name='createRange'
                   options={[
                     { value: 'all', label: '不限' },
                     { value: '30', label: '近一個月' },
@@ -508,11 +526,11 @@ function PostList() {
         table={table}
         isDefaultEmpty={isDefaultEmpty}
         totalCounts={pageMeta.totalCount}
-        totalPages={pageMeta.totalPage}
+        totalPages={pageMeta.totalPages}
         currentPage={pageMeta.page}
         handlePageFetch={handlePageFetch}
         handleCountFetch={handleCountFetch}
-        pageCountConfig={[20, 40, 60, 80, 100, 500]}
+        pageCountConfig={[10, 20, 40, 60, 80, 100, 500]}
       />
     </div>
   );

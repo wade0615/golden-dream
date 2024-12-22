@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { routerConfig } from 'routes/router';
+import routerPath from 'routes/router.path';
 
 import Breadcrumb from 'components/breadcrumb/Breadcrumb';
 import Avatar from 'components/avatar/Avatar';
@@ -44,7 +45,7 @@ function BackStageLayout({ children }) {
   const getMatchedRoute = (routes, pathname, prefix = '') => {
     for (let i = routes.length - 1; i >= 0; i--) {
       const route = routes[i];
-      const path = `${prefix}/${route.path}`.replace('//', '/');
+      const path = `/${prefix}/${route.path}`.replace('//', '/');
       if (pathname.startsWith(path)) {
         if (route.children) {
           const matchedRoute = getMatchedRoute(route.children, pathname, path);
@@ -59,7 +60,8 @@ function BackStageLayout({ children }) {
   };
   let currentRoute = getMatchedRoute(
     routerConfig[1].children,
-    location.pathname
+    location.pathname,
+    routerPath.secretDoor
   );
   return (
     <div id='backstage_layout' className='container-fluid d-flex g-0'>

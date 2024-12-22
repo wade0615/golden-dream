@@ -2,7 +2,7 @@
  * @description define LocalStorageKeys
  */
 export const LocalStorageKeys = Object.freeze({
-  UserInfo: '1oeji2k7bp6',
+  UserInfo: '_gdSecretKey',
   SetSideMenu: 'setSideMenu'
 });
 

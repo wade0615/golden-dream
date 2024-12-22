@@ -1,5 +1,7 @@
 const category = {
   template: 'v1',
+  backStagePosts: 'backStage/posts',
+  backStageCategory: 'backStage/category',
   auth: 'auth',
   member: 'member',
   test: 'test',
@@ -32,10 +34,18 @@ const common = {
   getAsideCardDetail: `${category.common}/getAsideCardDetail`
 };
 
+const backStage = {
+  getBackStagePostList: `${category.backStagePosts}/getBackStagePostList`,
+  getBackStagePostById: `${category.backStagePosts}/getBackStagePostById`,
+  postBackStageAddPost: `${category.backStagePosts}/postBackStageAddPost`,
+  getBackStageCategoryOptions: `${category.backStageCategory}/getBackStageCategoryOptions`
+};
+
 export default {
   template,
   auth,
   test,
   posts,
-  common
+  common,
+  backStage
 };

@@ -8,6 +8,7 @@ import { AuthService } from 'src/Models/V1/Auth/auth.service';
 import { RedisService } from 'src/Providers/Database/Redis/redis.service';
 import { v4 } from 'uuid';
 import { CustomerException } from '../ExceptionFilter/global.exception.handle.filter';
+const crypto = require('crypto');
 /**
  * 權限管理中介層
  */
@@ -23,8 +24,8 @@ export class RequestIdMiddleware implements NestMiddleware {
     const apiPath = urlPath.split('/');
 
     // 白名單驗證
-    const isValid = false; // 先永遠不驗證，待串接完成後再加上去
-    // const isValid = await this._headerValid(apiPath);
+    // const isValid = false; // 先永遠不驗證，待串接完成後再加上去
+    const isValid = await this._headerValid(apiPath);
 
     if (isValid) {
       const accessToken = req.headers.authorization;
@@ -35,34 +36,49 @@ export class RequestIdMiddleware implements NestMiddleware {
       }
 
       // jwt verify
-      await this.authService._verifyToken(pareToken);
-
-      // get auth member info from redis
-      const getUserInfo = await this.redisService.getCacheData(
-        `${config.REDIS_KEY.TOKEN}:${pareToken}`
-      );
-
-      if (!getUserInfo?.authMemberId) {
-        // user token expired => refresh token
+      // await this.authService._verifyToken(pareToken);
+      const privKey = config._ENCRYPT_CODE.PRIV_KEY;
+      const cryptoData = crypto
+        .privateDecrypt(privKey, Buffer.from(pareToken, 'base64'))
+        .toString('utf-8');
+      if (!cryptoData) {
         throw new CustomerException(configError._200009, HttpStatus.FORBIDDEN);
       }
 
-      const getUserInfoPermission = getUserInfo?.authPermission || [];
+      const tokenData = cryptoData.split('|');
+      const memberId = tokenData[0];
+      const expiredTime = tokenData[1];
 
-      if (!getUserInfoPermission?.length || getUserInfoPermission?.isAdmin) {
-        // this user has no permission also not admin
-        throw new CustomerException(configError._200006, HttpStatus.OK);
+      if (new Date().getTime() > expiredTime) {
+        throw new CustomerException(configError._200009, HttpStatus.FORBIDDEN);
       }
+
+      // get auth member info from redis
+      // const getUserInfo = await this.redisService.getCacheData(
+      //   `${config.REDIS_KEY.TOKEN}:${pareToken}`
+      // );
+
+      // if (!getUserInfo?.authMemberId) {
+      //   // user token expired => refresh token
+      //   throw new CustomerException(configError._200009, HttpStatus.FORBIDDEN);
+      // }
+
+      // const getUserInfoPermission = getUserInfo?.authPermission || [];
+
+      // if (!getUserInfoPermission?.length || getUserInfoPermission?.isAdmin) {
+      //   // this user has no permission also not admin
+      //   throw new CustomerException(configError._200006, HttpStatus.OK);
+      // }
 
       // Admin user no need to check permission
-      if (!getUserInfoPermission?.isAdmin) {
-        // TODO: 暫時註解API權限
-        await this._permissionCheck(apiPath, getUserInfoPermission);
-      }
+      // if (!getUserInfoPermission?.isAdmin) {
+      //   // TODO: 暫時註解API權限
+      //   await this._permissionCheck(apiPath, getUserInfoPermission);
+      // }
 
       // body add user info fot log tracking
-      req.body.iam = { authMemberId: getUserInfo?.authMemberId ?? 'system' };
-      req.headers['authMemberId'] = getUserInfo?.authMemberId;
+      req.body.iam = { authMemberId: memberId ?? 'system' };
+      req.headers['authMemberId'] = memberId;
       next();
     } else {
       req.body.iam = { authMemberId: 'system' };

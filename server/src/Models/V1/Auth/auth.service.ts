@@ -3,6 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 
 import { CustomerException } from 'src/Global/ExceptionFilter/global.exception.handle.filter';
 
+import { MysqlProvider } from 'src/Providers/Database/DatabaseMysql/mysql.provider';
+
 import config from 'src/Config/config';
 import configError from 'src/Config/error.message.config';
 import { RedisService } from 'src/Providers/Database/Redis/redis.service';
@@ -11,6 +13,8 @@ import { ConfigApiService } from '../../../Config/Api/config.service';
 import { GetUserInfoRes, LoginResDto } from './Dto';
 import { GetUserInfoInterface } from './Interface/get.user.info.interface';
 import { AuthRepository } from './auth.repository';
+
+import { cryptoPwd, getRandomString } from 'src/Utils/tools';
 
 import moment = require('moment-timezone');
 const crypto = require('crypto');
@@ -21,11 +25,12 @@ export class AuthService {
     private authRepository: AuthRepository,
     private apiConfigService: ConfigApiService,
     private redisService: RedisService,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    private internalConn: MysqlProvider
   ) {}
 
   /**
-   * 驗證User
+   * [old]驗證User
    * @param account
    * @returns
    */
@@ -36,19 +41,66 @@ export class AuthService {
       throw new CustomerException(configError._220026, HttpStatus.OK);
     }
 
-    const saltHashPassword = await this.cryptoPwd(
+    const saltHashPassword = await cryptoPwd(
       req?.pwd,
       getInfoFromActResp?.salt
     );
 
     if (
       !getInfoFromActResp?.account ||
-      getInfoFromActResp?.pswwd != saltHashPassword
+      getInfoFromActResp?.pswd != saltHashPassword
     ) {
       throw new CustomerException(configError._210001, HttpStatus.OK);
     }
 
     return getInfoFromActResp;
+  }
+
+  /**
+   * 驗證User
+   * @param req
+   * @returns
+   */
+  async validateUser(req): Promise<GetUserInfoInterface> {
+    const getInfoFromActResp = await this.authRepository.getUserInfo(req.act);
+    if (!getInfoFromActResp?.disable) {
+      throw new CustomerException(configError._220026, HttpStatus.OK);
+    }
+
+    const saltHashPassword = await cryptoPwd(
+      req?.pwd,
+      getInfoFromActResp?.salt
+    );
+
+    if (
+      !getInfoFromActResp?.account ||
+      getInfoFromActResp?.pswd != saltHashPassword
+    ) {
+      throw new CustomerException(configError._210001, HttpStatus.OK);
+    }
+
+    return getInfoFromActResp;
+  }
+
+  /**
+   * 建立新的帳號id
+   * @returns
+   */
+  async _generateNewId(): Promise<string> {
+    const latestAuthMemberId =
+      await this.authRepository.getLatestAuthMemberId();
+
+    const memberRandom = getRandomString(5);
+    const pattern = /\d{5}$/; // 匹配最後五個數字
+    const match = latestAuthMemberId.match(pattern);
+
+    const memberIdNumber = match
+      ? (Number(match[0]) + 1).toString().padStart(5, '0')
+      : '00001';
+
+    const memberId = `${memberRandom}${memberIdNumber}`;
+
+    return memberId;
   }
 
   /**
@@ -119,58 +171,78 @@ export class AuthService {
    * @returns
    */
   async login(req): Promise<LoginResDto> {
-    // 判斷帳密是否符合
-    const validateUserResp = await this._validateUser(req);
-    const authMemberId = validateUserResp?.authMemberId;
+    let connection;
+    try {
+      connection = await this.internalConn.getConnection();
+      await connection.beginTransaction();
+      // 判斷帳密是否符合
+      const validateUserResp = await this.validateUser(req);
+      const memberId = validateUserResp?.authMemberId;
 
-    const accessToken = await this._getToken(validateUserResp?.name);
-    const rToken = sha256Hash(
-      validateUserResp?.name,
-      process.env.JWT_REFRESH_TOKEN_SECRET
-    );
+      // const accessToken = await this._getToken(validateUserResp?.name);
+      // const rToken = sha256Hash(
+      //   validateUserResp?.name,
+      //   process.env.JWT_REFRESH_TOKEN_SECRET
+      // );
 
-    // 取得權限
-    const getMemberRoleInfo = [];
+      const ttl = 3 * 60 * 60 * 1000; // 3hr
+      const now = new Date().getTime() + ttl; // 過期時間為當前時間 + TTL（毫秒）;
+      const buffer = [memberId, now.toString()];
 
-    const authItems = getMemberRoleInfo.map((per) => {
-      return per.permissionCode;
-    });
+      const pubKey = config._ENCRYPT_CODE.PUBLIC_KEY.replace(/\\n/g, '\n');
 
-    // 設定 rt 以及 at
-    await this.redisService.setCacheUserInfo(
-      {
-        authMemberId: authMemberId,
-        name: validateUserResp?.name,
-        account: req.act,
-        password: req.pwd,
-        isAdmin: validateUserResp.isAdmin,
-        homePage: validateUserResp.homePage,
-        token: accessToken,
-        authPermission: [...authItems]
-      },
-      Number(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME) // 2 hours
-    );
+      const accessToken = crypto
+        .publicEncrypt(pubKey, Buffer.from(buffer.join('|')))
+        .toString(config._HASH_METHOD._BASE64);
 
-    await this.redisService.setRefreshToken(
-      {
-        memberId: authMemberId,
-        name: validateUserResp?.name,
-        homePage: validateUserResp.homePage,
-        account: req.act,
-        token: rToken
-      },
-      Number(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME) // 48 hours
-    );
+      // // 取得權限
+      // const getMemberRoleInfo = [];
 
-    const loginResp = {
-      accessToken: accessToken,
-      refreshToken: rToken,
-      name: validateUserResp?.name
-    };
+      // const authItems = getMemberRoleInfo.map((per) => {
+      //   return per.permissionCode;
+      // });
 
-    await this.authRepository.updateAuthMemberLoginTime(req.act);
+      // // 設定 rt 以及 at
+      // await this.redisService.setCacheUserInfo(
+      //   {
+      //     authMemberId: authMemberId,
+      //     name: validateUserResp?.name,
+      //     account: req.act,
+      //     password: req.pwd,
+      //     isAdmin: validateUserResp.isAdmin,
+      //     homePage: validateUserResp.homePage,
+      //     token: accessToken,
+      //     authPermission: [...authItems]
+      //   },
+      //   Number(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME) // 2 hours
+      // );
 
-    return loginResp;
+      // await this.redisService.setRefreshToken(
+      //   {
+      //     memberId: authMemberId,
+      //     name: validateUserResp?.name,
+      //     homePage: validateUserResp.homePage,
+      //     account: req.act,
+      //     token: rToken
+      //   },
+      //   Number(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME) // 48 hours
+      // );
+
+      const loginResp = {
+        accessToken: accessToken,
+        // refreshToken: rToken,
+        name: validateUserResp?.name
+      };
+
+      await this.authRepository.updateAuthMemberLoginTime(req.act);
+
+      return loginResp;
+    } catch (err) {
+      await connection.rollback();
+      throw new CustomerException(configError._200002, HttpStatus.OK);
+    } finally {
+      await connection.release();
+    }
   }
 
   /**
@@ -281,17 +353,72 @@ export class AuthService {
    * @returns
    */
   async logout(headers): Promise<object> {
-    const accessToken = headers['access-token'];
-    const refreshToken = headers['refresh-token'];
+    // const accessToken = headers['access-token'];
+    // const refreshToken = headers['refresh-token'];
 
-    await this.redisService.delCacheData(
-      `${config.REDIS_KEY.TOKEN}:${accessToken}`
-    );
+    // await this.redisService.delCacheData(
+    //   `${config.REDIS_KEY.TOKEN}:${accessToken}`
+    // );
 
-    await this.redisService.delCacheData(
-      `${config.REDIS_KEY.RFTOKEN}:${refreshToken}`
-    );
+    // await this.redisService.delCacheData(
+    //   `${config.REDIS_KEY.RFTOKEN}:${refreshToken}`
+    // );
 
     return {};
+  }
+
+  /**
+   * 新增帳號
+   * @param req
+   * @returns
+   */
+  async addAuthMember(req) {
+    // 檢查是否有重複帳號
+    const searchDuplicateAccount =
+      await this.authRepository.searchDuplicateAccount({
+        account: req?.account
+      });
+    if (searchDuplicateAccount?.length)
+      throw new CustomerException(configError._330001, HttpStatus.OK);
+
+    // 密碼為8~20位數的英數混合。
+    if (req?.pwd?.length < 6 || req?.pwd?.length > 20)
+      throw new CustomerException(configError._330003, HttpStatus.OK);
+
+    // 密碼不為英數混合 => 密碼為6~20位數的英數混合。
+    const regex = new RegExp(/[^\w]/);
+    if (regex.test(req?.pwd))
+      throw new CustomerException(configError._330003, HttpStatus.OK);
+
+    const salt = await this.genSalt();
+    const saltPassword = cryptoPwd(req?.pwd, salt);
+    const authMemberId = await this._generateNewId();
+
+    let connection;
+    try {
+      connection = await this.internalConn.getConnection();
+      await connection.beginTransaction();
+
+      // 新增後台使用者
+      await this.authRepository.addAccountTransaction(connection, {
+        Auth_Member_ID: authMemberId,
+        Account: req?.account,
+        Auth_Name: req?.name,
+        Auth_Password: saltPassword,
+        Remark: req?.remark ? req?.remark : req?.pwd,
+        Create_ID: 'system',
+        Alter_ID: 'system',
+        Salt: salt,
+        Email: req?.email
+      });
+      await connection.commit();
+
+      return { authMemberId: authMemberId, authMemberPWD: req?.pwd };
+    } catch (err) {
+      await connection.rollback();
+      throw new CustomerException(configError._200002, HttpStatus.OK);
+    } finally {
+      await connection.release();
+    }
   }
 }
