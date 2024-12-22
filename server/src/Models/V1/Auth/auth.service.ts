@@ -352,16 +352,16 @@ export class AuthService {
    * @returns
    */
   async logout(headers): Promise<object> {
-    const accessToken = headers['access-token'];
-    const refreshToken = headers['refresh-token'];
+    // const accessToken = headers['access-token'];
+    // const refreshToken = headers['refresh-token'];
 
-    await this.redisService.delCacheData(
-      `${config.REDIS_KEY.TOKEN}:${accessToken}`
-    );
+    // await this.redisService.delCacheData(
+    //   `${config.REDIS_KEY.TOKEN}:${accessToken}`
+    // );
 
-    await this.redisService.delCacheData(
-      `${config.REDIS_KEY.RFTOKEN}:${refreshToken}`
-    );
+    // await this.redisService.delCacheData(
+    //   `${config.REDIS_KEY.RFTOKEN}:${refreshToken}`
+    // );
 
     return {};
   }

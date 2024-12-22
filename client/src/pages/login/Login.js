@@ -2,13 +2,16 @@ import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+
 import api from 'services/api';
+import routerPath from 'routes/router.path';
+
 import { Form, Button } from 'react-bootstrap';
-import loginBg from 'assets/images/loginBg.png';
+// import loginBg from 'assets/images/loginBg.png';
 // import logo from 'assets/images/logo.svg';
 import './loginStyle.scss';
 import TextField from 'features/textField/TextField';
-import homePageType from 'constants/homePageType';
+// import homePageType from 'constants/homePageType';
 import localStorageUtil from 'utils/localStorageUtil';
 import LocalStorageKeys from 'constants/localStorageKeys';
 
@@ -45,27 +48,30 @@ function Login() {
         .then((res) => {
           if (!res) throw new Error('Login failed');
           localStorageUtil.setItem(LocalStorageKeys.UserInfo, res);
-          return api.auth.getAuthInfo(values);
+          navigate(
+            `/${routerPath.secretDoor}/${routerPath.secretDoor_Post}/${routerPath.secretDoor_Post_PostList}`
+          );
+          // return api.auth.getAuthInfo(values);
         })
-        .then((resAuthInfo) => {
-          if (!resAuthInfo) return;
-          const authItems = resAuthInfo.authItems;
-          const homePage = resAuthInfo.homePage;
-          const isAdmin = resAuthInfo.isAdmin;
-          const userInfo = localStorageUtil.getItem(LocalStorageKeys.UserInfo);
-          localStorageUtil.setItem(LocalStorageKeys.UserInfo, {
-            ...userInfo,
-            authItems,
-            homePage, // home, member
-            isAdmin
-          });
-          // 根據使用者權限 跳轉頁面
-          if (homePage) {
-            navigate(homePageType[homePage]);
-          } else {
-            navigate('/');
-          }
-        })
+        // .then((resAuthInfo) => {
+        //   if (!resAuthInfo) return;
+        //   const authItems = resAuthInfo.authItems;
+        //   const homePage = resAuthInfo.homePage;
+        //   const isAdmin = resAuthInfo.isAdmin;
+        //   const userInfo = localStorageUtil.getItem(LocalStorageKeys.UserInfo);
+        //   localStorageUtil.setItem(LocalStorageKeys.UserInfo, {
+        //     ...userInfo,
+        //     authItems,
+        //     homePage, // home, member
+        //     isAdmin
+        //   });
+        //   // 根據使用者權限 跳轉頁面
+        //   if (homePage) {
+        //     navigate(homePageType[homePage]);
+        //   } else {
+        //     navigate('/');
+        //   }
+        // })
         .catch((error) => {
           console.error(error.message);
         });

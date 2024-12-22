@@ -67,7 +67,7 @@ function Avatar({
       (() => {
         // api.auth.logout();
         localStorageUtil.removeItem(LocalStorageKeys.UserInfo);
-        navigate('/login');
+        navigate('/');
       })();
     } catch (error) {
       _EHS.errorReport(error, 'logout api', _EHS._LEVEL.ERROR);

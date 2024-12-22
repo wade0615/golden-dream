@@ -7,6 +7,7 @@ const routerPath = {
   categories: 'categories',
   about: 'about',
   // backstage: 'backstage'
+  login: 'login',
   secretDoor: 'secretDoor',
   secretDoor_Post: 'post',
   secretDoor_Post_PostList: 'postList',
