@@ -185,7 +185,8 @@ export class AuthService {
       //   process.env.JWT_REFRESH_TOKEN_SECRET
       // );
 
-      const now = new Date().getTime();
+      const ttl = 3 * 60 * 60 * 1000; // 3hr
+      const now = new Date().getTime() + ttl; // 過期時間為當前時間 + TTL（毫秒）;
       const buffer = [memberId, now.toString()];
 
       const pubKey = config._ENCRYPT_CODE.PUBLIC_KEY.replace(/\\n/g, '\n');

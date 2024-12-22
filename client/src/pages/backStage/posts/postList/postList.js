@@ -13,6 +13,7 @@ import {
 
 import { GetPostsClass } from './postListClass';
 import api from 'services/api';
+import { varifyLoginToken } from 'utils/commonUtil';
 import { formatDefTimeNew, formatStartEndDate } from 'utils/timeUtils';
 import routerPath from 'routes/router.path';
 // import { useSelector, useDispatch } from 'react-redux';
@@ -234,7 +235,9 @@ function PostList() {
     }
   }, []);
 
+  // 初始化
   useEffect(() => {
+    varifyLoginToken();
     getInit();
   }, [getInit]);
 
