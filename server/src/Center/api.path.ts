@@ -11,7 +11,9 @@ const auth = {
   /** 登入 */
   login: '/login',
   /** 登出 */
-  logout: '/logout'
+  logout: '/logout',
+  /** 新增後台使用者 */
+  addAuthMember: '/addAuthMember'
 };
 
 const common = {

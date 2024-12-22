@@ -14,20 +14,16 @@ export class AuthRepository {
   async getUserInfo(account): Promise<GetUserInfoInterface> {
     const sqlStr = `
       SELECT
-        Auth_Member_ID as authMemberId,
-        Auth_Name as name,
-        Account as account,
-        Auth_Password as pswwd,
-        Salt as salt,
-        Auth_Member.Is_Admin as isAdmin,
-        ar.Home_Page as homePage,
-        Auth_Member.Disable disable
+        bam.Auth_Member_ID AS authMemberId,
+        bam.Auth_Name AS name,
+        bam.Account AS account,
+        bam.Auth_Password AS pswd,
+        bam.Salt AS salt,
+        bam.Disable AS disable
       FROM
-        Auth_Member
-      INNER JOIN Map_Auth_Mem_Role mamr ON mamr.Member_ID = Auth_Member.Auth_Member_ID
-      INNER JOIN Auth_Role ar ON ar.Role_ID = mamr.Role_ID
-      WHERE Account = ?
-        AND Auth_Member.Is_Active = 1
+        blog_auth_member bam
+      WHERE bam.Account = ?
+        AND bam.Is_Active = 1
       LIMIT 1
     `;
 
@@ -42,7 +38,7 @@ export class AuthRepository {
     };
 
     const sqlStr = `
-      UPDATE Auth_Member SET ?
+      UPDATE blog_auth_member SET ?
       WHERE Account = ?
     `;
 
@@ -68,5 +64,81 @@ export class AuthRepository {
     const result = await this.internalConn.query(sqlStr, [authMemberId]);
 
     return result?.[0];
+  }
+
+  /**
+   * 取得最新的後台人員ID
+   *
+   * @returns
+   */
+  async getLatestAuthMemberId(): Promise<string> {
+    const sqlStr = `
+      SELECT
+        MAX(am.Create_Date), am.Auth_Member_ID as authMemberId
+      FROM
+        blog_auth_member am
+      GROUP BY am.Auth_Member_ID
+      ORDER BY MAX(am.Create_Date) DESC LIMIT 1;
+    `;
+
+    const result = await this.internalConn.query(sqlStr, []);
+
+    return result?.[0]?.authMemberId ?? '00000';
+  }
+
+  /**
+   * 檢查是否有重複帳號
+   *
+   * @param req
+   * @returns
+   */
+  async searchDuplicateAccount(req): Promise<any> {
+    const _account = this.internalConn.escape(req?.account);
+    // const _memberId = this.internalConn.escape(req?.memberId);
+
+    let sqlStr = '';
+    if (req?.account)
+      sqlStr += `
+        SELECT
+          Account as account
+        FROM
+          blog_auth_member
+        WHERE Account = ${_account} AND Is_Active = 1`;
+
+    // if (req?.memberId)
+    //   sqlStr += `
+    //     SELECT
+    //       Account as account
+    //     FROM
+    //       Auth_Member
+    //     WHERE Auth_Member_ID != ${_memberId} AND Is_Active = 1`;
+
+    const result = (await this.internalConn.query(sqlStr, [])) ?? [];
+
+    return result;
+  }
+
+  async addAccountTransaction(
+    connection,
+    dataset: {
+      Auth_Member_ID: string;
+      Account: string;
+      Auth_Name: string;
+      Auth_Password: string;
+      Remark: string;
+      Create_ID: string;
+      Alter_ID: string;
+      Salt: string;
+      Email: string;
+    }
+  ) {
+    const insertMemberSql = `
+      INSERT INTO blog_auth_member SET ?
+    `;
+
+    await this.internalConn.transactionQuery(connection, insertMemberSql, [
+      dataset
+    ]);
+    return {};
   }
 }

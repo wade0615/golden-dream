@@ -40,6 +40,8 @@ const About = () => {
   return (
     <div id='about' className='about_container'>
       <h1>板手之前人人平等</h1>
+      <h1>Life is</h1>
+      <h1>Love In Full Experience.</h1>
       <div>{aboutDescription.title}</div>
       <div>{aboutDescription.name}</div>
       <div>{aboutDescription.location}</div>

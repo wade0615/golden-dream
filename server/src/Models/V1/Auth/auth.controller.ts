@@ -25,7 +25,7 @@ export class AuthController {
   ) {}
 
   /**
-   * 登入CRM會員
+   * 登入會員
    * @param req
    * @returns
    */
@@ -58,6 +58,33 @@ export class AuthController {
   })
   async logout(@Headers() headers): Promise<object> {
     const data = await this.authService.logout(headers);
+    return data;
+  }
+
+  /**
+   * 新增後台使用者
+   * @param req
+   * @returns
+   */
+  @Post(apiPath.auth.addAuthMember)
+  @ApiOperation({
+    summary: '新增後台使用者'
+  })
+  @ApiCreatedResponse({
+    status: 200,
+    description: ''
+  })
+  async addAuthMember(
+    @Body()
+    body: {
+      account: string;
+      pwd: string;
+      name: string;
+      remark: string;
+      email: string;
+    }
+  ): Promise<object> {
+    const data = await this.authService.addAuthMember(body);
     return data;
   }
 }
