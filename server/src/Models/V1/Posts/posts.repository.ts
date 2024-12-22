@@ -31,6 +31,8 @@ export class PostsRepository {
       LEFT JOIN blog_category bc 
         ON bc.Category_ID = bmpc.Category_ID 
       WHERE bp.Post_Type = 2
+        AND bp.Is_Active = 1
+        AND bp.Is_Publish = 1
       ORDER BY bp.Seq DESC
       LIMIT ${_start}, ${_limit}
     `;
@@ -50,6 +52,8 @@ export class PostsRepository {
         COUNT(bp.Post_ID) AS count
       FROM blog_post bp 
       WHERE bp.Post_Type = 2
+        AND bp.Is_Active = 1
+        AND bp.Is_Publish = 1
     `;
 
     const result = (await this.internalConn.query(sqlStr, [])) ?? [];
@@ -78,6 +82,8 @@ export class PostsRepository {
       LEFT JOIN blog_category bc 
         ON bc.Category_ID = bmpc.Category_ID 
       WHERE bp.Post_ID = ${_postId}
+        AND bp.Is_Active = 1
+        AND bp.Is_Publish = 1
     `;
 
     const result = (await this.internalConn.query(sqlStr, [])) ?? [];
