@@ -2,6 +2,7 @@ import Swal from 'sweetalert2';
 import ExceptionHandleService from 'utils/exceptionHandler';
 import localStorageUtil from 'utils/localStorageUtil';
 import LocalStorageKeys from 'constants/localStorageKeys';
+import routerPath from 'routes/router.path';
 
 const _EHS = new ExceptionHandleService({
   _NAME: 'commonUtil',
@@ -219,6 +220,21 @@ export const validateEditorContentTextLength = (
       'validateEditorContentTextLength',
       _EHS._LEVEL.ERROR
     );
+    return false;
+  }
+};
+
+// 驗證是否有登入過，從沒登入過，直接請你離開
+export const varifyLoginToken = () => {
+  try {
+    const token = localStorageUtil.getItem(
+      LocalStorageKeys.UserInfo
+    )?.accessToken;
+    if (!token) {
+      window.location.href = `/${routerPath.login}`;
+    }
+  } catch (error) {
+    _EHS.errorReport(error, 'varifyLoginToken', _EHS._LEVEL.ERROR);
     return false;
   }
 };

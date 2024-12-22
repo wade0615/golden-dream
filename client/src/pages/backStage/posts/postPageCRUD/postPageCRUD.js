@@ -9,6 +9,7 @@ import { Form } from 'react-bootstrap';
 import TextField, { FieldGroup } from 'features/textField/TextField';
 import { DefaultLayout } from 'layout';
 
+import { varifyLoginToken } from 'utils/commonUtil';
 // import localStorageUtil from 'utils/localStorageUtil';
 // import LocalStorageKeys from 'constants/localStorageKeys';
 import api from 'services/api';
@@ -151,6 +152,7 @@ const PostPageCRUD = () => {
 
   /** 初始化 */
   useEffect(() => {
+    varifyLoginToken();
     getInit();
   }, [getInit]);
 
