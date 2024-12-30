@@ -1,4 +1,4 @@
-import { get, post } from './sub_services/base';
+import { get, post, patch } from './sub_services/base';
 import apiPath from './api.path';
 import config from 'config/config';
 import ExceptionHandleService from 'utils/exceptionHandler';
@@ -56,9 +56,22 @@ const postBackStageAddPost = async (req) => {
   }
 };
 
+/** [PATCH]後台編輯文章 */
+const patchBackStageEditPost = async (req) => {
+  try {
+    const url = `${config.SERVER_POINT}${apiPath.backStage.patchBackStageEditPost}`;
+    const result = await patch(url, req);
+    return result;
+  } catch (error) {
+    _EHS.errorReport(error, 'patchBackStageEditPost', _EHS._LEVEL.ERROR);
+    return Promise.reject(error);
+  }
+};
+
 export default {
   getBackStagePostList,
   getBackStagePostById,
   postBackStageAddPost,
+  patchBackStageEditPost,
   getBackStageCategoryOptions
 };

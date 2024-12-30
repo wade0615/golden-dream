@@ -427,7 +427,8 @@ VALUES(?,?,?, @email,?,?,?);
       SELECT 
           COUNT(bp.Post_ID) AS postCount
       FROM blog_post bp 
-      WHERE bp.Post_Type = 2;
+      WHERE bp.Post_Type = 2
+      AND bp.Is_Publish = 1;
 
       SELECT 
           COUNT(*) AS categoriesCount

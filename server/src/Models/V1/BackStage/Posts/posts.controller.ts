@@ -1,10 +1,18 @@
-import { Body, Controller, Headers, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Headers,
+  HttpStatus,
+  Patch,
+  Post
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import apiPath from 'src/Center/api.path';
 
 import { PostsService } from './posts.service';
 
 import { AddPostReq } from './Dto/add.post.dto';
+import { EditPostReq } from './Dto/edit.post.dto';
 import { GetPostByIdReq, GetPostByIdResp } from './Dto/get.post.by.id.dto';
 import { GetPostListReq, GetPostListResp } from './Dto/get.post.list.dto';
 
@@ -75,10 +83,14 @@ export class PostsController {
    * @param body
    * @returns
    */
-  @Post(apiPath.backStage.posts.editPost)
-  async editPost(@Body() body: GetPostByIdReq): Promise<any> {
+  @Patch(apiPath.backStage.posts.patchBackStageEditPost)
+  async editPost(
+    @Headers() headers: any,
+    @Body() body: EditPostReq
+  ): Promise<any> {
     try {
-      const result = await this.postsService.editPost();
+      const userId = headers['authMemberId'] ?? 'system';
+      const result = await this.postsService.editPost(body, userId);
 
       return result;
     } catch (error) {

@@ -66,6 +66,7 @@ const PostPageCRUD = () => {
   const pageMode = location?.state?.pageMode;
   const isAddMode = pageMode === 'add';
   const isViewMode = pageMode === 'view';
+  // const isEditMode = pageMode === 'edit';
 
   const methods = useForm({
     mode: 'onBlur',
@@ -159,23 +160,48 @@ const PostPageCRUD = () => {
   /* 送出表單 */
   const handleSubmit = async (data, e) => {
     e.preventDefault();
-    const reqBody = {
-      postName: data.title,
-      category: data.category,
-      content: markdown,
-      shortContent: data.shortContent,
-      // postType: 2,
-      isPublish: data.isPublish
-    };
-    const res = await api.backStage.postBackStageAddPost(reqBody);
-    if (res) {
-      await alert
-        .toast({ title: '新增文章成功' })
-        .then(() =>
-          navigate(
-            `/${routerPath.secretDoor}/${routerPath.secretDoor_Post}/${routerPath.secretDoor_Post_PostList}`
-          )
-        );
+
+    // 新增文章
+    if (isAddMode) {
+      const reqBody = {
+        postName: data.title,
+        category: data.category,
+        content: markdown,
+        shortContent: data.shortContent,
+        // postType: 2,
+        isPublish: data.isPublish
+      };
+      const res = await api.backStage.postBackStageAddPost(reqBody);
+      if (res) {
+        await alert
+          .toast({ title: '新增文章成功' })
+          .then(() =>
+            navigate(
+              `/${routerPath.secretDoor}/${routerPath.secretDoor_Post}/${routerPath.secretDoor_Post_PostList}`
+            )
+          );
+      }
+    } else {
+      // 編輯文章
+      const reqBody = {
+        postId: postId,
+        postName: data.title,
+        category: data.category,
+        content: markdown,
+        shortContent: data.shortContent,
+        // postType: 2,
+        isPublish: data.isPublish
+      };
+      const res = await api.backStage.patchBackStageEditPost(reqBody);
+      if (res) {
+        await alert
+          .toast({ title: '編輯文章成功' })
+          .then(() =>
+            navigate(
+              `/${routerPath.secretDoor}/${routerPath.secretDoor_Post}/${routerPath.secretDoor_Post_PostList}`
+            )
+          );
+      }
     }
   };
   const handleGoBack = () => {
@@ -189,7 +215,11 @@ const PostPageCRUD = () => {
       <FormProvider {...methods}>
         {/* <DevTool control={methods.control} /> */}
         <Form onSubmit={methods.handleSubmit(handleSubmit)}>
-          <DefaultLayout.Outlet onCancel={handleGoBack}>
+          <DefaultLayout.Outlet
+            onCancel={handleGoBack}
+            onCancelText={isViewMode ? '返回' : '取消'}
+            hiddenSaveBtn={isViewMode}
+          >
             <div className='form-grid form-grid-md-2 mb-4'>
               {/* 文章標題 */}
               <FieldGroup title='文章標題' required htmlFor='title'>

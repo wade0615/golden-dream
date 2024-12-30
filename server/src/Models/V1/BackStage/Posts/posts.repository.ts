@@ -3,6 +3,7 @@ import { MysqlProvider } from 'src/Providers/Database/DatabaseMysql/mysql.provid
 
 import { GetPostListReq } from './Dto/get.post.list.dto';
 import { AddPostInterface } from './Interface/add.post.interface';
+import { EditPostInterface } from './Interface/edit.post.interface';
 import { GetPostByIdInterface } from './Interface/get.post.by.id.interface';
 import { GetPostListInterface } from './Interface/get.post.list.interface';
 
@@ -179,6 +180,52 @@ export class PostsRepository {
     `;
 
     await this.internalConn.query(sqlStr, []);
+
+    return true;
+  }
+
+  /** 編輯文章 */
+  async editPost(connection, postData: EditPostInterface): Promise<any> {
+    const _postId = this.internalConn.escape(postData?.postId);
+    const _postName = this.internalConn.escape(postData?.postName);
+    const _alterId = this.internalConn.escape(postData?.alterId);
+    const _content = this.internalConn.escape(postData?.content);
+    const _shortContent = this.internalConn.escape(postData?.shortContent);
+    const _postType = this.internalConn.escape(postData?.postType);
+    const _isPublish = this.internalConn.escape(postData?.isPublish);
+
+    const sqlStr = `
+      UPDATE blog_post 
+      SET 
+        Post_Name = ${_postName},
+        Alter_ID = ${_alterId},
+        Content = ${_content},
+        Short_Content = ${_shortContent},
+        Post_Type = ${_postType},
+        Is_Publish = ${_isPublish}
+      WHERE Post_ID = ${_postId};
+    `;
+
+    await this.internalConn.transactionQuery(connection, sqlStr, []);
+
+    return true;
+  }
+
+  async updatePostCategory(
+    connection,
+    req: { postId: string; category: string }
+  ): Promise<any> {
+    const _postId = this.internalConn.escape(req?.postId);
+    const _category = this.internalConn.escape(req?.category);
+
+    const sqlStr = `
+      UPDATE blog_map_post_category 
+      SET 
+        Category_ID = ${_category}
+      WHERE Post_ID = ${_postId};
+    `;
+
+    await this.internalConn.transactionQuery(connection, sqlStr, []);
 
     return true;
   }
