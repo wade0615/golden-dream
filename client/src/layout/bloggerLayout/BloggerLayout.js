@@ -55,24 +55,24 @@ function BloggerLayout({ children, bannerHeight }) {
       {/* Side Menu */}
       <div className='blogger_layout_side_menu'>
         <Navbars
-          brand='Spanner Wade'
-          sideNavTitle='Spanner Wade'
+          brand='Gorgeous Wade'
+          sideNavTitle='Gorgeous Wade'
           subPath={[
             {
               path: routerPath.posts,
               title: '文章',
               icon: ''
             },
-            {
-              path: routerPath.timeline,
-              title: '時間軸',
-              icon: ''
-            },
-            {
-              path: routerPath.categories,
-              title: '分類',
-              icon: ''
-            },
+            // {
+            //   path: routerPath.timeline,
+            //   title: '時間軸',
+            //   icon: ''
+            // },
+            // {
+            //   path: routerPath.categories,
+            //   title: '分類',
+            //   icon: ''
+            // },
             {
               path: routerPath.about,
               title: '關於我',
@@ -84,7 +84,7 @@ function BloggerLayout({ children, bannerHeight }) {
       <div
         className='blogger_layout_banner'
         style={{
-          height: currentRoute?.path?.length > 1 ? '30vh' : `${bannerHeight}vh`,
+          height: currentRoute?.path?.length > 1 ? '50vh' : `${bannerHeight}vh`,
           backgroundImage: `url(https://storage.cloud.google.com/personal_public/blog/iceland.webp)`
         }}
       >
@@ -166,7 +166,7 @@ function BloggerLayoutAsideCard() {
       </section>
       <section className='blogger_layout_aside_card_name'>
         <h2>Wade Wu</h2>
-        <p>Spanner Wade</p>
+        <p>Gorgeous Wade</p>
       </section>
       <section className='blogger_layout_aside_card_counts'>
         <div>
