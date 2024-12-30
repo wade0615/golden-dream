@@ -38,6 +38,7 @@ const backStage = {
   getBackStagePostList: `${category.backStagePosts}/getBackStagePostList`,
   getBackStagePostById: `${category.backStagePosts}/getBackStagePostById`,
   postBackStageAddPost: `${category.backStagePosts}/postBackStageAddPost`,
+  patchBackStageEditPost: `${category.backStagePosts}/patchBackStageEditPost`,
   getBackStageCategoryOptions: `${category.backStageCategory}/getBackStageCategoryOptions`
 };
 

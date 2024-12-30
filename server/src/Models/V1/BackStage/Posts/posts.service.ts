@@ -4,9 +4,11 @@ import { v4 as ruuidv4 } from 'uuid';
 import configError from 'src/Config/error.message.config';
 import { CustomerException } from 'src/Global/ExceptionFilter/global.exception.handle.filter';
 
+import { MysqlProvider } from 'src/Providers/Database/DatabaseMysql/mysql.provider';
 import { PostsRepository } from './posts.repository';
 
 import { AddPostReq } from './Dto/add.post.dto';
+import { EditPostReq } from './Dto/edit.post.dto';
 import { GetPostByIdReq, GetPostByIdResp } from './Dto/get.post.by.id.dto';
 import { GetPostListReq, GetPostListResp } from './Dto/get.post.list.dto';
 
@@ -20,7 +22,10 @@ const crypto = require('crypto');
 
 @Injectable()
 export class PostsService {
-  constructor(private postsRepository: PostsRepository) {}
+  constructor(
+    private postsRepository: PostsRepository,
+    private internalConn: MysqlProvider
+  ) {}
 
   /**
    * 取得後台文章列表
@@ -93,7 +98,11 @@ export class PostsService {
    * @returns
    */
   async postBackStageAddPost(req: AddPostReq, userId: string): Promise<any> {
+    let connection;
     try {
+      connection = await this.internalConn.getConnection();
+      await connection.beginTransaction();
+
       const postData = {
         postId: ruuidv4(),
         postName: req?.postName,
@@ -115,10 +124,15 @@ export class PostsService {
         req?.category
       );
 
+      await connection.commit();
+
       return true;
     } catch (error) {
+      await connection.rollback();
       console.error('postBackStageAddPost service error:', error);
       throw new CustomerException(configError._200002, HttpStatus.OK);
+    } finally {
+      await connection.release();
     }
   }
 
@@ -126,5 +140,42 @@ export class PostsService {
    * 編輯文章
    * @returns
    */
-  async editPost() {}
+  async editPost(req: EditPostReq, userId: string): Promise<any> {
+    let connection;
+    try {
+      connection = await this.internalConn.getConnection();
+      await connection.beginTransaction();
+
+      const postData = {
+        postId: req?.postId,
+        postName: req?.postName,
+        createId: userId,
+        alterId: userId,
+        content: req?.content,
+        shortContent: req?.shortContent,
+        postType: req?.postType
+          ? parseInt(req?.postType, 10)
+          : POST_TYPE_CODE?.NORMAL_POST,
+        isPublish: req?.isPublish
+          ? parseInt(req?.isPublish, 10)
+          : POST_PUBLISH_CODE?.UNPUBLISH
+      };
+      await this.postsRepository.editPost(connection, postData);
+
+      await this.postsRepository.updatePostCategory(connection, {
+        postId: postData.postId,
+        category: req?.category
+      });
+
+      await connection.commit();
+
+      return true;
+    } catch (error) {
+      await connection.rollback();
+      console.error('editPost service error:', error);
+      throw new CustomerException(configError._200002, HttpStatus.OK);
+    } finally {
+      await connection.release();
+    }
+  }
 }

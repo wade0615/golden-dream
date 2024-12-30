@@ -47,7 +47,7 @@ const backStage = {
     /** 新增文章 */
     postBackStageAddPost: `/postBackStageAddPost`,
     /** 編輯文章 */
-    editPost: `/editPost`
+    patchBackStageEditPost: `/patchBackStageEditPost`
   },
   category: {
     /** 取得後台分類下拉選單 */
