@@ -14,6 +14,7 @@ import { ConfigApiModule } from './Config/Api/config.module';
 import { ConfigAppModule } from './Config/App/config.module';
 
 // Middleware
+import { ContentSecurityPolicyMiddleware } from './Global/Middlewares/contentSecurityPolicy.middleware';
 import { RequestIdMiddleware } from './Global/Middlewares/request-id.middleware';
 import { RequestLoggerMiddleware } from './Global/Middlewares/request-logger.middleware';
 
@@ -81,5 +82,8 @@ export class AppModule {
     consumer
       .apply(RequestLoggerMiddleware, RequestIdMiddleware)
       .forRoutes({ path: '/**', method: RequestMethod.ALL });
+    consumer
+      .apply(ContentSecurityPolicyMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }
