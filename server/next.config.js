@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-
 const nextConfig = {
   async headers() {
     return [
@@ -8,8 +7,14 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value:
-              "default-src 'self'; connect-src 'self' https://wade-personal.de.r.appspot.com; script-src 'self'; style-src 'self';"
+            value: `
+              default-src 'self';
+              connect-src 'self' https://wade-personal.de.r.appspot.com;
+              script-src 'self';
+              style-src 'self';
+              img-src 'self' data:;
+              frame-src 'self';
+            `.replace(/\s{2,}/g, ' ') // 確保單行輸出
           }
         ]
       }
