@@ -6,7 +6,7 @@ export class ContentSecurityPolicyMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction): void {
     res.setHeader(
       'Content-Security-Policy',
-      "default-src 'self'; connect-src 'self' https://wade-personal.de.r.appspot.com https://gorgeous-wade.com; script-src 'self'; style-src *; img-src * data:;"
+      "default-src 'self'; connect-src 'self' https://wade-personal.de.r.appspot.com https://gorgeous-wade.com; script-src 'self'; font-src *; style-src *; img-src * data:;"
     );
     console.log('ContentSecurityPolicyMiddleware executed');
     next();
