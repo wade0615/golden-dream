@@ -82,6 +82,7 @@ export class PostsService {
         content:
           postInfo?.content.replace(/\\\\/g, '\\').replace(/\\n/g, '\n') ??
           '未知的文章內容',
+        shortContent: postInfo?.shortContent ?? '未知的文章短文',
         prevPostId: postPrevAndNextId?.prevId ?? '',
         nextPostId: postPrevAndNextId?.nextId ?? ''
       };

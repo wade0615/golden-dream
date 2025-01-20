@@ -6,4 +6,5 @@ export interface GetPostByIdInterface {
   categoryName: string;
   tag: string;
   content: string;
+  shortContent: string;
 }
