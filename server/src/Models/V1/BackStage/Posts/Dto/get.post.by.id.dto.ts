@@ -39,13 +39,21 @@ export class GetPostByIdResp {
   categoryName: string;
 
   @ApiProperty({
+    title: '文章內容',
+    example: '這是一篇測試文章的文章內容',
+    description: '文章內容'
+  })
+  @IsString()
+  @IsNotEmpty()
+  content: string;
+
+  @ApiProperty({
     title: '簡介',
     example: '這是一篇測試文章',
     description: '簡介'
   })
   @IsString()
-  @IsNotEmpty()
-  content: string;
+  shortContent: string;
 
   @ApiProperty({
     title: '日期',

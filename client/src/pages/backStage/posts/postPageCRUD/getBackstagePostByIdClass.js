@@ -10,6 +10,7 @@ const GetBackstagePostByIdClass = class {
     this.category = data.category ?? '未知的分類';
     this.tag = data.tag ?? '未知的標籤';
     this.content = data.content ?? '未知的內容';
+    this.shortContent = data.shortContent ?? '未知的簡介';
   }
 };
 

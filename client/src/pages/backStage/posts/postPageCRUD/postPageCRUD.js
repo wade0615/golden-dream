@@ -60,7 +60,7 @@ const PostPageCRUD = () => {
   const [postCreateDate, setPostCreateDate] = useState(null);
   const [markdown, setMarkdown] = useState(mdStr);
   const [categoryOptions, setCategoryOptions] = useState([]);
-  const [formData, setFormData] = useState({});
+  // const [formData, setFormData] = useState({});
 
   // 頁面狀態狀態 add/edit/view
   const pageMode = location?.state?.pageMode;
@@ -127,6 +127,7 @@ const PostPageCRUD = () => {
         const postCategory = postInfo?.category;
         const postCreatedDate = postInfo?.createdDate;
         const postContent = postInfo?.content;
+        const postShortContent = postInfo?.shortContent;
         setPostTitle(postTitle);
         setPostCategory(postCategory);
         setPostCreateDate(postCreatedDate);
@@ -134,11 +135,12 @@ const PostPageCRUD = () => {
 
         const formateData = {
           title: postTitle ?? '',
-          category: postCategory ?? ''
+          category: postCategory ?? '',
+          shortContent: postShortContent ?? ''
         };
 
         reset(formateData);
-        setFormData(formateData);
+        // setFormData(formateData);
       }
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
