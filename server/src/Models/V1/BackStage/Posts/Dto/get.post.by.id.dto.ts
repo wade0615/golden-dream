@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
 
 export class GetPostByIdReq {
   @ApiProperty({
@@ -76,4 +76,11 @@ export class GetPostByIdResp {
   })
   @IsString()
   nextPostId: string;
+
+  @ApiProperty({
+    title: '是否發布',
+    example: 'true'
+  })
+  @IsBoolean()
+  isPublish: boolean;
 }
