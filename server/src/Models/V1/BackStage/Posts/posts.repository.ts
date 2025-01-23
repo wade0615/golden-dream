@@ -75,6 +75,7 @@ export class PostsRepository {
         bp.Create_Date AS createdDate, 
         bp.Content AS content,
         bp.Short_Content AS shortContent,
+        bp.Is_Publish AS isPublish,
         bc.Category_ID AS categoryId,
         bc.Category_Name AS categoryName
       FROM blog_post bp 

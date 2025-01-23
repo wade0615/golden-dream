@@ -1,10 +1,11 @@
 runtime: custom
-env: flex
-manual_scaling:
-  instances: 1
-resources:
-  cpu: 1
-  memory_gb: 0.5
+instance_class: F1
+# env: flex
+# manual_scaling:
+#   instances: 1
+# resources:
+#   cpu: 1
+#   memory_gb: 0.5
 
 env_variables:
   ClientBuildEnv: dev

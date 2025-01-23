@@ -136,7 +136,8 @@ const PostPageCRUD = () => {
         const formateData = {
           title: postTitle ?? '',
           category: postCategory ?? '',
-          shortContent: postShortContent ?? ''
+          shortContent: postShortContent ?? '',
+          isPublish: postInfo?.isPublish ?? '0'
         };
 
         reset(formateData);

@@ -7,4 +7,5 @@ export interface GetPostByIdInterface {
   tag: string;
   content: string;
   shortContent: string;
+  isPublish: number;
 }
