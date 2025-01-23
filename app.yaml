@@ -1,11 +1,12 @@
-runtime: nodejs18
-instance_class: F1
-# env: flex
-# manual_scaling:
-#   instances: 1
-# resources:
-#   cpu: 1
-#   memory_gb: 0.5
+runtime: custom
+# instance_class: F1
+env: flex
+automatic_scaling:
+  min_instances: 0
+  max_instances: 2
+resources:
+  cpu: 1
+  memory_gb: 0.5
 
 env_variables:
   ClientBuildEnv: dev
