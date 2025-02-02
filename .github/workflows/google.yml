@@ -44,7 +44,7 @@ env:
   PROJECT_ID: "wade-personal" # TODO: update to your Google Cloud project ID
   REGION: "asia-east1" # 你所在的 GCP 區域
   GAE_APP_NAME: "wade-personal-blog" # 請更改為你的 GAE 應用名稱
-  WORKLOAD_IDENTITY_PROVIDER: "principal://iam.googleapis.com/projects/684523256629/locations/global/workloadIdentityPools/github-pool/subject/SUBJECT_ATTRIBUTE_VALUE"
+  WORKLOAD_IDENTITY_PROVIDER: "projects/684523256629/locations/global/workloadIdentityPools/github-pool/subject/SUBJECT_ATTRIBUTE_VALUE"
   # principal://iam.googleapis.com/projects/684523256629/locations/global/workloadIdentityPools/github-pool/subject/SUBJECT_ATTRIBUTE_VALUE
   # GAR_LOCATION: "asia-east1" # TODO: update to your region
   # GKE_CLUSTER: "wade-personal-blog" # TODO: update to your cluster name
