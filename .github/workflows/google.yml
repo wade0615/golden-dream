@@ -67,7 +67,7 @@ jobs:
       - name: "Authenticate to Google Cloud"
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: "${{ env.WORKLOAD_IDENTITY_PROVIDER }}"
+          workload_identity_provider: "${{ env.WORKLOAD_IDENTITY_PROVIDER }}"
 
       # Step 3: 安裝 Google Cloud SDK
       - name: "Install Google Cloud SDK"
