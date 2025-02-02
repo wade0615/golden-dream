@@ -44,13 +44,14 @@ env:
   PROJECT_ID: "wade-personal" # TODO: update to your Google Cloud project ID
   REGION: "asia-east1" # 你所在的 GCP 區域
   GAE_APP_NAME: "wade-personal-blog" # 請更改為你的 GAE 應用名稱
+  WORKLOAD_IDENTITY_PROVIDER: "principal://iam.googleapis.com/projects/684523256629/locations/global/workloadIdentityPools/github-pool/subject/SUBJECT_ATTRIBUTE_VALUE"
+  # principal://iam.googleapis.com/projects/684523256629/locations/global/workloadIdentityPools/github-pool/subject/SUBJECT_ATTRIBUTE_VALUE
   # GAR_LOCATION: "asia-east1" # TODO: update to your region
   # GKE_CLUSTER: "wade-personal-blog" # TODO: update to your cluster name
   # GKE_ZONE: "UTC" # TODO: update to your cluster zone
   # DEPLOYMENT_NAME: "golden-dream" # TODO: update to your deployment name
   # REPOSITORY: "main" # TODO: update to your Artifact Registry docker repository name
   # IMAGE: "static-site"
-  # WORKLOAD_IDENTITY_PROVIDER: "projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider" # TODO: update to your workload identity provider
 jobs:
   deploy:
     name: "Deploy to Google App Engine"
@@ -66,7 +67,7 @@ jobs:
       - name: "Authenticate to Google Cloud"
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: "${{ secrets.GAE_WADE_PERSONAL }}" # 確保這是你的 Service Account JSON 密鑰的 Secret 名稱
+          credentials_json: "${{ env.WORKLOAD_IDENTITY_PROVIDER }}"
 
       # Step 3: 安裝 Google Cloud SDK
       - name: "Install Google Cloud SDK"
