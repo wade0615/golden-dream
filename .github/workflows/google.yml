@@ -63,6 +63,10 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v2
 
+      # 檢查 WORKLOAD_IDENTITY_PROVIDER 是否正確
+      - name: "Check Workload Identity Provider"
+        run: echo ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+
       # Step 2: 設定 Google Cloud 身份驗證
       - name: "Authenticate to Google Cloud"
         uses: google-github-actions/auth@v2
