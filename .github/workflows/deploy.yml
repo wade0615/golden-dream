@@ -31,21 +31,21 @@ jobs:
         with:
           workload_identity_provider: "${{ env.WORKLOAD_IDENTITY_PROVIDER }}"
       
-      - name: "Install Google Cloud SDK"
-        run: |
-          echo "Installing Google Cloud SDK"
-          curl -sSL https://sdk.cloud.google.com | bash
-          source $HOME/google-cloud-sdk/path.bash.inc
+      # - name: "Install Google Cloud SDK"
+      #   run: |
+      #     echo "Installing Google Cloud SDK"
+      #     curl -sSL https://sdk.cloud.google.com | bash
+      #     source $HOME/google-cloud-sdk/path.bash.inc
 
-      # - name: Set up Cloud SDK
-      #   uses: google-github-actions/setup-gcloud@v2
-      #   with:
-      #     project_id: ${{ env.PROJECT_ID }}
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
 
-      - name: "Set Google Cloud project"
-        run: |
-          gcloud config set project ${{ env.PROJECT_ID }}
-          gcloud config set compute/region ${{ env.REGION }}
+      # - name: "Set Google Cloud project"
+      #   run: |
+      #     gcloud config set project ${{ env.PROJECT_ID }}
+      #     gcloud config set compute/region ${{ env.REGION }}
 
       - name: Deploy to Google App Engine
         run: gcloud app deploy app.yaml --quiet
