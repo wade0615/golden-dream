@@ -30,12 +30,16 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: "${{ env.WORKLOAD_IDENTITY_PROVIDER }}"
+          service_account: "github-actions@wade-personal.iam.gserviceaccount.com"
       
       # - name: "Install Google Cloud SDK"
       #   run: |
       #     echo "Installing Google Cloud SDK"
       #     curl -sSL https://sdk.cloud.google.com | bash
       #     source $HOME/google-cloud-sdk/path.bash.inc
+
+      - name: Check Authenticated Account
+        run: gcloud auth list
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
