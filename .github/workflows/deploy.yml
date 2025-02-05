@@ -9,6 +9,7 @@ env:
   PROJECT_ID: "wade-personal"
   REGION: "asia-east1"
   WORKLOAD_IDENTITY_PROVIDER: "projects/684523256629/locations/global/workloadIdentityPools/github-action-provider/providers/github-action-provider"
+  # projects/684523256629/locations/global/workloadIdentityPools/github-pool/providers/github-action-provider
   # https://iam.googleapis.com/projects/684523256629/locations/global/workloadIdentityPools/github-action-provider/providers/github-action-provider
 
 permissions:
