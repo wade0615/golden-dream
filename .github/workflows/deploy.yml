@@ -27,12 +27,15 @@ jobs:
       - name: "Check Workload Identity Provider"
         run: echo ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
 
+      - name: Debug GitHub Environment Variables
+        run: env | grep -E 'GCP|GOOGLE|AUTH|ID_TOKEN'
+
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: "${{ env.WORKLOAD_IDENTITY_PROVIDER }}"
           service_account: "github-action@wade-personal.iam.gserviceaccount.com"
-      
+
       # - name: "Install Google Cloud SDK"
       #   run: |
       #     echo "Installing Google Cloud SDK"
@@ -53,4 +56,4 @@ jobs:
       #     gcloud config set compute/region ${{ env.REGION }}
 
       - name: Deploy to Google App Engine
-        run: gcloud app deploy app.yaml --quiet
+        run: gcloud app deploy app.yaml --quiet --promote
