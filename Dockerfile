@@ -25,4 +25,7 @@ COPY --from=builder ./home/node/server/tsconfig.build.json ./home/node/server/ts
 COPY --from=builder ./home/node/server/tsconfig.json ./home/node/server/tsconfig.json
 
 WORKDIR /home/node/server
+
+EXPOSE 8080
+
 ENTRYPOINT npm run start:${ServerBuildEnv}

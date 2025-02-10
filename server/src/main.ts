@@ -17,6 +17,7 @@ import { LogService } from './Utils/log.service';
 async function bootstrap(): Promise<void> {
   console.log('Current env:', process.env.APP_ENV);
   console.log('Current app name:', process.env.APP_NAME);
+  console.log('Current app port:', process.env.APP_PORT);
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
