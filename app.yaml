@@ -4,6 +4,8 @@ env: standard
 # env: flex
 instance_class: F1
 
+entrypoint: node server/dist/main.js
+
 handlers:
   - url: /.*
     script: auto
