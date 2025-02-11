@@ -1,7 +1,0 @@
-node_modules/
-client/
-server/node_modules/
-server/src/
-client/src/
-*.log
-.git/

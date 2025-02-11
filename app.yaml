@@ -1,24 +1,22 @@
-runtime: nodejs18
-# runtime: custom
-env: standard
-# env: flex
-instance_class: F1
+# runtime: nodejs18
+runtime: custom
+# env: standard
+env: flex
+# instance_class: F1
 
-entrypoint: node server/dist/main.js
+# entrypoint: node server/dist/main.js
 
-handlers:
-  - url: /.*
-    script: auto
+# handlers:
+#   - url: /.*
+#     script: auto
 # manual_scaling:
 #   instances: 1
-# resources:
-#   cpu: 1
-#   memory_gb: 0.5
-
-# env_variables:
-#   ClientBuildEnv: dev
-#   ServerBuildEnv: dev
-
+resources:
+  cpu: 1
+  memory_gb: 0.5
+env_variables:
+  ClientBuildEnv: dev
+  ServerBuildEnv: dev
 # gcloud auth configure-docker asia-east1-docker.pkg.dev
 # gcloud artifacts repositories list --location=asia-east1
 # docker build --build-arg ClientBuildEnv=dev --build-arg ServerBuildEnv=dev -t asia-east1-docker.pkg.dev/wade-personal/golden-dream/v0.1.5 .
