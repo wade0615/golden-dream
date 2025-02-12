@@ -1,5 +1,6 @@
 #!/bin/bash
 FROM node:18-alpine as builder
+# FROM --platform=linux/amd64 node:18-alpine as builder
 WORKDIR /home/node
 COPY . .
 ARG ClientBuildEnv
@@ -9,6 +10,7 @@ RUN cd /home/node/client && npm install && npm run build -- ${ClientBuildEnv}
 RUN cd /home/node/server && npm install && npm run build
 # Runtime image
 FROM node:18-alpine
+# FROM --platform=linux/amd64 node:18-alpine
 COPY server/package*.json ./home/node/server/
 COPY server/env ./home/node/server/env
 ARG NODE_CONFIG=config.js
@@ -25,4 +27,10 @@ COPY --from=builder ./home/node/server/tsconfig.build.json ./home/node/server/ts
 COPY --from=builder ./home/node/server/tsconfig.json ./home/node/server/tsconfig.json
 
 WORKDIR /home/node/server
+
+EXPOSE 8080
+
 ENTRYPOINT npm run start:${ServerBuildEnv}
+
+# docker build --build-arg ClientBuildEnv=dev --build-arg ServerBuildEnv=dev -t asia-east1-docker.pkg.dev/wade-personal/golden-dream/v1.1.10:ARMv1.1.10 .
+# docker buildx build --platform linux/amd64 --build-arg ClientBuildEnv=dev --build-arg ServerBuildEnv=dev -t asia-east1-docker.pkg.dev/wade-personal/golden-dream/v1.1.10:x86v1.1.10 .
