@@ -12,7 +12,8 @@ export const configValue = (_target, _env) => {
   switch (_target) {
     case keys.SERVER_POINT:
       if (_env === LOCAL) result = `http://${IP}:5500/api/`;
-      if (_env === DEV) result = `https://wade-personal.de.r.appspot.com/api/`;
+      if (_env === DEV)
+        result = `https://my-app-684523256629.asia-east1.run.app`;
       if (_env === STAGE) result = `https://sample/api/`;
       if (_env === PROD) result = `https://sample/api/`;
       break;
