@@ -73,6 +73,14 @@ export class PostList {
   tag: string;
 
   @ApiProperty({
+    title: '是否發布',
+    example: '1',
+    description: '是否發布'
+  })
+  @IsString()
+  isPublish: number;
+
+  @ApiProperty({
     title: '簡介',
     example: '這是一篇測試文章',
     description: '簡介'

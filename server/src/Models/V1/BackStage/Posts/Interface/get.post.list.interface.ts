@@ -6,4 +6,5 @@ export interface GetPostListInterface {
   categoryName: string;
   tag: string;
   shortContent: string;
+  isPublish: number;
 }
