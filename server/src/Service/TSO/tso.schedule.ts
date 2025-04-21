@@ -18,7 +18,7 @@ export class TSO_ScheduleService {
   // taiwan-strait-observatory 台海觀測站
   tsoSchedule = () => {
     const config = <ScheduleGeneratorReq>{};
-    config.frequency = ENUM_FREQUENCY.FIVE_SECOND;
+    config.frequency = ENUM_FREQUENCY.EVERY_SIX_HOUR;
     config.scheduleName = 'taiwan-strait-observatory';
     config.processLockName = `${ENUM_CONFIG.PROCESS_LOCK}:taiwan-strait-observatory`;
     config.processLockTime = 10 * 60;

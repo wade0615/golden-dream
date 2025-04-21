@@ -37,6 +37,7 @@ import { TestModule } from './Models/V1/Test/test.module';
 import { ScheduleService } from 'src/Service/Basic/schedule.service';
 import { LogService } from 'src/Utils/log.service';
 
+import { TSO_Repository } from 'src/Service/TSO/tso.repository';
 import { TSO_ScheduleService } from 'src/Service/TSO/tso.schedule';
 import { TSO_Service } from 'src/Service/TSO/tso.service';
 import { BatchScheduleService } from './Service/batchSchedule.service';
@@ -91,7 +92,8 @@ if (envNow === 'DEV' || envNow === 'STAGE' || envNow === 'PROD') {
     ScheduleService,
     BatchScheduleService,
     TSO_ScheduleService,
-    TSO_Service
+    TSO_Service,
+    TSO_Repository
   ]
 })
 export class AppModule {

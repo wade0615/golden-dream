@@ -28,6 +28,7 @@ export enum ENUM_FREQUENCY {
   ONE_HOUR = '*/1 * * *',
   ONE_HOUR_6_8 = '0 22-23 * * *',
   ONE_HOUR_8_23 = '0 0-15 * * *',
+  EVERY_SIX_HOUR = '0 */6 * * *', // 每6小時, 00:00, 06:00, 12:00, 18:00
   /** 每月 */
   EVERY_MONTH = '0 0 0 1 * *',
   /** 每季 */
