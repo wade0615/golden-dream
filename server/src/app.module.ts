@@ -34,6 +34,16 @@ import { CommonModule } from './Models/V1/Common/common.module';
 import { PostsModule } from './Models/V1/Posts/posts.module';
 import { TestModule } from './Models/V1/Test/test.module';
 
+import { ScheduleService } from 'src/Service/Basic/schedule.service';
+import { LogService } from 'src/Utils/log.service';
+
+import { TSO_Repository } from 'src/Service/TSO/tso.repository';
+import { TSO_ScheduleService } from 'src/Service/TSO/tso.schedule';
+import { TSO_Service } from 'src/Service/TSO/tso.service';
+import { BatchScheduleService } from './Service/batchSchedule.service';
+
+import { MysqlModule } from 'src/Providers/Database/DatabaseMysql/mysql.module';
+
 const moduleImport = [
   ConfigApiModule,
   ConfigAppModule,
@@ -48,7 +58,8 @@ const moduleImport = [
   AuthModule,
   BackStagePostsModule,
   BackStageCategoryModule,
-  RedisModule
+  RedisModule,
+  MysqlModule
   // FirebaseModule
   // SmsModule,
   // MailModule,
@@ -75,7 +86,15 @@ if (envNow === 'DEV' || envNow === 'STAGE' || envNow === 'PROD') {
 @Module({
   imports: moduleImport,
   controllers: [AppController],
-  providers: [AppService]
+  providers: [
+    AppService,
+    LogService,
+    ScheduleService,
+    BatchScheduleService,
+    TSO_ScheduleService,
+    TSO_Service,
+    TSO_Repository
+  ]
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer): void {

@@ -51,6 +51,7 @@ export class PostsService {
             alterDate: data?.alterDate ?? '未知的時間',
             category: data?.categoryName ?? '未知的分類',
             tag: data?.tag ?? '未知的標籤',
+            isPublish: data?.isPublish ?? 0,
             content: data?.shortContent ?? '未知的簡介'
           };
         })
