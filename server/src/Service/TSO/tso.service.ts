@@ -26,7 +26,18 @@ export class TSO_Service {
       const feed = await parser.parseURL(RSS_URL);
       console.log(feed.title);
       // 可加入關鍵字過濾
-      const keywords = ['台', '台灣', '台海', '解放軍'];
+      const keywords = [
+        '台',
+        '台灣',
+        '台海',
+        '解放軍',
+        '英偉達',
+        '半導體',
+        'NVIDIA',
+        '台積電',
+        'TSMC',
+        '晶圓'
+      ];
       const filtered = feed.items.filter((item) => {
         const text = `${item.title} ${item.contentSnippet}`;
         return keywords.some((kw) => text.includes(kw));
