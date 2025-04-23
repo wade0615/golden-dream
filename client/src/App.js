@@ -40,8 +40,9 @@ function App() {
   return (
     <>
       <Loading isLoading={isFetchLoading} />
-      <RouterProvider router={router} />
-      <GaTracker />
+      <RouterProvider router={router}>
+        <GaTracker />
+      </RouterProvider>
       {/* <PageRoute /> */}
     </>
   );
