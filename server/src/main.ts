@@ -33,6 +33,11 @@ async function bootstrap(): Promise<void> {
           'https://www.googletagmanager.com',
           'https://www.google-analytics.com'
         ],
+        'script-src-elem': [
+          "'self'",
+          'https://www.googletagmanager.com',
+          'https://www.google-analytics.com'
+        ],
         'img-src': [
           "'self'",
           'https: data: blob:',
