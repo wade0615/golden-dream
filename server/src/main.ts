@@ -1,35 +1,52 @@
-import { NestFactory } from "@nestjs/core";
-import { NestExpressApplication } from "@nestjs/platform-express";
+import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 // import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as cookieParser from "cookie-parser";
-import * as helmet from "helmet";
+import * as cookieParser from 'cookie-parser';
+import * as helmet from 'helmet';
 
-import { VersioningType } from "@nestjs/common";
+import { VersioningType } from '@nestjs/common';
 // import { version } from '../package.json';
-import { ConfigAppService } from "./Config/App/config.service";
-import { AppModule } from "./app.module";
+import { ConfigAppService } from './Config/App/config.service';
+import { AppModule } from './app.module';
 
-import globalExceptionHandleFilter from "./Global/ExceptionFilter/global.exception.handle.filter";
-import globalInterceptor from "./Global/Interceptors/global.interceptor";
-import { GlobalDTOValidationPipe } from "./Global/Pipes/global.dto.validation.pipe";
-import { LogService } from "./Utils/log.service";
+import globalExceptionHandleFilter from './Global/ExceptionFilter/global.exception.handle.filter';
+import globalInterceptor from './Global/Interceptors/global.interceptor';
+import { GlobalDTOValidationPipe } from './Global/Pipes/global.dto.validation.pipe';
+import { LogService } from './Utils/log.service';
 
 async function bootstrap(): Promise<void> {
-  console.log("Current env:", process.env.APP_ENV);
-  console.log("Current app name:", process.env.APP_NAME);
-  console.log("Current app port:", process.env.APP_PORT);
+  console.log('Current env:', process.env.APP_ENV);
+  console.log('Current app name:', process.env.APP_NAME);
+  console.log('Current app port:', process.env.APP_PORT);
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  app.use(helmet());
-
+  // app.use(helmet());
   // allow use image
   app.use(
     helmet.contentSecurityPolicy({
       useDefaults: true,
       directives: {
-        "img-src": ["'self'", "https: data: blob:"],
-      },
+        'default-src': ["'self'"],
+        'script-src': [
+          "'self'",
+          'https://www.googletagmanager.com',
+          'https://www.google-analytics.com'
+        ],
+        'img-src': [
+          "'self'",
+          'https: data: blob:',
+          'data:',
+          'blob:',
+          'https://www.google-analytics.com',
+          'https://stats.g.doubleclick.net'
+        ],
+        'connect-src': [
+          "'self'",
+          'https://www.google-analytics.com',
+          'https://www.googletagmanager.com'
+        ]
+      }
     })
   );
   app.use(cookieParser());
@@ -39,21 +56,21 @@ async function bootstrap(): Promise<void> {
   // *******************上ＵＡＴ後要鎖 非常重要 ***************************
   app.enableCors({
     origin: true,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, //設置是否傳送 cookie
     preflightContinue: false, //傳遞 OPTION 請求的 response 到下一個 handle
     optionsSuccessStatus: 204, //設置當 OPTION 請求成功時，回傳的 HTTP Code
-    allowedHeaders: "Content-Type,Authorization,refresh-token",
+    allowedHeaders: 'Content-Type,Authorization,refresh-token'
   });
 
   app.useGlobalPipes(new GlobalDTOValidationPipe());
 
   // Version control
   app.enableVersioning({
-    type: VersioningType.URI,
+    type: VersioningType.URI
   });
 
-  app.setGlobalPrefix("api");
+  app.setGlobalPrefix('api');
   app.useGlobalInterceptors(new globalInterceptor(new LogService()));
   app.useGlobalFilters(new globalExceptionHandleFilter(new LogService()));
 
