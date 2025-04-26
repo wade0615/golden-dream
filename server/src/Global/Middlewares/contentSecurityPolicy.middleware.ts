@@ -6,7 +6,7 @@ export class ContentSecurityPolicyMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction): void {
     const contentSecurityPolicy = `
       default-src 'self';
-      connect-src 'self' https://my-app-684523256629.asia-east1.run.app https://gorgeous-wade.com https://www.googletagmanager.com https://www.google-analytics.com;
+      connect-src 'self' https://my-app-684523256629.asia-east1.run.app https://gorgeous-wade.com https://taiwan-strait-observatory.vercel.app https://www.taiwan-strait-observatory.com https://www.googletagmanager.com https://www.google-analytics.com;
       script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com;
       script-src-elem 'self' https://www.googletagmanager.com https://www.google-analytics.com;
       font-src *;
