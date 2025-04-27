@@ -33,10 +33,12 @@ import { PostsModule as BackStagePostsModule } from './Models/V1/BackStage/Posts
 import { CommonModule } from './Models/V1/Common/common.module';
 import { PostsModule } from './Models/V1/Posts/posts.module';
 import { TestModule } from './Models/V1/Test/test.module';
+import { TSO_Module } from './Models/V1/TSO/tso.module';
 
 import { ScheduleService } from 'src/Service/Basic/schedule.service';
 import { LogService } from 'src/Utils/log.service';
 
+// 排程 Schedule
 import { TSO_Repository } from 'src/Service/TSO/tso.repository';
 import { TSO_ScheduleService } from 'src/Service/TSO/tso.schedule';
 import { TSO_Service } from 'src/Service/TSO/tso.service';
@@ -59,7 +61,8 @@ const moduleImport = [
   BackStagePostsModule,
   BackStageCategoryModule,
   RedisModule,
-  MysqlModule
+  MysqlModule,
+  TSO_Module
   // FirebaseModule
   // SmsModule,
   // MailModule,

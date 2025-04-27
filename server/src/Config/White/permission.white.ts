@@ -7,5 +7,6 @@ export const PermissionWhite = [
   'auth/login',
   'common/getAsideCardDetail',
   'posts/getPostList',
-  'posts/getPostById'
+  'posts/getPostById',
+  'tso/getTsoNews'
 ];
