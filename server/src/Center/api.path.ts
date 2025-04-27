@@ -55,10 +55,16 @@ const backStage = {
   }
 };
 
+const tso = {
+  /** 取得 TSO 新聞列表 */
+  getTsoNews: `/getTsoNews`
+};
+
 export default {
   test,
   common,
   auth,
   posts,
-  backStage
+  backStage,
+  tso
 };
