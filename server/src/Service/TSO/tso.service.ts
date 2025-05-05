@@ -70,6 +70,34 @@ export class TSO_Service {
     return CNNNews;
   };
 
+  /**
+   * 取得 NYT 新聞
+   * @param keywords 關鍵字
+   * @returns
+   */
+  getNYT = async (keywords) => {
+    const parser = new Parser(); // 正確實例化 Parser
+    const RSS_URL =
+      'https://news.google.com/rss/search?q=taiwan+site:nytimes.com&hl=en-US&gl=US&ceid=US:en';
+    const feed = await parser.parseURL(RSS_URL);
+    console.log(feed.title);
+    const filtered = feed.items.filter((item) => {
+      const text = `${item.title} ${item.contentSnippet}`;
+      return keywords.some((kw) => text.includes(kw));
+    });
+    const NYTNews = filtered.map((item) => {
+      return {
+        newsID: item.guid,
+        newsTitle: item.title,
+        newsContent: item.contentSnippet,
+        newsLink: item.link,
+        newsIsoDate: item.isoDate,
+        newsSource: 'NYT'
+      };
+    });
+    return NYTNews;
+  };
+
   tsoSchedule = async (config) => {
     let connection;
     try {
@@ -106,8 +134,11 @@ export class TSO_Service {
       /** 取得 CNN 新聞 */
       const CNNNews = await this.getCNN(keywords);
       console.log('tsoSchedule CNNNews', CNNNews.length);
+      /** 取得 NYT 新聞 */
+      const NYTNews = await this.getNYT(keywords);
+      console.log('tsoSchedule NYTNews', NYTNews.length);
 
-      const tsoNews = BBCNews.concat(CNNNews);
+      const tsoNews = BBCNews.concat(CNNNews).concat(NYTNews);
 
       connection = await this.internalConn.getConnection();
       await connection.beginTransaction();
