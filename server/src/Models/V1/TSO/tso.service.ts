@@ -18,7 +18,6 @@ export class TSO_Service {
    */
   async getTsoNews(): Promise<any> {
     try {
-      console.log('getTsoNews service');
       const result = await this.tsoRepository.getTsoNews();
 
       return result;
