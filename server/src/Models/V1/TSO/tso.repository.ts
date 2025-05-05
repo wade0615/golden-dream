@@ -17,7 +17,7 @@ export class TSO_Repository {
         tn.News_Title title,
         tn.News_Content description,
         tn.News_Source source,
-        tn.News_Link urlk,
+        tn.News_Link url,
         tn.News_IsoDate date
       FROM tso_news tn 
       WHERE tn.Is_Active = 1

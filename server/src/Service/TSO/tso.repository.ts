@@ -19,7 +19,7 @@ export class TSO_Repository {
       Create_ID, Alter_ID, Is_Active) 
       VALUES ?
       ON DUPLICATE KEY UPDATE 
-        News_Title = VALUES(News_Title), 
+        -- News_Title = VALUES(News_Title), 
         News_Content = VALUES(News_Content),
         News_Link = VALUES(News_Link),
         News_IsoDate = VALUES(News_IsoDate),
