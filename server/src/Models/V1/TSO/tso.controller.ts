@@ -20,7 +20,6 @@ export class TSO_Controller {
   @Get(apiPath.tso.getTsoNews)
   async getTsoNews(@Req() req) {
     try {
-      console.log('TSO controller');
       const result = await this.tsoService.getTsoNews();
 
       return result;
