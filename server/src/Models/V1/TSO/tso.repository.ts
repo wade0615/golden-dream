@@ -21,7 +21,8 @@ export class TSO_Repository {
         tn.News_IsoDate date
       FROM tso_news tn 
       WHERE tn.Is_Active = 1
-        AND tn.Create_Date >= NOW() - INTERVAL 1 MONTH;
+        AND tn.Create_Date >= NOW() - INTERVAL 1 MONTH
+      ORDER BY tn.News_IsoDate DESC;
     `;
 
     const result = (await this.internalConn.query(sqlStr, [])) ?? [];
