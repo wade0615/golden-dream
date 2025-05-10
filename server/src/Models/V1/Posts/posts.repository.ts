@@ -33,6 +33,7 @@ export class PostsRepository {
       WHERE bp.Post_Type = 2
         AND bp.Is_Active = 1
         AND bp.Is_Publish = 1
+        AND bp.Is_Public = 1
       ORDER BY bp.Seq DESC
       LIMIT ${_start}, ${_limit}
     `;
@@ -54,6 +55,7 @@ export class PostsRepository {
       WHERE bp.Post_Type = 2
         AND bp.Is_Active = 1
         AND bp.Is_Publish = 1
+        AND bp.Is_Public = 1
     `;
 
     const result = (await this.internalConn.query(sqlStr, [])) ?? [];
