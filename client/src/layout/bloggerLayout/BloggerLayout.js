@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { routerConfig } from 'routes/router';
 import routerPath from 'routes/router.path';
 import api from 'services/api';
@@ -26,7 +26,6 @@ const _EHS = new ExceptionHandleService({
 /* 基本樣式： 側邊欄 + 上部使用者導覽 + 名稱 */
 function BloggerLayout({ children, bannerHeight }) {
   const location = useLocation();
-  // const navigate = useNavigate();
 
   // 遞迴獲取最深層次且最匹配當前路徑的路由配置 反向遍歷
   const getMatchedRoute = (routes, pathname, prefix = '') => {
@@ -122,6 +121,7 @@ function BloggerLayout({ children, bannerHeight }) {
 
 /** 側邊資訊小卡 */
 function BloggerLayoutAsideCard() {
+  const navigate = useNavigate();
   const [postCount, setPostCount] = useState(null);
   const [categoriesCount, setCategoriesCount] = useState(null);
 
@@ -169,11 +169,11 @@ function BloggerLayoutAsideCard() {
         <p>Gorgeous Wade</p>
       </section>
       <section className='blogger_layout_aside_card_counts'>
-        <div>
+        <div onClick={() => navigate(routerPath.posts)}>
           <p>文章</p>
           <p>{postCount}</p>
         </div>
-        <div>
+        <div onClick={() => navigate(routerPath.categories)}>
           <p>分類</p>
           <p>{categoriesCount}</p>
         </div>
