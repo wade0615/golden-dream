@@ -3,7 +3,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 // import { RedisGui } from 'pages/redis';
 import { Login } from 'pages/login';
 import { PostList, PostPage } from 'pages/posts';
-import { Categories } from 'pages/categories';
+import { CategoryList, CategoryPostsPage } from 'pages/categories';
 import { About } from 'pages/about';
 import { Timeline } from 'pages/timeline';
 
@@ -134,12 +134,37 @@ export const routerConfig = [
       {
         path: routerPath.categories, // 子路由的路徑
         breadcrumbPath: routerPath.categories, // 頁面路由，用於麵包屑
-        element: <Categories />, // 當訪問 '/categories' 路由時要渲染的元件
+        // element: <CategoryList />, // 當訪問 '/categories' 路由時要渲染的元件
         errorElement: <Error404 />, // 有任何錯誤，例如無效的子路由，就會渲染這個元件
         sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
         pageTitle: '文章分類', // 此路由的頁面標題
         shortTitle: '分類', // 此路由的短標題
-        authCode: '' // 權限代碼
+        authCode: '', // 權限代碼
+        children: [
+          // 子路由的子路由的陣列
+          {
+            index: true, // 預設路由，當訪問 '/posts' 時，會自動導航到此路由
+            element: <Navigate to='categoryList' />, // 自動導航到 'list' 子路由
+            hiddenFromNav: true // 導航欄中是否隱藏
+          },
+          {
+            path: routerPath.categoryList,
+            pageTitle: '分類列表',
+            element: <CategoryList />,
+            authCode: '',
+            subPath: [routerPath.categoryPostsPage] // 子路由的陣列
+          },
+          {
+            path: routerPath.categoryPostsPage,
+            pageTitle: '分類文章頁',
+            element: <CategoryPostsPage />,
+            authCode: '',
+            hiddenFromNav: true,
+            breadcrumbParentPath: routerPath.categoryList, // 前一層的頁面路由，用於麵包屑
+            breadcrumbParentTitle: '分類列表', // 前一層的頁面標題，用於麵包屑
+            hiddenAsideCard: true // 是否隱藏側邊欄小卡
+          }
+        ]
       },
       /**
        ** about 關於我

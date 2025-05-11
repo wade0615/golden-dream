@@ -8,5 +8,6 @@ export const PermissionWhite = [
   'common/getAsideCardDetail',
   'posts/getPostList',
   'posts/getPostById',
+  'category/getCategoryList',
   'tso/getTsoNews'
 ];
