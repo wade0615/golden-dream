@@ -9,5 +9,6 @@ export const PermissionWhite = [
   'posts/getPostList',
   'posts/getPostById',
   'category/getCategoryList',
+  'category/getCategoryPostList',
   'tso/getTsoNews'
 ];

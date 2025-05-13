@@ -39,8 +39,10 @@ const posts = {
 };
 
 const category = {
-  /** 取得文章分類列表 */
-  getCategoryList: `/getCategoryList`
+  /** 取得分類列表 */
+  getCategoryList: `/getCategoryList`,
+  /** 取得分類文章列表 */
+  getCategoryPostList: `/getCategoryPostList`
 };
 
 const backStage = {

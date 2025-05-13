@@ -1,4 +1,4 @@
-import { get } from './sub_services/base';
+import { get, post } from './sub_services/base';
 import apiPath from './api.path';
 import config from 'config/config';
 import ExceptionHandleService from 'utils/exceptionHandler';
@@ -8,7 +8,7 @@ const _EHS = new ExceptionHandleService({
   _NOTICE: 'category api'
 });
 
-/* [POST]取得文章分類列表 */
+/* [GET]取得文章分類列表 */
 const getCategoryList = async (params) => {
   try {
     const url = `${config.SERVER_POINT}${apiPath.category.getCategoryList}`;
@@ -20,6 +20,19 @@ const getCategoryList = async (params) => {
   }
 };
 
+/* [POST]取得分類文章列表 */
+const getCategoryPostList = async (params) => {
+  try {
+    const url = `${config.SERVER_POINT}${apiPath.category.getCategoryPostList}`;
+    const result = await post(url, params);
+    return result;
+  } catch (error) {
+    _EHS.errorReport(error, 'getCategoryPostList', _EHS._LEVEL.ERROR);
+    return Promise.reject(error);
+  }
+};
+
 export default {
-  getCategoryList
+  getCategoryList,
+  getCategoryPostList
 };

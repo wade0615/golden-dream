@@ -32,7 +32,8 @@ const posts = {
 };
 
 const category = {
-  getCategoryList: `${config.category}/getCategoryList`
+  getCategoryList: `${config.category}/getCategoryList`,
+  getCategoryPostList: `${config.category}/getCategoryPostList`
 };
 
 const common = {

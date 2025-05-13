@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // import localStorageUtil from 'utils/localStorageUtil';
 // import LocalStorageKeys from 'constants/localStorageKeys';
 import api from 'services/api';
+import routerPath from 'routes/router.path';
 
 import './categoriesStyle.scss';
 
@@ -17,6 +18,7 @@ const _EHS = new ExceptionHandleService({
 /** 文章分類  */
 const Categories = () => {
   const [categoryList, setCategoryList] = useState([]);
+  const navigate = useNavigate();
 
   /** 取得文章分類列表 */
   const getCategoryList = useCallback(async (page = 1, perPage = 10) => {
@@ -64,7 +66,10 @@ const Categories = () => {
               key={index}
               className='categories_item'
               onClick={() => {
-                // navigate(`/categories/${item.id}`);
+                navigate(
+                  `/${routerPath.categories}/${routerPath.categoryPostsPage}?id=${item.id}`,
+                  {}
+                );
               }}
             >
               <p className='categories_item_title'>{item.name}</p>
