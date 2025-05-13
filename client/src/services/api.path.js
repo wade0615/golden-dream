@@ -1,4 +1,4 @@
-const category = {
+const config = {
   template: 'v1',
   backStagePosts: 'backStage/posts',
   backStageCategory: 'backStage/category',
@@ -6,40 +6,46 @@ const category = {
   member: 'member',
   test: 'test',
   posts: 'posts',
+  category: 'category',
   common: 'common'
 };
 
 const template = {
-  getTemplate: `${category.template}/test`
+  getTemplate: `${config.template}/test`
 };
 
 const auth = {
-  login: `${category.auth}/login`,
-  getAuthInfo: `${category.auth}/getAuthInfo`,
-  refresh: `${category.auth}/refresh`,
-  logout: `${category.auth}/logout`,
-  getDashboard: `${category.auth}/getDashboard`
+  login: `${config.auth}/login`,
+  getAuthInfo: `${config.auth}/getAuthInfo`,
+  refresh: `${config.auth}/refresh`,
+  logout: `${config.auth}/logout`,
+  getDashboard: `${config.auth}/getDashboard`
 };
 
 const test = {
-  punchme: `${category.test}/punchme`
+  punchme: `${config.test}/punchme`
 };
 
 const posts = {
-  getPostList: `${category.posts}/getPostList`,
-  getPostById: `${category.posts}/getPostById`
+  getPostList: `${config.posts}/getPostList`,
+  getPostById: `${config.posts}/getPostById`
+};
+
+const category = {
+  getCategoryList: `${config.category}/getCategoryList`,
+  getCategoryPostList: `${config.category}/getCategoryPostList`
 };
 
 const common = {
-  getAsideCardDetail: `${category.common}/getAsideCardDetail`
+  getAsideCardDetail: `${config.common}/getAsideCardDetail`
 };
 
 const backStage = {
-  getBackStagePostList: `${category.backStagePosts}/getBackStagePostList`,
-  getBackStagePostById: `${category.backStagePosts}/getBackStagePostById`,
-  postBackStageAddPost: `${category.backStagePosts}/postBackStageAddPost`,
-  patchBackStageEditPost: `${category.backStagePosts}/patchBackStageEditPost`,
-  getBackStageCategoryOptions: `${category.backStageCategory}/getBackStageCategoryOptions`
+  getBackStagePostList: `${config.backStagePosts}/getBackStagePostList`,
+  getBackStagePostById: `${config.backStagePosts}/getBackStagePostById`,
+  postBackStageAddPost: `${config.backStagePosts}/postBackStageAddPost`,
+  patchBackStageEditPost: `${config.backStagePosts}/patchBackStageEditPost`,
+  getBackStageCategoryOptions: `${config.backStageCategory}/getBackStageCategoryOptions`
 };
 
 export default {
@@ -47,6 +53,7 @@ export default {
   auth,
   test,
   posts,
+  category,
   common,
   backStage
 };

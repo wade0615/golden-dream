@@ -30,6 +30,7 @@ import { RedisModule } from './Providers/Database/Redis/redis.module';
 import { AuthModule } from './Models/V1/Auth/auth.module';
 import { CategoryModule as BackStageCategoryModule } from './Models/V1/BackStage/Category/category.module';
 import { PostsModule as BackStagePostsModule } from './Models/V1/BackStage/Posts/posts.module';
+import { CategoryModule } from './Models/V1/Category/category.module';
 import { CommonModule } from './Models/V1/Common/common.module';
 import { PostsModule } from './Models/V1/Posts/posts.module';
 import { TestModule } from './Models/V1/Test/test.module';
@@ -55,6 +56,7 @@ const moduleImport = [
   }),
   TestModule,
   PostsModule,
+  CategoryModule,
   AuthModule,
   CommonModule,
   AuthModule,

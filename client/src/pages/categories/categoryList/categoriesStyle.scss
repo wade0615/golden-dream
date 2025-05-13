@@ -1,0 +1,22 @@
+@import '../../../styles/defaultStyle.scss';
+
+#categories.categories_container {
+  position: relative;
+  padding: 10rem;
+
+  // .categories_list {
+  // }
+  .categories_item {
+    cursor: pointer;
+    transition: color 0.3s ease;
+    &:hover p {
+      color: $main-color;
+    }
+  }
+  .categories_item_title {
+    font-size: 1.5rem;
+    font-style: italic;
+    color: $base-font-color;
+    margin-bottom: 1rem;
+  }
+}
