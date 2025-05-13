@@ -3,6 +3,14 @@
 #category_posts_page.posts_container {
   position: relative;
   padding: 2rem 1rem;
+  .posts_title {
+    padding: 4rem 1rem;
+    .posts_title_name {
+      font-size: 2.5rem;
+      font-weight: bold;
+      font-style: italic;
+    }
+  }
   .posts_list {
     padding: 0 1rem;
     .posts_item {

@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef
+} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import routerPath from 'routes/router.path';
 // import localStorageUtil from 'utils/localStorageUtil';
@@ -11,7 +17,7 @@ import ExceptionHandleService from 'utils/exceptionHandler';
 import { GetCategoryPostListClass } from './getCategoryPostListClass';
 
 const _EHS = new ExceptionHandleService({
-  _NAME: 'pages/posts/Posts.js',
+  _NAME: 'categories/CategoryPostPage/CategoryPostsList.js',
   _NOTICE: ''
 });
 
@@ -32,12 +38,12 @@ const CategoryPostsPage = () => {
     () => new URLSearchParams(location.search).get('id'),
     [location.search]
   );
+  const categoryName = useRef(location?.state?.categoryName);
 
-  /** 取得文章列表 */
-  const getPostList = useCallback(
+  /** 取得分類文章列表 */
+  const getCategoryPostList = useCallback(
     async (categoryId, page = 1, perPage = 10) => {
       try {
-        console.log('getPostList', categoryId, page, perPage);
         if (!categoryId) {
           throw new Error('categoryId is required');
         }
@@ -53,7 +59,7 @@ const CategoryPostsPage = () => {
           return res;
         }
       } catch (error) {
-        _EHS.errorReport(error, 'getPostList', _EHS._LEVEL.ERROR);
+        _EHS.errorReport(error, 'getCategoryPostList', _EHS._LEVEL.ERROR);
       }
     },
     []
@@ -62,7 +68,7 @@ const CategoryPostsPage = () => {
   /** 初次載入 */
   const getInit = useCallback(async () => {
     try {
-      const postList = await getPostList(categoryId);
+      const postList = await getCategoryPostList(categoryId);
       const metaData = postList.metaData;
       const posts = postList.postList;
       setPageMeta(metaData);
@@ -70,7 +76,7 @@ const CategoryPostsPage = () => {
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
-  }, [getPostList, categoryId]);
+  }, [getCategoryPostList, categoryId]);
 
   /** 初始化 */
   useEffect(() => {
@@ -84,7 +90,7 @@ const CategoryPostsPage = () => {
 
   /* 上下頁切換 */
   const handlePageFetch = async (page) => {
-    const postList = await getPostList(page, pageMeta.perPage);
+    const postList = await getCategoryPostList(page, pageMeta.perPage);
     const metaData = postList.metaData;
     const posts = postList.postList;
     setPageMeta(metaData);
@@ -93,6 +99,9 @@ const CategoryPostsPage = () => {
 
   return (
     <div id='category_posts_page' className='posts_container'>
+      <div className='posts_title'>
+        <h1 className='posts_title_name'>分類 - {categoryName.current}</h1>
+      </div>
       {/* 列表 */}
       <div className='posts_list'>
         {listData?.length > 0 &&

@@ -68,7 +68,12 @@ const Categories = () => {
               onClick={() => {
                 navigate(
                   `/${routerPath.categories}/${routerPath.categoryPostsPage}?id=${item.id}`,
-                  {}
+                  {
+                    state: {
+                      categoryId: item.id,
+                      categoryName: item.name
+                    }
+                  }
                 );
               }}
             >
