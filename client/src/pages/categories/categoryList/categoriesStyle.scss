@@ -6,8 +6,13 @@
 
   // .categories_list {
   // }
-  // .categories_item {
-  // }
+  .categories_item {
+    cursor: pointer;
+    transition: color 0.3s ease;
+    &:hover p {
+      color: $main-color;
+    }
+  }
   .categories_item_title {
     font-size: 1.5rem;
     font-style: italic;
