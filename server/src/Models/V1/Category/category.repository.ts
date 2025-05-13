@@ -4,7 +4,7 @@ import { MysqlProvider } from 'src/Providers/Database/DatabaseMysql/mysql.provid
 import { GetCategoryPostListReq } from './Dto/get.category.post.list.dto';
 
 import { GetCategoryListInterface } from './InterFace/get.category.list.interface';
-import { GetCategoryPostListInterface } from './Interface/get.category.post.list.interface';
+import { GetCategoryPostListInterface } from './InterFace/get.category.post.list.interface';
 
 @Injectable()
 export class CategoryRepository {
