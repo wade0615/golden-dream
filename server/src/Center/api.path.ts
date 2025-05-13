@@ -38,6 +38,13 @@ const posts = {
   getPostById: `/getPostById`
 };
 
+const category = {
+  /** 取得分類列表 */
+  getCategoryList: `/getCategoryList`,
+  /** 取得分類文章列表 */
+  getCategoryPostList: `/getCategoryPostList`
+};
+
 const backStage = {
   posts: {
     /** 取得後台文章列表 */
@@ -65,6 +72,7 @@ export default {
   common,
   auth,
   posts,
+  category,
   backStage,
   tso
 };

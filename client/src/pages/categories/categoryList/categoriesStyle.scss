@@ -1,0 +1,17 @@
+@import '../../../styles/defaultStyle.scss';
+
+#categories.categories_container {
+  position: relative;
+  padding: 10rem;
+
+  // .categories_list {
+  // }
+  // .categories_item {
+  // }
+  .categories_item_title {
+    font-size: 1.5rem;
+    font-style: italic;
+    color: $base-font-color;
+    margin-bottom: 1rem;
+  }
+}

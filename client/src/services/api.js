@@ -4,6 +4,7 @@ import auth from './auth';
 import test from './test';
 import posts from './posts';
 import common from './common';
+import category from './category';
 
 import backStage from './backStage';
 
@@ -12,6 +13,7 @@ export default {
   auth,
   test,
   posts,
+  category,
   common,
   backStage
 };
