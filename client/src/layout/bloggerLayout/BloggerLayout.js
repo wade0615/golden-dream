@@ -23,6 +23,61 @@ const _EHS = new ExceptionHandleService({
   _NOTICE: ''
 });
 
+/** Nav */
+function BloggerLayoutNav() {
+  const [isActive, setIsActive] = useState(false); // 用於管理 navbar 的狀態
+  useEffect(() => {
+    let lastScrollTop = 0;
+
+    const handleScroll = () => {
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+
+      // 根據滾動方向更新狀態
+      if (scrollTop > lastScrollTop) {
+        setIsActive(true); // 向下滾動時設為 active
+      } else {
+        setIsActive(false); // 向上滾動時移除 active
+      }
+      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // 防止負值
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  return (
+    <nav className={`blogger_layout_nav_menu` + (isActive ? ' isActive' : '')}>
+      <Navbars
+        brand='Gorgeous Wade'
+        sideNavTitle='Gorgeous Wade'
+        subPath={[
+          {
+            path: routerPath.posts,
+            title: '文章',
+            icon: ''
+          },
+          // {
+          //   path: routerPath.timeline,
+          //   title: '時間軸',
+          //   icon: ''
+          // },
+          // {
+          //   path: routerPath.categories,
+          //   title: '分類',
+          //   icon: ''
+          // },
+          {
+            path: routerPath.about,
+            title: '關於我',
+            icon: ''
+          }
+        ]}
+      />
+    </nav>
+  );
+}
+
 /* 基本樣式： 側邊欄 + 上部使用者導覽 + 名稱 */
 function BloggerLayout({ children, bannerHeight }) {
   const location = useLocation();
@@ -52,39 +107,15 @@ function BloggerLayout({ children, bannerHeight }) {
   return (
     <div id='blogger_layout'>
       {/* Side Menu */}
-      <div className='blogger_layout_side_menu'>
-        <Navbars
-          brand='Gorgeous Wade'
-          sideNavTitle='Gorgeous Wade'
-          subPath={[
-            {
-              path: routerPath.posts,
-              title: '文章',
-              icon: ''
-            },
-            // {
-            //   path: routerPath.timeline,
-            //   title: '時間軸',
-            //   icon: ''
-            // },
-            // {
-            //   path: routerPath.categories,
-            //   title: '分類',
-            //   icon: ''
-            // },
-            {
-              path: routerPath.about,
-              title: '關於我',
-              icon: ''
-            }
-          ]}
-        />
-      </div>
+      <BloggerLayoutNav />
       <div
         className='blogger_layout_banner'
         style={{
           height: currentRoute?.path?.length > 1 ? '50vh' : `${bannerHeight}vh`,
-          backgroundImage: `url(https://storage.cloud.google.com/personal_public/blog/iceland.webp)`
+          backgroundImage: `url(${
+            currentRoute?.bannerImg ??
+            'https://storage.cloud.google.com/personal_public/blog/iceland.webp'
+          })`
         }}
       >
         <div className='blogger_layout_banner_intro'>

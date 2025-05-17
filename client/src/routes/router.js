@@ -16,6 +16,11 @@ import { RedirectUrl } from 'pages/redirectUrl';
 
 import { BloggerLayout, BackStageLayout } from 'layout';
 import { PersonOutlineIcon } from 'assets/icons';
+import HomeBGI from 'assets/images/_DSC2436.webp';
+import PostListBGI from 'assets/images/_DSC1080.webp';
+import PostPageBGI from 'assets/images/_DSC2150.webp';
+import AboutBGI from 'assets/images/_DSC1820.webp';
+import CategoryBGI from 'assets/images/_DSC2740.webp';
 
 // import AUTH_CODE from 'config/auth.code.config';
 import localStorageUtil from 'utils/localStorageUtil';
@@ -75,7 +80,8 @@ export const routerConfig = [
         // element: <Home />,
         element: <PostList />,
         pageTitle: '首頁', // 可以添加首頁的標題
-        tooltip: <p>首頁喔</p>
+        tooltip: <p>首頁喔</p>,
+        bannerImg: HomeBGI // 首頁的背景圖片
       },
       /**
        ** posts 文章首頁列表
@@ -101,7 +107,8 @@ export const routerConfig = [
             pageTitle: '文章列表',
             element: <PostList />,
             authCode: '',
-            subPath: [routerPath.postPage] // 子路由的陣列
+            subPath: [routerPath.postPage], // 子路由的陣列
+            bannerImg: PostListBGI
           },
           {
             path: routerPath.postPage,
@@ -111,7 +118,8 @@ export const routerConfig = [
             hiddenFromNav: true,
             breadcrumbParentPath: routerPath.postList, // 前一層的頁面路由，用於麵包屑
             breadcrumbParentTitle: '文章列表', // 前一層的頁面標題，用於麵包屑
-            hiddenAsideCard: true // 是否隱藏側邊欄小卡
+            hiddenAsideCard: true, // 是否隱藏側邊欄小卡
+            bannerImg: PostPageBGI
           }
         ]
       },
@@ -152,7 +160,8 @@ export const routerConfig = [
             pageTitle: '分類列表',
             element: <CategoryList />,
             authCode: '',
-            subPath: [routerPath.categoryPostsPage] // 子路由的陣列
+            subPath: [routerPath.categoryPostsPage], // 子路由的陣列
+            bannerImg: CategoryBGI
           },
           {
             path: routerPath.categoryPostsPage,
@@ -161,7 +170,8 @@ export const routerConfig = [
             authCode: '',
             hiddenFromNav: true,
             breadcrumbParentPath: routerPath.categoryList, // 前一層的頁面路由，用於麵包屑
-            breadcrumbParentTitle: '分類列表' // 前一層的頁面標題，用於麵包屑
+            breadcrumbParentTitle: '分類列表', // 前一層的頁面標題，用於麵包屑
+            bannerImg: CategoryBGI
           }
         ]
       },
@@ -176,7 +186,8 @@ export const routerConfig = [
         sidebarIcon: <PersonOutlineIcon color='white' size='24' />, // 手機版側邊欄中對應此路由的圖標
         pageTitle: '關於我', // 此路由的頁面標題
         shortTitle: '關於我', // 此路由的短標題
-        authCode: '' // 權限代碼
+        authCode: '', // 權限代碼
+        bannerImg: AboutBGI // 首頁的背景圖片
       }
       /**
        ** 會員管理

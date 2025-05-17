@@ -6,6 +6,20 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  .blogger_layout_nav_menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    transition: transform 0.3s ease;
+    background: $base-bg-color;
+    opacity: 0.85;
+    transform: translateY(0);
+    &.isActive {
+      transform: translateY(-100%);
+    }
+  }
   .blogger_layout_side_menu {
     position: sticky;
     top: 0;
@@ -30,7 +44,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100%;
+      height: 70%;
       color: $base-font-color;
       h1 {
         font-size: 2.5rem;
