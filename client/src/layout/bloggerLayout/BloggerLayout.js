@@ -112,7 +112,10 @@ function BloggerLayout({ children, bannerHeight }) {
         className='blogger_layout_banner'
         style={{
           height: currentRoute?.path?.length > 1 ? '50vh' : `${bannerHeight}vh`,
-          backgroundImage: `url(https://storage.cloud.google.com/personal_public/blog/iceland.webp)`
+          backgroundImage: `url(${
+            currentRoute?.bannerImg ??
+            'https://storage.cloud.google.com/personal_public/blog/iceland.webp'
+          })`
         }}
       >
         <div className='blogger_layout_banner_intro'>
