@@ -6,7 +6,9 @@ export class TelegramService implements OnModuleInit {
   private bot: TelegramBot;
 
   onModuleInit() {
-    this.bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
+    this.bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, {
+      polling: true
+    });
 
     // 監聽收到的訊息
     this.bot.on('message', (msg) => {
