@@ -3,6 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { MysqlProvider } from 'src/Providers/Database/DatabaseMysql/mysql.provider';
 import { TSO_Repository } from './tso.repository';
 
+import { TelegramService } from 'src/Providers/Telegram/telegram.service';
+
 const Parser = require('rss-parser'); // 使用 require 導入
 
 import moment = require('moment-timezone');
@@ -11,7 +13,8 @@ import moment = require('moment-timezone');
 export class TSO_Service {
   constructor(
     private internalConn: MysqlProvider,
-    private tsoRepository: TSO_Repository
+    private tsoRepository: TSO_Repository,
+    private telegramService: TelegramService
   ) {}
 
   /**
@@ -100,6 +103,10 @@ export class TSO_Service {
 
   tsoSchedule = async (config) => {
     let connection;
+    let BBCNews = [];
+    let CNNNews = [];
+    let NYTNews = [];
+    let tsoNews = [];
     try {
       const date = moment().tz(process.env.TIME_ZONE_UTC);
       console.log('tsoSchedule', date);
@@ -129,16 +136,16 @@ export class TSO_Service {
       ];
 
       /** 取得 BBC 新聞 */
-      const BBCNews = await this.getBBC(keywords);
+      BBCNews = await this.getBBC(keywords);
       console.log('tsoSchedule BBCNews', BBCNews.length);
       /** 取得 CNN 新聞 */
-      const CNNNews = await this.getCNN(keywords);
+      CNNNews = await this.getCNN(keywords);
       console.log('tsoSchedule CNNNews', CNNNews.length);
       /** 取得 NYT 新聞 */
-      const NYTNews = await this.getNYT(keywords);
+      NYTNews = await this.getNYT(keywords);
       console.log('tsoSchedule NYTNews', NYTNews.length);
 
-      const tsoNews = BBCNews.concat(CNNNews).concat(NYTNews);
+      tsoNews = BBCNews.concat(CNNNews).concat(NYTNews);
 
       connection = await this.internalConn.getConnection();
       await connection.beginTransaction();
@@ -156,6 +163,17 @@ export class TSO_Service {
       if (connection) {
         await connection.release();
       }
+
+      const chatId = process.env.CHAT_ID;
+      if (!chatId) {
+        throw new Error('CHAT_ID environment variable is not set');
+      }
+      const tgMsg = 
+        `台海觀測站新聞搜集完成時間： ${moment().tz(process.env.TIME_ZONE_UTC).format('YYYY-MM-DD HH:mm:ss')}\n` +
+        `總共新增新聞數: ${tsoNews.length}\n` +
+        `BBC News: ${BBCNews.length}, CNN News: ${CNNNews.length}, NYT News: ${NYTNews.length}`;
+      // 發送 Telegram 訊息
+      await this.telegramService.sendMessage(chatId, tgMsg)
     }
   };
 }

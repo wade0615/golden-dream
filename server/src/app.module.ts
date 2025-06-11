@@ -36,6 +36,7 @@ import { PostsModule } from './Models/V1/Posts/posts.module';
 import { TestModule } from './Models/V1/Test/test.module';
 import { TSO_Module } from './Models/V1/TSO/tso.module';
 
+import { TelegramService } from 'src/Providers/Telegram/telegram.service';
 import { ScheduleService } from 'src/Service/Basic/schedule.service';
 import { LogService } from 'src/Utils/log.service';
 
@@ -94,6 +95,7 @@ if (envNow === 'DEV' || envNow === 'STAGE' || envNow === 'PROD') {
   providers: [
     AppService,
     LogService,
+    TelegramService,
     ScheduleService,
     BatchScheduleService,
     TSO_ScheduleService,
