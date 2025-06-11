@@ -21,7 +21,12 @@ export class RequestIdMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction): Promise<void> {
     res.setHeader(
       'Content-Security-Policy',
-      "default-src 'self'; connect-src 'self' https://wade-personal.de.r.appspot.com https://gorgeous-wade.com https://www.taiwan-strait-observatory.com; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; script-src-elem 'self' https://www.googletagmanager.com https://www.google-analytics.com;"
+      `
+      default-src 'self'; 
+      connect-src 'self' https://wade-personal.de.r.appspot.com https://gorgeous-wade.com https://www.taiwan-strait-observatory.com https://taiwan-strait-observatory.vercel.app https://taiwan-strait-observatory-wades-projects-1587a432.vercel.app/;
+      script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; 
+      script-src-elem 'self' https://www.googletagmanager.com https://www.google-analytics.com;
+      `
     );
 
     res.setHeader('X-Request-ID', v4());
