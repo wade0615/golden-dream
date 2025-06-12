@@ -1,5 +1,5 @@
-import { Injectable, NestMiddleware, Logger } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
+import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
+import { NextFunction, Request, Response } from 'express';
 
 const NS_TO_MS = 1e6;
 const MS_TO_S = 1e3;
@@ -7,6 +7,9 @@ const getDurationInMilliseconds = (start: bigint): number => {
   return Number(start) / NS_TO_MS;
 };
 
+/**
+ * 請求紀錄器中介層，用於記錄所有請求所花費的時間的紀錄
+ */
 @Injectable()
 export class RequestLoggerMiddleware implements NestMiddleware {
   private readonly logger = new Logger(RequestLoggerMiddleware.name);
