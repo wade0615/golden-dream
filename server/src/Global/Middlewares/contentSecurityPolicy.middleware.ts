@@ -5,6 +5,7 @@ import { v4 } from 'uuid';
 /**
  * HTTP 內容安全政策 (Content Security Policy) 中介層
  * 用於設定 HTTP 響應標頭，增強應用程式的安全性。
+ * 已轉移去統一使用 main.ts Helmet 套件來處理內容安全政策。
  */
 @Injectable()
 export class ContentSecurityPolicyMiddleware implements NestMiddleware {

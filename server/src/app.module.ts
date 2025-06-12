@@ -14,9 +14,9 @@ import { ConfigApiModule } from './Config/Api/config.module';
 import { ConfigAppModule } from './Config/App/config.module';
 
 // Middleware
-import { ContentSecurityPolicyMiddleware } from './Global/Middlewares/contentSecurityPolicy.middleware';
 import { RequestIdMiddleware } from './Global/Middlewares/request-id.middleware';
 import { RequestLoggerMiddleware } from './Global/Middlewares/request-logger.middleware';
+// import { ContentSecurityPolicyMiddleware } from './Global/Middlewares/contentSecurityPolicy.middleware';
 
 // Basic Service Setting
 import { RedisModule } from './Providers/Database/Redis/redis.module';
@@ -107,7 +107,7 @@ if (envNow === 'DEV' || envNow === 'STAGE' || envNow === 'PROD') {
 export class AppModule {
   configure(consumer: MiddlewareConsumer): void {
     consumer
-      .apply(RequestLoggerMiddleware, RequestIdMiddleware, ContentSecurityPolicyMiddleware)
+      .apply(RequestLoggerMiddleware, RequestIdMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }

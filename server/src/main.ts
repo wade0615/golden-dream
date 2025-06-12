@@ -35,35 +35,34 @@ async function bootstrap(): Promise<void> {
   // 建立 NestJS 應用程式
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  // 設定 helmet 內容安全政策，允許使用圖片
+  // 設定 Helmet 內容安全政策
   app.use(
     helmet.contentSecurityPolicy({
       useDefaults: true,
       directives: {
-        'default-src': ["'self'"],
-        'script-src': [
+        defaultSrc: ["'self'"],
+        connectSrc: [
+          "'self'",
+          'https://my-app-684523256629.asia-east1.run.app',
+          'https://gorgeous-wade.com',
+          'https://taiwan-strait-observatory.vercel.app',
+          'https://www.taiwan-strait-observatory.com',
+          'https://www.googletagmanager.com',
+          'https://www.google-analytics.com'
+        ],
+        scriptSrc: [
           "'self'",
           'https://www.googletagmanager.com',
           'https://www.google-analytics.com'
         ],
-        'script-src-elem': [
+        scriptSrcElem: [
           "'self'",
           'https://www.googletagmanager.com',
           'https://www.google-analytics.com'
         ],
-        'img-src': [
-          "'self'",
-          'https: data: blob:',
-          'data:',
-          'blob:',
-          'https://www.google-analytics.com',
-          'https://stats.g.doubleclick.net'
-        ],
-        'connect-src': [
-          "'self'",
-          'https://www.google-analytics.com',
-          'https://www.googletagmanager.com'
-        ]
+        fontSrc: ['*'],
+        styleSrc: ['*', "'unsafe-inline'"],
+        imgSrc: ['*', 'data:']
       }
     })
   );
