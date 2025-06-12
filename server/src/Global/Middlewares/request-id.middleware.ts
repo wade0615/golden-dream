@@ -4,39 +4,24 @@ import { PermissionWhite } from 'src/Config/White/permission.white';
 import { PermissionRoute } from 'src/Config/api.permission';
 import config from 'src/Config/config';
 import configError from 'src/Config/error.message.config';
-import { AuthService } from 'src/Models/V1/Auth/auth.service';
-import { RedisService } from 'src/Providers/Database/Redis/redis.service';
-import { v4 } from 'uuid';
 import { CustomerException } from '../ExceptionFilter/global.exception.handle.filter';
 const crypto = require('crypto');
+
 /**
  * 權限管理中介層
  */
 @Injectable()
 export class RequestIdMiddleware implements NestMiddleware {
   constructor(
-    private redisService: RedisService,
-    private authService: AuthService
   ) {}
   async use(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const contentSecurityPolicy = `
-      default-src 'self'; 
-      connect-src 'self' https://wade-personal.de.r.appspot.com https://gorgeous-wade.com https://www.taiwan-strait-observatory.com https://taiwan-strait-observatory.vercel.app https://taiwan-strait-observatory-wades-projects-1587a432.vercel.app/;
-      script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; 
-      script-src-elem 'self' https://www.googletagmanager.com https://www.google-analytics.com;
-    `
-      .trim()
-      .replace(/\s{2,}/g, ' ');
-
-    res.setHeader('Content-Security-Policy', contentSecurityPolicy);
-
-    res.setHeader('X-Request-ID', v4());
+    // 取得 API 路徑
     const urlPath = req.originalUrl;
     const apiPath = urlPath.split('/');
 
     // 白名單驗證
-    // const isValid = false; // 先永遠不驗證，待串接完成後再加上去
     const isValid = await this._headerValid(apiPath);
+    // const isValid = false; // 永遠不驗證
 
     if (isValid) {
       const accessToken = req.headers.authorization;
@@ -64,29 +49,6 @@ export class RequestIdMiddleware implements NestMiddleware {
         throw new CustomerException(configError._200009, HttpStatus.FORBIDDEN);
       }
 
-      // get auth member info from redis
-      // const getUserInfo = await this.redisService.getCacheData(
-      //   `${config.REDIS_KEY.TOKEN}:${pareToken}`
-      // );
-
-      // if (!getUserInfo?.authMemberId) {
-      //   // user token expired => refresh token
-      //   throw new CustomerException(configError._200009, HttpStatus.FORBIDDEN);
-      // }
-
-      // const getUserInfoPermission = getUserInfo?.authPermission || [];
-
-      // if (!getUserInfoPermission?.length || getUserInfoPermission?.isAdmin) {
-      //   // this user has no permission also not admin
-      //   throw new CustomerException(configError._200006, HttpStatus.OK);
-      // }
-
-      // Admin user no need to check permission
-      // if (!getUserInfoPermission?.isAdmin) {
-      //   // TODO: 暫時註解API權限
-      //   await this._permissionCheck(apiPath, getUserInfoPermission);
-      // }
-
       // body add user info fot log tracking
       req.body.iam = { authMemberId: memberId ?? 'system' };
       req.headers['authMemberId'] = memberId;
@@ -98,6 +60,11 @@ export class RequestIdMiddleware implements NestMiddleware {
     }
   }
 
+  /**
+   * 白名單驗證
+   * @param apiPath API 路徑
+   * @returns 是否通過驗證，true: 需要驗證，false: 不需要驗證
+   */
   async _headerValid(apiPath): Promise<boolean> {
     // white list no need token valid
     if (PermissionWhite.includes(`${apiPath[2]}/${apiPath[3]}`)) {
@@ -112,6 +79,12 @@ export class RequestIdMiddleware implements NestMiddleware {
     return true;
   }
 
+  /**
+   * API 路徑權限驗證
+   * @param apiPath API 路徑
+   * @param permissionList 權限列表
+   * @returns 是否通過驗證，true: 通過驗證，false: 不通過驗證
+   */
   async _permissionCheck(apiPath, permissionList): Promise<boolean> {
     const currRoute = `${apiPath[2]}/${apiPath[3]}`;
     const currPermission = PermissionRoute[currRoute] ?? [];
@@ -127,6 +100,11 @@ export class RequestIdMiddleware implements NestMiddleware {
     return true;
   }
 
+  /**
+   * 解析 token
+   * @param bearerHeader token
+   * @returns token
+   */
   async _credentialParser(bearerHeader: string): Promise<string> {
     let parts = bearerHeader?.split(' ') ?? [];
     if (parts?.length === 2 && parts?.[0] === 'Bearer') {
