@@ -1,7 +1,6 @@
 import {
   CallHandler,
   ExecutionContext,
-  HttpStatus,
   Injectable,
   NestInterceptor
 } from '@nestjs/common';
@@ -24,11 +23,7 @@ export default class ApiInterceptor implements NestInterceptor {
   constructor(private readonly logService: LogService) {}
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req = context.switchToHttp().getRequest();
-    const resp = context.switchToHttp().getResponse();
-    if (req.method === 'POST') {
-      resp.statusCode = HttpStatus.OK;
-    }
-    const now = Date.now();
+    // const resp = context.switchToHttp().getResponse();
 
     return next.handle().pipe(
       map((result) => {

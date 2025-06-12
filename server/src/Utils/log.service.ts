@@ -8,17 +8,29 @@ const path = require('path');
 @Injectable()
 export class LogService {
   /**
-   * 印 log 在本機
+   * 印 log 在本機，並且寫入到 logger 資料夾，屬於建立本地 log 日誌，方便 debug
    * @param req
    * @param result
    */
   async printLogToLocal(req, result) {
-    const now = Date.now();
-    const date = UTCToTimeString(now).split(' ')[0];
-    const folderPath = path.join(__dirname, 'logger');
-
-    if (!fs.existsSync(folderPath)) {
-      fs.mkdirSync(folderPath, { recursive: true });
+    try {
+      const now = Date.now();
+      const date = UTCToTimeString(now).split(' ')[0];
+      const folderPath = path.join(__dirname, 'logger');
+      const logFilePath = path.join(folderPath, `${date}.log`);
+  
+      // 檢查並建立日誌資料夾
+      if (!fs.existsSync(folderPath)) {
+        fs.mkdirSync(folderPath, { recursive: true });
+      }
+  
+      // 定義日誌內容
+      const logContent = `[${date}] ${JSON.stringify(req)} ${JSON.stringify(result)}\n`;
+  
+      // 寫入日誌
+      fs.appendFileSync(logFilePath, logContent);
+    } catch (error) {
+      console.error('Failed to write local log:', error);
     }
   }
 
