@@ -8,7 +8,7 @@ const path = require('path');
 @Injectable()
 export class LogService {
   /**
-   * 印 log 在本機，並且寫入到 logger 資料夾，屬於建立本地 log 日誌，方便 debug
+   * 寫入 log 紀錄到 logger 資料夾，屬於建立本地 log 日誌，方便 debug
    * @param req
    * @param result
    */

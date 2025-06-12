@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import config from 'src/Config/config';
 import { ELK_LEVEL } from 'src/Definition/Enum/elk.level.enum';
 import { STATE_CODE } from 'src/Definition/Enum/state.code.enum';
 import { ELKLogObj } from 'src/Definition/Interface/Log/print.log.elk.third.party.interface';
@@ -18,6 +17,10 @@ export interface Response<T> {
   message: string;
   result: T;
 }
+
+/**
+ * 全域攔截器，用於攔截所有 API 請求，並且印 log 到 local 資料夾，以及印 ELK log
+ */
 @Injectable()
 export default class ApiInterceptor implements NestInterceptor {
   constructor(private readonly logService: LogService) {}
@@ -27,21 +30,10 @@ export default class ApiInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       map((result) => {
-        //印 log 在本機
-        if (config.LOGGER_SWITCH) {
-          this.logService.printLogToLocal(req, result);
-        }
+        // 印 log 在 local 資料夾
+        this.logService.printLogToLocal(req, result);
 
-        // 印 log 在 cmd
-        if (config.LOGSWITCH) {
-          const log = {
-            apiPath: req.originalUrl,
-            request: req.body,
-            response: result
-          };
-          console.log(JSON.stringify(log));
-        }
-
+        // ELK 印 log 在 cmd
         const elkLogObj = <ELKLogObj>{};
         elkLogObj.status = 200;
         elkLogObj.code = STATE_CODE.SUCCESS;

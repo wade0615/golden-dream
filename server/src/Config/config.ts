@@ -27,8 +27,6 @@ export default {
     USER_NAME: 'crm',
     PWD: 'o^D9lmN'
   },
-  LOGGER_SWITCH: true, // TODO 要再移至.env
-  LOGSWITCH: false, // TODO 要再移至.env
   _HASH_METHOD: {
     _SHA256: 'SHA256',
     _HEX: 'hex',
