@@ -7,10 +7,10 @@ import { MysqlProvider } from 'src/Providers/Database/DatabaseMysql/mysql.provid
 
 import config from 'src/Config/config';
 import configError from 'src/Config/error.message.config';
-import { RedisService } from 'src/Providers/Database/Redis/redis.service';
-import { sha256Hash } from 'src/Utils/tools';
-import { ConfigApiService } from '../../../Config/Api/config.service';
-import { GetUserInfoRes, LoginResDto } from './Dto';
+// import { RedisService } from 'src/Providers/Database/Redis/redis.service';
+// import { sha256Hash } from 'src/Utils/tools';
+// import { ConfigApiService } from '../../../Config/Api/config.service';
+import { LoginResDto } from './Dto';
 import { GetUserInfoInterface } from './Interface/get.user.info.interface';
 import { AuthRepository } from './auth.repository';
 
@@ -23,8 +23,8 @@ const crypto = require('crypto');
 export class AuthService {
   constructor(
     private authRepository: AuthRepository,
-    private apiConfigService: ConfigApiService,
-    private redisService: RedisService,
+    // private apiConfigService: ConfigApiService,
+    // private redisService: RedisService,
     private readonly jwtService: JwtService,
     private internalConn: MysqlProvider
   ) {}
@@ -250,102 +250,102 @@ export class AuthService {
    * @param req
    * @returns
    */
-  async refresh(headers): Promise<LoginResDto> {
-    const refreshToken = headers['refresh-token'];
+  // async refresh(headers): Promise<LoginResDto> {
+  //   const refreshToken = headers['refresh-token'];
 
-    const getUserInfo = await this.redisService.getCacheData(
-      `${config.REDIS_KEY.RFTOKEN}:${refreshToken}`
-    );
+  //   const getUserInfo = await this.redisService.getCacheData(
+  //     `${config.REDIS_KEY.RFTOKEN}:${refreshToken}`
+  //   );
 
-    // refresh token expired => out
-    if (!getUserInfo?.memberId)
-      throw new CustomerException(configError._200008, HttpStatus.FORBIDDEN);
+  //   // refresh token expired => out
+  //   if (!getUserInfo?.memberId)
+  //     throw new CustomerException(configError._200008, HttpStatus.FORBIDDEN);
 
-    const memberId = getUserInfo?.memberId;
-    const name = getUserInfo?.name;
+  //   const memberId = getUserInfo?.memberId;
+  //   const name = getUserInfo?.name;
 
-    // 產生新 at
-    const accessToken = await this._getToken(name);
+  //   // 產生新 at
+  //   const accessToken = await this._getToken(name);
 
-    // 取得權限
-    const getMemberRoleInfo = [];
+  //   // 取得權限
+  //   const getMemberRoleInfo = [];
 
-    const authItems = getMemberRoleInfo.map((per) => {
-      return per.permissionCode;
-    });
+  //   const authItems = getMemberRoleInfo.map((per) => {
+  //     return per.permissionCode;
+  //   });
 
-    // 產生新 rt
-    const rToken = sha256Hash(
-      getUserInfo?.name,
-      process.env.JWT_REFRESH_TOKEN_SECRET
-    );
+  //   // 產生新 rt
+  //   const rToken = sha256Hash(
+  //     getUserInfo?.name,
+  //     process.env.JWT_REFRESH_TOKEN_SECRET
+  //   );
 
-    // 重新存入at
-    await this.redisService.setCacheUserInfo(
-      {
-        authMemberId: memberId,
-        name: name,
-        account: getUserInfo.act,
-        password: getUserInfo.pwd,
-        isAdmin: getUserInfo.isAdmin,
-        homePage: getUserInfo.homePage,
-        token: accessToken,
-        authPermission: [...authItems]
-      },
-      Number(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME) // 2 hours
-    );
+  //   // 重新存入at
+  //   await this.redisService.setCacheUserInfo(
+  //     {
+  //       authMemberId: memberId,
+  //       name: name,
+  //       account: getUserInfo.act,
+  //       password: getUserInfo.pwd,
+  //       isAdmin: getUserInfo.isAdmin,
+  //       homePage: getUserInfo.homePage,
+  //       token: accessToken,
+  //       authPermission: [...authItems]
+  //     },
+  //     Number(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME) // 2 hours
+  //   );
 
-    // 因有使用的話要遞延，所以產新的 48 hr 的 rt
-    await this.redisService.setRefreshToken(
-      {
-        memberId: getUserInfo?.memberId,
-        name: getUserInfo?.name,
-        homePage: getUserInfo.homePage,
-        account: getUserInfo.act,
-        token: rToken
-      },
-      Number(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME) // 48 hours
-    );
+  //   // 因有使用的話要遞延，所以產新的 48 hr 的 rt
+  //   await this.redisService.setRefreshToken(
+  //     {
+  //       memberId: getUserInfo?.memberId,
+  //       name: getUserInfo?.name,
+  //       homePage: getUserInfo.homePage,
+  //       account: getUserInfo.act,
+  //       token: rToken
+  //     },
+  //     Number(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME) // 48 hours
+  //   );
 
-    // 刪除舊的 rt
-    this.redisService.delCacheData(
-      `${config.REDIS_KEY.RFTOKEN}:${refreshToken}`
-    );
+  //   // 刪除舊的 rt
+  //   this.redisService.delCacheData(
+  //     `${config.REDIS_KEY.RFTOKEN}:${refreshToken}`
+  //   );
 
-    const loginResp = {
-      accessToken: accessToken,
-      refreshToken: rToken
-    };
+  //   const loginResp = {
+  //     accessToken: accessToken,
+  //     refreshToken: rToken
+  //   };
 
-    return loginResp;
-  }
+  //   return loginResp;
+  // }
 
   /**
    * 取得使用者資訊
    * @param headers
    * @returns
    */
-  async getUserInfo(headers): Promise<GetUserInfoRes> {
-    const accessToken = headers.authorization;
+  // async getUserInfo(headers): Promise<GetUserInfoRes> {
+  //   const accessToken = headers.authorization;
 
-    let parts = accessToken.split(' ');
+  //   let parts = accessToken.split(' ');
 
-    const getUserInfo = await this.redisService.getCacheData(
-      `${config.REDIS_KEY.TOKEN}:${parts[1]}`
-    );
+  //   const getUserInfo = await this.redisService.getCacheData(
+  //     `${config.REDIS_KEY.TOKEN}:${parts[1]}`
+  //   );
 
-    const name = getUserInfo?.name;
-    const authItem = getUserInfo?.authPermission;
+  //   const name = getUserInfo?.name;
+  //   const authItem = getUserInfo?.authPermission;
 
-    const loginResp = {
-      name: name,
-      authItems: [...authItem],
-      homePage: getUserInfo?.homePage ?? 'home',
-      isAdmin: getUserInfo?.isAdmin
-    };
+  //   const loginResp = {
+  //     name: name,
+  //     authItems: [...authItem],
+  //     homePage: getUserInfo?.homePage ?? 'home',
+  //     isAdmin: getUserInfo?.isAdmin
+  //   };
 
-    return loginResp;
-  }
+  //   return loginResp;
+  // }
 
   /**
    * 登出
