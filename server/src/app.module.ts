@@ -51,21 +51,20 @@ import { MysqlModule } from 'src/Providers/Database/DatabaseMysql/mysql.module';
 const moduleImport = [
   ConfigApiModule,
   ConfigAppModule,
-  // ConfigKafkaModule,
   MulterModule.register({
     storage: memoryStorage()
   }),
-  TestModule,
-  PostsModule,
-  CategoryModule,
-  AuthModule,
-  CommonModule,
-  AuthModule,
-  BackStagePostsModule,
-  BackStageCategoryModule,
   RedisModule,
   MysqlModule,
+  TestModule,
+  CommonModule,
+  AuthModule,
+  PostsModule,
+  CategoryModule,
+  BackStagePostsModule,
+  BackStageCategoryModule,
   TSO_Module
+  // ConfigKafkaModule,
   // FirebaseModule
   // SmsModule,
   // MailModule,
