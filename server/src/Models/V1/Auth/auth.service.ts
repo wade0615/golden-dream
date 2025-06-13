@@ -30,33 +30,6 @@ export class AuthService {
   ) {}
 
   /**
-   * [old]驗證User
-   * @param account
-   * @returns
-   */
-  async _validateUser(req): Promise<GetUserInfoInterface> {
-    const getInfoFromActResp = await this.authRepository.getUserInfo(req.act);
-    console.log(getInfoFromActResp?.disable);
-    if (!getInfoFromActResp?.disable) {
-      throw new CustomerException(configError._220026, HttpStatus.OK);
-    }
-
-    const saltHashPassword = await cryptoPwd(
-      req?.pwd,
-      getInfoFromActResp?.salt
-    );
-
-    if (
-      !getInfoFromActResp?.account ||
-      getInfoFromActResp?.pswd != saltHashPassword
-    ) {
-      throw new CustomerException(configError._210001, HttpStatus.OK);
-    }
-
-    return getInfoFromActResp;
-  }
-
-  /**
    * 驗證User
    * @param req
    * @returns
