@@ -17,13 +17,13 @@ export class MailProvider {
         port: 587,
         secure: false,
         auth: {
-          user: 'AKIA4QFG5ZIJO5UQJ76D',
-          pass: 'BHYlu5bWzVwLTHakqSgow0/sGfkroIRrbS6egBTbxmol'
+          user: '',
+          pass: ''
         }
       });
 
       await transporter.sendMail({
-        from: `CRM 系統通知 <services@ieatcrm.com>`,
+        from: `系統通知 <services@semple.com>`,
         to,
         subject: subject,
         html

@@ -9,6 +9,20 @@ import { validate } from 'class-validator';
 import configError from 'src/Config/error.message.config';
 import { CustomerException } from '../ExceptionFilter/global.exception.handle.filter';
 
+/**
+ * 全域 DTO 驗證 Pipe
+ * 用於驗證傳入的 DTO 是否符合定義的類型和約束
+ * 如果驗證失敗，則拋出自定義的 CustomerException
+ * @example
+ * @Global()
+ * @UsePipes(new GlobalDTOValidationPipe())
+ * export class AppController {
+ *   @Get()
+ *   getHello(@Body() body: CreateDto): string {
+ *     return `Hello ${body.name}`;
+ *   }
+ * }
+ */
 @Injectable()
 export class GlobalDTOValidationPipe implements PipeTransform<any> {
   async transform(value, { metatype }: ArgumentMetadata) {
