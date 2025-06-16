@@ -59,6 +59,26 @@ export class GlobalVariableService {
     return this.messageLimits[ip].count;
   }
 
+  // 設定定時器，在台灣時間 00:00 執行清理
+  private scheduleCleanup(): void {
+    const now = new Date();
+    const taiwanTime = new Date(now.getTime() + (8 * 60 * 60 * 1000)); // 轉換為台灣時間
+    const nextMidnight = new Date(taiwanTime);
+    nextMidnight.setHours(24, 0, 0, 0); // 設置為下一個 00:00
+    
+    // 計算距離下一個 00:00 的毫秒數
+    const timeUntilMidnight = nextMidnight.getTime() - taiwanTime.getTime();
+    
+    // 設置定時器，在台灣時間 00:00 執行清理
+    setTimeout(() => {
+      this.cleanupOldData();
+      // 設置之後每 24 小時執行一次
+      setInterval(() => {
+        this.cleanupOldData();
+      }, 24 * 60 * 60 * 1000);
+    }, timeUntilMidnight);
+  }
+
   // 清理過期數據
   private cleanupOldData(): void {
     const now = new Date();
@@ -76,8 +96,6 @@ export class GlobalVariableService {
 
   constructor() {
     // 每天凌晨執行清理
-    setInterval(() => {
-      this.cleanupOldData();
-    }, 24 * 60 * 60 * 1000);
+    this.scheduleCleanup();
   }
 }
