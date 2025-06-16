@@ -11,8 +11,8 @@ import { MessageLimitGuard } from 'src/Global/Guards/message-limit.guard';
 import configError from 'src/Config/error.message.config';
 import { CustomerException } from 'src/Global/ExceptionFilter/global.exception.handle.filter';
 
-@ApiTags('telegram')
-@Controller('telegram')
+@ApiTags('tg')
+@Controller('tg')
 export class Telegram_Controller {
   constructor(private readonly telegramService: Telegram_Service) {}
 
