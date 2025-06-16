@@ -14,6 +14,7 @@ import { ConfigApiModule } from './Config/Api/config.module';
 import { ConfigAppModule } from './Config/App/config.module';
 
 // Middleware
+import { GlobalVariableService } from './Global/GlobalVariable/global-variable';
 import { RequestIdMiddleware } from './Global/Middlewares/request-id.middleware';
 import { RequestLoggerMiddleware } from './Global/Middlewares/request-logger.middleware';
 // import { ContentSecurityPolicyMiddleware } from './Global/Middlewares/contentSecurityPolicy.middleware';
@@ -102,8 +103,10 @@ if (envNow === 'DEV' || envNow === 'STAGE' || envNow === 'PROD') {
     BatchScheduleService,
     TSO_ScheduleService,
     TSO_Service,
-    TSO_Repository
-  ]
+    TSO_Repository,
+    GlobalVariableService
+  ],
+  exports: [GlobalVariableService]
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer): void {
