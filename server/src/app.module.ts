@@ -14,6 +14,7 @@ import { ConfigApiModule } from './Config/Api/config.module';
 import { ConfigAppModule } from './Config/App/config.module';
 
 // Middleware
+import { GlobalVariableService } from './Global/GlobalVariable/global-variable';
 import { RequestIdMiddleware } from './Global/Middlewares/request-id.middleware';
 import { RequestLoggerMiddleware } from './Global/Middlewares/request-logger.middleware';
 // import { ContentSecurityPolicyMiddleware } from './Global/Middlewares/contentSecurityPolicy.middleware';
@@ -33,6 +34,7 @@ import { PostsModule as BackStagePostsModule } from './Models/V1/BackStage/Posts
 import { CategoryModule } from './Models/V1/Category/category.module';
 import { CommonModule } from './Models/V1/Common/common.module';
 import { PostsModule } from './Models/V1/Posts/posts.module';
+import { Telegram_Module } from './Models/V1/Telegram/telegram.module';
 import { TestModule } from './Models/V1/Test/test.module';
 import { TSO_Module } from './Models/V1/TSO/tso.module';
 
@@ -64,7 +66,8 @@ const moduleImport = [
   CategoryModule,
   BackStagePostsModule,
   BackStageCategoryModule,
-  TSO_Module
+  TSO_Module,
+  Telegram_Module
   // ConfigKafkaModule,
   // FirebaseModule
   // SmsModule,
@@ -102,8 +105,10 @@ if (envNow === 'DEV' || envNow === 'STAGE' || envNow === 'PROD') {
     TSO_ScheduleService,
     TSO_Service,
     TSO_Repository,
-    OpenAIService
-  ]
+    OpenAIService,
+    GlobalVariableService
+  ],
+  exports: [GlobalVariableService]
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer): void {
