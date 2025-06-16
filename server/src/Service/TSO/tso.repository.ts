@@ -51,7 +51,13 @@ export class TSO_Repository {
    */
   async getUnhandledNews(connection): Promise<any> {
     const sqlStr = `
-      SELECT News_ID, News_Title, News_Content, News_Link, News_IsoDate, News_Source 
+      SELECT 
+        News_ID newsID,
+        News_Title newsTitle,
+        News_Content newsContent,
+        News_Link newsLink,
+        News_IsoDate,
+        News_Source
       FROM tso_news 
       WHERE Is_Active = 1 AND Is_Processed = 0
     `;

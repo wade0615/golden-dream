@@ -36,6 +36,7 @@ import { PostsModule } from './Models/V1/Posts/posts.module';
 import { TestModule } from './Models/V1/Test/test.module';
 import { TSO_Module } from './Models/V1/TSO/tso.module';
 
+import { OpenAIService } from 'src/Providers/Openai/openai.service';
 import { TelegramService } from 'src/Providers/Telegram/telegram.service';
 import { ScheduleService } from 'src/Service/Basic/schedule.service';
 import { LogService } from 'src/Utils/log.service';
@@ -100,7 +101,8 @@ if (envNow === 'DEV' || envNow === 'STAGE' || envNow === 'PROD') {
     BatchScheduleService,
     TSO_ScheduleService,
     TSO_Service,
-    TSO_Repository
+    TSO_Repository,
+    OpenAIService
   ]
 })
 export class AppModule {

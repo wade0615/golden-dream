@@ -178,7 +178,7 @@ export class TSO_Service {
         `台海觀測站新聞搜集完成時間： ${moment()
           .tz(process.env.TIME_ZONE_UTC)
           .format('YYYY-MM-DD HH:mm:ss')}\n` +
-        `總共新增新聞數: ${tsoNews.length}\n` +
+        `總共抓到新聞數: ${tsoNews.length}\n` +
         `BBC News: ${BBCNews.length}, CNN News: ${CNNNews.length}, NYT News: ${NYTNews.length}`;
       // 發送 Telegram 訊息
       await this.telegramService.sendMessage(chatId, tgMsg);
@@ -191,7 +191,8 @@ export class TSO_Service {
    */
   tsoNewsHandleSchedule = async (config) => {
     let connection;
-    let unhandledNews = [];
+    let openaiHandledNewsCount = 0;
+    let isAboutTaiwanCount = 0;
     try {
       connection = await this.internalConn.getConnection();
       await connection.beginTransaction();
@@ -202,6 +203,12 @@ export class TSO_Service {
       );
 
       if (unhandledNews.length > 0) {
+        console.log(
+          'tsoNewsHandleSchedule unhandledNews',
+          unhandledNews.length
+        );
+        openaiHandledNewsCount = unhandledNews.length;
+
         let processedNews = [];
         // 處理新聞邏輯
         for (const news of unhandledNews) {
@@ -217,6 +224,7 @@ export class TSO_Service {
               newsLink: news.newsLink,
               isProcessed: true
             });
+            isAboutTaiwanCount++;
           }
         }
         await this.tsoRepository.updateHandledNews(connection, processedNews);
@@ -239,7 +247,7 @@ export class TSO_Service {
         `台海觀測站新聞處理完成時間： ${moment()
           .tz(process.env.TIME_ZONE_UTC)
           .format('YYYY-MM-DD HH:mm:ss')}\n` +
-        `總共處理新聞數: ${unhandledNews.length}`;
+        `總共處理新聞數: ${openaiHandledNewsCount}，共有 ${isAboutTaiwanCount} 條新聞與台灣相關。`;
       // 發送 Telegram 訊息
       await this.telegramService.sendMessage(chatId, tgMsg);
     }
