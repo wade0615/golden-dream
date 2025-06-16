@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { MysqlProvider } from 'src/Providers/Database/DatabaseMysql/mysql.provider';
 import { TSO_Repository } from './tso.repository';
 
+import { OpenAIService } from 'src/Providers/Openai/openai.service';
 import { TelegramService } from 'src/Providers/Telegram/telegram.service';
 
 const Parser = require('rss-parser'); // 使用 require 導入
@@ -14,7 +15,8 @@ export class TSO_Service {
   constructor(
     private internalConn: MysqlProvider,
     private tsoRepository: TSO_Repository,
-    private telegramService: TelegramService
+    private telegramService: TelegramService,
+    private openAIService: OpenAIService
   ) {}
 
   /**
@@ -101,7 +103,11 @@ export class TSO_Service {
     return NYTNews;
   };
 
-  tsoSchedule = async (config) => {
+  /**
+   * 台海觀測站新聞搜集排程
+   * @param config
+   */
+  tsoNewsCollectSchedule = async (config) => {
     let connection;
     let BBCNews = [];
     let CNNNews = [];
@@ -168,12 +174,74 @@ export class TSO_Service {
       if (!chatId) {
         throw new Error('CHAT_ID environment variable is not set');
       }
-      const tgMsg = 
-        `台海觀測站新聞搜集完成時間： ${moment().tz(process.env.TIME_ZONE_UTC).format('YYYY-MM-DD HH:mm:ss')}\n` +
+      const tgMsg =
+        `台海觀測站新聞搜集完成時間： ${moment()
+          .tz(process.env.TIME_ZONE_UTC)
+          .format('YYYY-MM-DD HH:mm:ss')}\n` +
         `總共新增新聞數: ${tsoNews.length}\n` +
         `BBC News: ${BBCNews.length}, CNN News: ${CNNNews.length}, NYT News: ${NYTNews.length}`;
       // 發送 Telegram 訊息
-      await this.telegramService.sendMessage(chatId, tgMsg)
+      await this.telegramService.sendMessage(chatId, tgMsg);
+    }
+  };
+
+  /**
+   * 台海觀測站新聞處理排程
+   * @param config
+   */
+  tsoNewsHandleSchedule = async (config) => {
+    let connection;
+    let unhandledNews = [];
+    try {
+      connection = await this.internalConn.getConnection();
+      await connection.beginTransaction();
+
+      // 取得未處理的新聞
+      const unhandledNews = await this.tsoRepository.getUnhandledNews(
+        connection
+      );
+
+      if (unhandledNews.length > 0) {
+        let processedNews = [];
+        // 處理新聞邏輯
+        for (const news of unhandledNews) {
+          // 使用 OpenAI 處理新聞內容
+          const processedContent = await this.openAIService.processNewsContent(
+            news.newsContent
+          );
+          if (processedContent.isAboutTaiwan) {
+            processedNews.push({
+              newsID: news.newsID,
+              newsTitle: news.newsTitle,
+              // zhHantContent: processedContent.zhHantContent,
+              newsLink: news.newsLink,
+              isProcessed: true
+            });
+          }
+        }
+        await this.tsoRepository.updateHandledNews(connection, processedNews);
+      }
+
+      await connection.commit();
+    } catch (error) {
+      console.error('Error TSO News Handle Schedule:', error);
+      return;
+    } finally {
+      console.log('tsoNewsHandleSchedule finally');
+      if (connection) {
+        await connection.release();
+      }
+      const chatId = process.env.CHAT_ID;
+      if (!chatId) {
+        throw new Error('CHAT_ID environment variable is not set');
+      }
+      const tgMsg =
+        `台海觀測站新聞處理完成時間： ${moment()
+          .tz(process.env.TIME_ZONE_UTC)
+          .format('YYYY-MM-DD HH:mm:ss')}\n` +
+        `總共處理新聞數: ${unhandledNews.length}`;
+      // 發送 Telegram 訊息
+      await this.telegramService.sendMessage(chatId, tgMsg);
     }
   };
 }

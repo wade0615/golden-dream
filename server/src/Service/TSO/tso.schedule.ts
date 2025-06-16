@@ -8,6 +8,10 @@ import { ScheduleService } from 'src/Service/Basic/schedule.service';
 
 import { TSO_Service } from './tso.service';
 
+/**
+ * 台海觀測站排程服務
+ * TSO_ScheduleService
+ */
 @Injectable()
 export class TSO_ScheduleService {
   constructor(
@@ -15,14 +19,25 @@ export class TSO_ScheduleService {
     private readonly tsoService: TSO_Service
   ) {}
 
-  // taiwan-strait-observatory 台海觀測站
-  tsoSchedule = () => {
+  // tso 新聞資料收集
+  tsoNewsCollectSchedule = () => {
     const config = <ScheduleGeneratorReq>{};
     config.frequency = ENUM_FREQUENCY.EVERY_SIX_HOUR;
-    config.scheduleName = 'taiwan-strait-observatory';
-    config.processLockName = `${ENUM_CONFIG.PROCESS_LOCK}:taiwan-strait-observatory`;
+    config.scheduleName = 'tsoNewsCollectSchedule';
+    config.processLockName = `${ENUM_CONFIG.PROCESS_LOCK}:tsoNewsCollect`;
     config.processLockTime = 10 * 60;
-    config.scheduleFunction = this.tsoService.tsoSchedule;
+    config.scheduleFunction = this.tsoService.tsoNewsCollectSchedule;
+    this.scheduleService.scheduleGenerator(config);
+  };
+
+  // tso 新聞資料判斷與翻譯
+  tsoNewsHandleSchedule = () => {
+    const config = <ScheduleGeneratorReq>{};
+    config.frequency = ENUM_FREQUENCY.EVERY_SIX_HOUR_TEN_MINUTE;
+    config.scheduleName = 'tsoNewsHandleSchedule';
+    config.processLockName = `${ENUM_CONFIG.PROCESS_LOCK}:tsoNewsHandle`;
+    config.processLockTime = 10 * 60;
+    config.scheduleFunction = this.tsoService.tsoNewsHandleSchedule;
     this.scheduleService.scheduleGenerator(config);
   };
 }

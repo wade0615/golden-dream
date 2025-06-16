@@ -44,4 +44,56 @@ export class TSO_Repository {
 
     return true;
   }
+
+  /**
+   * 取得尚未處理過的新聞
+   * @returns
+   */
+  async getUnhandledNews(connection): Promise<any> {
+    const sqlStr = `
+      SELECT News_ID, News_Title, News_Content, News_Link, News_IsoDate, News_Source 
+      FROM tso_news 
+      WHERE Is_Active = 1 AND Is_Processed = 0
+    `;
+
+    const result = await this.internalConn.transactionQuery(connection, sqlStr);
+    return result;
+  }
+
+  /**
+   * 更新新聞處理狀態
+   * @param newsID
+   * @returns
+   */
+  async updateHandledNews(
+    connection,
+    processedNews: {
+      newsID: string;
+      newsTitle: string;
+      // zhHantContent: string;
+      newsLink: string;
+      isProcessed: boolean;
+    }[]
+  ): Promise<any> {
+    const sqlStr = `
+      CREATE TEMPORARY TABLE Temp_News_Target AS (
+        SELECT tson.News_ID AS id
+        FROM tso_news tson
+        WHERE tson.News_ID IN (?)
+      );
+
+      UPDATE tso_news tn
+      INNER JOIN Temp_News_Target AS tnt
+        ON tnt.id = tn.News_ID
+      SET Is_Processed = 1;
+
+      DROP TEMPORARY TABLE IF EXISTS Temp_News_Target;
+    `;
+
+    await this.internalConn.transactionQuery(connection, sqlStr, [
+      processedNews.map((news) => news.newsID)
+    ]);
+
+    return true;
+  }
 }
