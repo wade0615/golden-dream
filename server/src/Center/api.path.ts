@@ -67,6 +67,11 @@ const tso = {
   getTsoNews: `/getTsoNews`
 };
 
+const telegram = {
+  /** 發送 telegram 訊息 */
+  postTelegramMsg: `/postTelegramMsg`
+};
+
 export default {
   test,
   common,
@@ -74,5 +79,6 @@ export default {
   posts,
   category,
   backStage,
-  tso
+  tso,
+  telegram
 };

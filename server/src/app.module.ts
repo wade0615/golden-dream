@@ -33,6 +33,7 @@ import { PostsModule as BackStagePostsModule } from './Models/V1/BackStage/Posts
 import { CategoryModule } from './Models/V1/Category/category.module';
 import { CommonModule } from './Models/V1/Common/common.module';
 import { PostsModule } from './Models/V1/Posts/posts.module';
+import { Telegram_Module } from './Models/V1/Telegram/telegram.module';
 import { TestModule } from './Models/V1/Test/test.module';
 import { TSO_Module } from './Models/V1/TSO/tso.module';
 
@@ -63,7 +64,8 @@ const moduleImport = [
   CategoryModule,
   BackStagePostsModule,
   BackStageCategoryModule,
-  TSO_Module
+  TSO_Module,
+  Telegram_Module,
   // ConfigKafkaModule,
   // FirebaseModule
   // SmsModule,
