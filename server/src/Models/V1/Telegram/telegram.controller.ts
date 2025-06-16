@@ -4,7 +4,7 @@ import apiPath from 'src/Center/api.path';
 
 import { Telegram_Service } from './telegram.service';
 
-import { PostTgMsgDto } from './Dto';
+import { PostTgMsgReq, PostTgMsgResp } from './Dto';
 
 import configError from 'src/Config/error.message.config';
 import { CustomerException } from 'src/Global/ExceptionFilter/global.exception.handle.filter';
@@ -20,7 +20,7 @@ export class Telegram_Controller {
    * @returns
    */
   @Post(apiPath.telegram.postTelegramMsg)
-  async postTelegramMsg(@Body() body: PostTgMsgDto) {
+  async postTelegramMsg(@Body() body: PostTgMsgReq): Promise<PostTgMsgResp> {
     try {
       const result = await this.telegramService.postTelegramMsg(body);
 

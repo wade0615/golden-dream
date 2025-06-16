@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
-export class PostTgMsgDto {
+export class PostTgMsgReq {
   @ApiProperty({
     title: '稱呼'
   })
@@ -13,4 +13,12 @@ export class PostTgMsgDto {
   })
   @IsString()
   msg: string;
+}
+
+export class PostTgMsgResp {
+  @ApiProperty({
+    title: '傳送結果'
+  })
+  @IsString()
+  result: string;
 }
