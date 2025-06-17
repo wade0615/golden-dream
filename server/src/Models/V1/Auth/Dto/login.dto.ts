@@ -28,9 +28,9 @@ export class LoginResDto {
   })
   accessToken: string;
 
-  // @ApiProperty({
-  //   title: '重置token',
-  //   required: true
-  // })
-  // refreshToken: string;
+  @ApiProperty({
+    title: '重置token',
+    required: true
+  })
+  refreshToken: string;
 }

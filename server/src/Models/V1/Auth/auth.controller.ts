@@ -85,4 +85,28 @@ export class AuthController {
     const data = await this.authService.addAuthMember(body);
     return data;
   }
+
+  /**
+   * 使用 refresh token 更新 access token
+   * @param req
+   * @returns
+   */
+  @Get(apiPath.auth.tokenRefresh)
+  @ApiOperation({
+    summary: '使用 refresh token 更新 access token'
+  })
+  @ApiCreatedResponse({
+    status: 200,
+    description: 'access token refreshed successfully',
+    type: 'object'
+  })
+  async tokenRefresh(
+    @Headers() headers: {
+      authorization: string;
+      'refresh-token': string;
+    }
+  ): Promise<LoginResDto> {
+    const data = await this.authService.tokenRefresh(headers);
+    return data;
+  }
 }
