@@ -7,11 +7,9 @@ import { PostTgMsgReq, PostTgMsgResp } from './Dto';
 import configError from 'src/Config/error.message.config';
 import { CustomerException } from 'src/Global/ExceptionFilter/global.exception.handle.filter';
 
-
 @Injectable()
 export class Telegram_Service {
-  constructor(private readonly telegramService: TelegramService) {
-  }
+  constructor(private telegramService: TelegramService) {}
 
   /**
    *  發送 Telegram 訊息
@@ -19,17 +17,17 @@ export class Telegram_Service {
    */
   async postTelegramMsg(req: PostTgMsgReq): Promise<PostTgMsgResp> {
     try {
-        const chatId = process.env.CHAT_ID;
-        if (!chatId) {
-            throw new Error('CHAT_ID environment variable is not set');
-        }
+      const chatId = process.env.CHAT_ID;
+      if (!chatId) {
+        throw new Error('CHAT_ID environment variable is not set');
+      }
 
-        const tgMsg = req.msg || 'No message provided';
-        if (!tgMsg) {
-            throw new Error('Message is required');
-        }
-        // 發送 Telegram 訊息
-        await this.telegramService.sendMessage(chatId, tgMsg)
+      const tgMsg = req.msg || 'No message provided';
+      if (!tgMsg) {
+        throw new Error('Message is required');
+      }
+      // 發送 Telegram 訊息
+      await this.telegramService.sendMessage(chatId, tgMsg);
 
       return {
         result: 'Telegram message sent successfully'
