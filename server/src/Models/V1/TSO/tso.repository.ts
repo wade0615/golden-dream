@@ -21,6 +21,8 @@ export class TSO_Repository {
         tn.News_IsoDate date
       FROM tso_news tn 
       WHERE tn.Is_Active = 1
+        AND tn.Is_Processed = 1
+        AND tn.News_IsoDate >= NOW() - INTERVAL 1 YEAR
         AND tn.Create_Date >= NOW() - INTERVAL 1 MONTH
       ORDER BY tn.News_IsoDate DESC;
     `;
