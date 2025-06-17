@@ -1,20 +1,20 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { CustomerException } from 'src/Global/ExceptionFilter/global.exception.handle.filter';
-
 import { MysqlProvider } from 'src/Providers/Database/DatabaseMysql/mysql.provider';
 
 import config from 'src/Config/config';
 import configError from 'src/Config/error.message.config';
-import { RedisService } from 'src/Providers/Database/Redis/redis.service';
-import { sha256Hash } from 'src/Utils/tools';
-import { ConfigApiService } from '../../../Config/Api/config.service';
-import { GetUserInfoRes, LoginResDto } from './Dto';
+// import { RedisService } from 'src/Providers/Database/Redis/redis.service';
+// import { sha256Hash } from 'src/Utils/tools';
+// import { ConfigApiService } from '../../../Config/Api/config.service';
+import { LoginDto, LoginResDto } from './Dto';
 import { GetUserInfoInterface } from './Interface/get.user.info.interface';
 import { AuthRepository } from './auth.repository';
 
 import { cryptoPwd, getRandomString } from 'src/Utils/tools';
+
+import { CustomerException } from 'src/Global/ExceptionFilter/global.exception.handle.filter';
 
 import moment = require('moment-timezone');
 const crypto = require('crypto');
@@ -23,45 +23,18 @@ const crypto = require('crypto');
 export class AuthService {
   constructor(
     private authRepository: AuthRepository,
-    private apiConfigService: ConfigApiService,
-    private redisService: RedisService,
+    // private apiConfigService: ConfigApiService,
+    // private redisService: RedisService,
     private readonly jwtService: JwtService,
     private internalConn: MysqlProvider
   ) {}
-
-  /**
-   * [old]驗證User
-   * @param account
-   * @returns
-   */
-  async _validateUser(req): Promise<GetUserInfoInterface> {
-    const getInfoFromActResp = await this.authRepository.getUserInfo(req.act);
-    console.log(getInfoFromActResp?.disable);
-    if (!getInfoFromActResp?.disable) {
-      throw new CustomerException(configError._220026, HttpStatus.OK);
-    }
-
-    const saltHashPassword = await cryptoPwd(
-      req?.pwd,
-      getInfoFromActResp?.salt
-    );
-
-    if (
-      !getInfoFromActResp?.account ||
-      getInfoFromActResp?.pswd != saltHashPassword
-    ) {
-      throw new CustomerException(configError._210001, HttpStatus.OK);
-    }
-
-    return getInfoFromActResp;
-  }
 
   /**
    * 驗證User
    * @param req
    * @returns
    */
-  async validateUser(req): Promise<GetUserInfoInterface> {
+  async validateUser(req: LoginDto): Promise<GetUserInfoInterface> {
     const getInfoFromActResp = await this.authRepository.getUserInfo(req.act);
     if (!getInfoFromActResp?.disable) {
       throw new CustomerException(configError._220026, HttpStatus.OK);
@@ -170,7 +143,7 @@ export class AuthService {
    * @param req
    * @returns
    */
-  async login(req): Promise<LoginResDto> {
+  async login(req: LoginDto): Promise<LoginResDto> {
     let connection;
     try {
       connection = await this.internalConn.getConnection();
@@ -193,6 +166,14 @@ export class AuthService {
 
       const accessToken = crypto
         .publicEncrypt(pubKey, Buffer.from(buffer.join('|')))
+        .toString(config._HASH_METHOD._BASE64);
+
+      const refresh_ttl = 48 * 60 * 60 * 1000; // 48hr
+      const refresh_now = new Date().getTime() + refresh_ttl; // 過期時間為當前時間 + TTL（毫秒）;
+      const refresh_buffer = [memberId, refresh_now.toString()];
+
+      const refreshToken = crypto
+        .publicEncrypt(pubKey, Buffer.from(refresh_buffer.join('|')))
         .toString(config._HASH_METHOD._BASE64);
 
       // // 取得權限
@@ -230,7 +211,7 @@ export class AuthService {
 
       const loginResp = {
         accessToken: accessToken,
-        // refreshToken: rToken,
+        refreshToken: refreshToken,
         name: validateUserResp?.name
       };
 
@@ -250,102 +231,102 @@ export class AuthService {
    * @param req
    * @returns
    */
-  async refresh(headers): Promise<LoginResDto> {
-    const refreshToken = headers['refresh-token'];
+  // async refresh(headers): Promise<LoginResDto> {
+  //   const refreshToken = headers['refresh-token'];
 
-    const getUserInfo = await this.redisService.getCacheData(
-      `${config.REDIS_KEY.RFTOKEN}:${refreshToken}`
-    );
+  //   const getUserInfo = await this.redisService.getCacheData(
+  //     `${config.REDIS_KEY.RFTOKEN}:${refreshToken}`
+  //   );
 
-    // refresh token expired => out
-    if (!getUserInfo?.memberId)
-      throw new CustomerException(configError._200008, HttpStatus.FORBIDDEN);
+  //   // refresh token expired => out
+  //   if (!getUserInfo?.memberId)
+  //     throw new CustomerException(configError._200008, HttpStatus.FORBIDDEN);
 
-    const memberId = getUserInfo?.memberId;
-    const name = getUserInfo?.name;
+  //   const memberId = getUserInfo?.memberId;
+  //   const name = getUserInfo?.name;
 
-    // 產生新 at
-    const accessToken = await this._getToken(name);
+  //   // 產生新 at
+  //   const accessToken = await this._getToken(name);
 
-    // 取得權限
-    const getMemberRoleInfo = [];
+  //   // 取得權限
+  //   const getMemberRoleInfo = [];
 
-    const authItems = getMemberRoleInfo.map((per) => {
-      return per.permissionCode;
-    });
+  //   const authItems = getMemberRoleInfo.map((per) => {
+  //     return per.permissionCode;
+  //   });
 
-    // 產生新 rt
-    const rToken = sha256Hash(
-      getUserInfo?.name,
-      process.env.JWT_REFRESH_TOKEN_SECRET
-    );
+  //   // 產生新 rt
+  //   const rToken = sha256Hash(
+  //     getUserInfo?.name,
+  //     process.env.JWT_REFRESH_TOKEN_SECRET
+  //   );
 
-    // 重新存入at
-    await this.redisService.setCacheUserInfo(
-      {
-        authMemberId: memberId,
-        name: name,
-        account: getUserInfo.act,
-        password: getUserInfo.pwd,
-        isAdmin: getUserInfo.isAdmin,
-        homePage: getUserInfo.homePage,
-        token: accessToken,
-        authPermission: [...authItems]
-      },
-      Number(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME) // 2 hours
-    );
+  //   // 重新存入at
+  //   await this.redisService.setCacheUserInfo(
+  //     {
+  //       authMemberId: memberId,
+  //       name: name,
+  //       account: getUserInfo.act,
+  //       password: getUserInfo.pwd,
+  //       isAdmin: getUserInfo.isAdmin,
+  //       homePage: getUserInfo.homePage,
+  //       token: accessToken,
+  //       authPermission: [...authItems]
+  //     },
+  //     Number(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME) // 2 hours
+  //   );
 
-    // 因有使用的話要遞延，所以產新的 48 hr 的 rt
-    await this.redisService.setRefreshToken(
-      {
-        memberId: getUserInfo?.memberId,
-        name: getUserInfo?.name,
-        homePage: getUserInfo.homePage,
-        account: getUserInfo.act,
-        token: rToken
-      },
-      Number(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME) // 48 hours
-    );
+  //   // 因有使用的話要遞延，所以產新的 48 hr 的 rt
+  //   await this.redisService.setRefreshToken(
+  //     {
+  //       memberId: getUserInfo?.memberId,
+  //       name: getUserInfo?.name,
+  //       homePage: getUserInfo.homePage,
+  //       account: getUserInfo.act,
+  //       token: rToken
+  //     },
+  //     Number(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME) // 48 hours
+  //   );
 
-    // 刪除舊的 rt
-    this.redisService.delCacheData(
-      `${config.REDIS_KEY.RFTOKEN}:${refreshToken}`
-    );
+  //   // 刪除舊的 rt
+  //   this.redisService.delCacheData(
+  //     `${config.REDIS_KEY.RFTOKEN}:${refreshToken}`
+  //   );
 
-    const loginResp = {
-      accessToken: accessToken,
-      refreshToken: rToken
-    };
+  //   const loginResp = {
+  //     accessToken: accessToken,
+  //     refreshToken: rToken
+  //   };
 
-    return loginResp;
-  }
+  //   return loginResp;
+  // }
 
   /**
    * 取得使用者資訊
    * @param headers
    * @returns
    */
-  async getUserInfo(headers): Promise<GetUserInfoRes> {
-    const accessToken = headers.authorization;
+  // async getUserInfo(headers): Promise<GetUserInfoRes> {
+  //   const accessToken = headers.authorization;
 
-    let parts = accessToken.split(' ');
+  //   let parts = accessToken.split(' ');
 
-    const getUserInfo = await this.redisService.getCacheData(
-      `${config.REDIS_KEY.TOKEN}:${parts[1]}`
-    );
+  //   const getUserInfo = await this.redisService.getCacheData(
+  //     `${config.REDIS_KEY.TOKEN}:${parts[1]}`
+  //   );
 
-    const name = getUserInfo?.name;
-    const authItem = getUserInfo?.authPermission;
+  //   const name = getUserInfo?.name;
+  //   const authItem = getUserInfo?.authPermission;
 
-    const loginResp = {
-      name: name,
-      authItems: [...authItem],
-      homePage: getUserInfo?.homePage ?? 'home',
-      isAdmin: getUserInfo?.isAdmin
-    };
+  //   const loginResp = {
+  //     name: name,
+  //     authItems: [...authItem],
+  //     homePage: getUserInfo?.homePage ?? 'home',
+  //     isAdmin: getUserInfo?.isAdmin
+  //   };
 
-    return loginResp;
-  }
+  //   return loginResp;
+  // }
 
   /**
    * 登出
@@ -420,5 +401,85 @@ export class AuthService {
     } finally {
       await connection.release();
     }
+  }
+
+  /**
+   * 更新登入時間
+   * @param act
+   * @returns
+   */
+  async tokenRefresh(
+    headers: { authorization: string }
+  ): Promise<LoginResDto> {
+    const accessToken = headers.authorization;
+    const refreshToken = headers['refresh-token'];
+
+    if (!accessToken) {
+      throw new CustomerException(configError._200008, HttpStatus.FORBIDDEN);
+    }
+
+    // 解析 accessToken
+    const parts = accessToken.split(' ');
+    const pareToken = parts[1];
+    if (parts.length !== 2 || parts[0] !== 'Bearer') {
+      throw new CustomerException(configError._200008, HttpStatus.FORBIDDEN);
+    }
+
+    const privKey = config._ENCRYPT_CODE.PRIV_KEY;
+    const cryptoData = crypto
+      .privateDecrypt(privKey, Buffer.from(pareToken, 'base64'))
+      .toString('utf-8');
+    if (!cryptoData) {
+      throw new CustomerException(configError._200008, HttpStatus.FORBIDDEN);
+    }
+    const tokenData = cryptoData.split('|');
+    const memberId = tokenData[0];
+    // const expiredTime = tokenData[1];
+
+    // 解析 refreshToken
+    if (!refreshToken) {
+      throw new CustomerException(configError._200008, HttpStatus.FORBIDDEN);
+    }
+    const refreshParts = refreshToken.split(' ');
+    if (refreshParts.length !== 2 || refreshParts[0] !== 'Bearer') {
+      throw new CustomerException(configError._200008, HttpStatus.FORBIDDEN);
+    }
+    const refreshPareToken = refreshParts[1];
+    const refreshCryptoData = crypto
+      .privateDecrypt(privKey, Buffer.from(refreshPareToken, 'base64'))
+      .toString('utf-8');
+    if (!refreshCryptoData) {
+      throw new CustomerException(configError._200008, HttpStatus.FORBIDDEN);
+    }
+    // const refreshTokenData = refreshCryptoData.split('|');
+    // const refreshMemberId = refreshTokenData[0];
+    // const refreshExpiredTime = refreshTokenData[1];
+
+    // 建立新的 accessToken & refreshToken
+    const ttl = 3 * 60 * 60 * 1000; // 3hr
+    const now = new Date().getTime() + ttl; // 過期時間為當前時間 + TTL（毫秒）;
+    const buffer = [memberId, now.toString()];
+
+    const pubKey = config._ENCRYPT_CODE.PUBLIC_KEY.replace(/\\n/g, '\n');
+
+    const newAccessToken = crypto
+      .publicEncrypt(pubKey, Buffer.from(buffer.join('|')))
+      .toString(config._HASH_METHOD._BASE64);
+
+    const refresh_ttl = 48 * 60 * 60 * 1000; // 48hr
+    const refresh_now = new Date().getTime() + refresh_ttl; // 過期時間為當前時間 + TTL（毫秒）;
+    const refresh_buffer = [memberId, refresh_now.toString()];
+
+    const newRefreshToken = crypto
+      .publicEncrypt(pubKey, Buffer.from(refresh_buffer.join('|')))
+      .toString(config._HASH_METHOD._BASE64);
+
+    // 更新登入時間
+    // await this.authRepository.updateAuthMemberLoginTime(name);
+
+    return {
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken
+    };
   }
 }

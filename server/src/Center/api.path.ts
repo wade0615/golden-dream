@@ -13,7 +13,9 @@ const auth = {
   /** 登出 */
   logout: '/logout',
   /** 新增後台使用者 */
-  addAuthMember: '/addAuthMember'
+  addAuthMember: '/addAuthMember',
+  /** 使用 refresh token 更新 access token */
+  tokenRefresh: '/tokenRefresh'
 };
 
 const common = {
@@ -67,6 +69,11 @@ const tso = {
   getTsoNews: `/getTsoNews`
 };
 
+const telegram = {
+  /** 發送 telegram 訊息 */
+  postTelegramMsg: `/postTelegramMsg`
+};
+
 export default {
   test,
   common,
@@ -74,5 +81,6 @@ export default {
   posts,
   category,
   backStage,
-  tso
+  tso,
+  telegram
 };

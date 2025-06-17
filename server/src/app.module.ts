@@ -14,9 +14,10 @@ import { ConfigApiModule } from './Config/Api/config.module';
 import { ConfigAppModule } from './Config/App/config.module';
 
 // Middleware
-import { ContentSecurityPolicyMiddleware } from './Global/Middlewares/contentSecurityPolicy.middleware';
+import { GlobalVariableService } from './Global/GlobalVariable/global-variable';
 import { RequestIdMiddleware } from './Global/Middlewares/request-id.middleware';
 import { RequestLoggerMiddleware } from './Global/Middlewares/request-logger.middleware';
+// import { ContentSecurityPolicyMiddleware } from './Global/Middlewares/contentSecurityPolicy.middleware';
 
 // Basic Service Setting
 import { RedisModule } from './Providers/Database/Redis/redis.module';
@@ -33,9 +34,11 @@ import { PostsModule as BackStagePostsModule } from './Models/V1/BackStage/Posts
 import { CategoryModule } from './Models/V1/Category/category.module';
 import { CommonModule } from './Models/V1/Common/common.module';
 import { PostsModule } from './Models/V1/Posts/posts.module';
+import { Telegram_Module } from './Models/V1/Telegram/telegram.module';
 import { TestModule } from './Models/V1/Test/test.module';
 import { TSO_Module } from './Models/V1/TSO/tso.module';
 
+import { OpenAIService } from 'src/Providers/Openai/openai.service';
 import { TelegramService } from 'src/Providers/Telegram/telegram.service';
 import { ScheduleService } from 'src/Service/Basic/schedule.service';
 import { LogService } from 'src/Utils/log.service';
@@ -51,31 +54,33 @@ import { MysqlModule } from 'src/Providers/Database/DatabaseMysql/mysql.module';
 const moduleImport = [
   ConfigApiModule,
   ConfigAppModule,
-  // ConfigKafkaModule,
   MulterModule.register({
     storage: memoryStorage()
   }),
-  TestModule,
-  PostsModule,
-  CategoryModule,
-  AuthModule,
-  CommonModule,
-  AuthModule,
-  BackStagePostsModule,
-  BackStageCategoryModule,
   RedisModule,
   MysqlModule,
-  TSO_Module
+  TestModule,
+  CommonModule,
+  AuthModule,
+  PostsModule,
+  CategoryModule,
+  BackStagePostsModule,
+  BackStageCategoryModule,
+  TSO_Module,
+  Telegram_Module
+  // ConfigKafkaModule,
   // FirebaseModule
   // SmsModule,
   // MailModule,
   // CsvDownloadExample
 ];
 
+// 根據環境變數決定是否啟用靜態檔案服務
+// 如果環境變數 APP_ENV 為 DEV、STAGE 或 PROD，則啟用 ServeStaticModule
+// ServeStaticModule 是一個 NestJS 中的模組，用於提供靜態檔案服務
 const envNow = process.env.APP_ENV
   ? process.env.APP_ENV.toUpperCase()
   : 'LOCAL';
-
 if (envNow === 'DEV' || envNow === 'STAGE' || envNow === 'PROD') {
   moduleImport.push(
     ServeStaticModule.forRoot({
@@ -85,8 +90,7 @@ if (envNow === 'DEV' || envNow === 'STAGE' || envNow === 'PROD') {
 }
 
 /**
- * Import and provide app related classes.
- *
+ * 主模組，用於匯入所有模組，以及提供所有服務
  * @module
  */
 @Module({
@@ -100,16 +104,16 @@ if (envNow === 'DEV' || envNow === 'STAGE' || envNow === 'PROD') {
     BatchScheduleService,
     TSO_ScheduleService,
     TSO_Service,
-    TSO_Repository
-  ]
+    TSO_Repository,
+    OpenAIService,
+    GlobalVariableService
+  ],
+  exports: [GlobalVariableService]
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer): void {
     consumer
       .apply(RequestLoggerMiddleware, RequestIdMiddleware)
-      .forRoutes({ path: '/**', method: RequestMethod.ALL });
-    consumer
-      .apply(ContentSecurityPolicyMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }

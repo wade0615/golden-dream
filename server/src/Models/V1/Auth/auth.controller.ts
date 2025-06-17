@@ -9,7 +9,6 @@ import {
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import apiPath from 'src/Center/api.path';
-import { RedisService } from 'src/Providers/Database/Redis/redis.service';
 import { LoginDto, LoginResDto } from './Dto';
 import { AuthService } from './auth.service';
 
@@ -20,18 +19,17 @@ import { AuthService } from './auth.service';
 })
 export class AuthController {
   constructor(
-    private readonly authService: AuthService,
-    private readonly redisService: RedisService
+    private readonly authService: AuthService
   ) {}
 
   /**
-   * 登入會員
+   * 後台登入
    * @param req
    * @returns
    */
   @Post(apiPath.auth.login)
   @ApiOperation({
-    summary: '後台會員登入'
+    summary: '後台登入'
   })
   @ApiCreatedResponse({
     status: 200,
@@ -44,13 +42,13 @@ export class AuthController {
   }
 
   /**
-   * 登出
+   * 後台登出
    * @param req
    * @returns
    */
   @Get(apiPath.auth.logout)
   @ApiOperation({
-    summary: '後台會員登出'
+    summary: '後台登出'
   })
   @ApiCreatedResponse({
     status: 200,
@@ -85,6 +83,30 @@ export class AuthController {
     }
   ): Promise<object> {
     const data = await this.authService.addAuthMember(body);
+    return data;
+  }
+
+  /**
+   * 使用 refresh token 更新 access token
+   * @param req
+   * @returns
+   */
+  @Get(apiPath.auth.tokenRefresh)
+  @ApiOperation({
+    summary: '使用 refresh token 更新 access token'
+  })
+  @ApiCreatedResponse({
+    status: 200,
+    description: 'access token refreshed successfully',
+    type: 'object'
+  })
+  async tokenRefresh(
+    @Headers() headers: {
+      authorization: string;
+      'refresh-token': string;
+    }
+  ): Promise<LoginResDto> {
+    const data = await this.authService.tokenRefresh(headers);
     return data;
   }
 }

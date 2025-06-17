@@ -12,6 +12,9 @@ import { STATE_CODE } from 'src/Definition/Enum/state.code.enum';
 import { ELKLogObj } from 'src/Definition/Interface/Log/print.log.elk.third.party.interface';
 import { LogService } from 'src/Utils/log.service';
 
+/**
+ * 全域例外處理過濾器，用於處理所有例外，並且印 log 到 ELK
+ */
 @Catch()
 export default class GlobalExceptionHandleFilter implements ExceptionFilter {
   constructor(private readonly logService: LogService) {}
