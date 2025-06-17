@@ -115,7 +115,7 @@ export class TSO_Service {
     let tsoNews = [];
     try {
       const date = moment().tz(process.env.TIME_ZONE_UTC);
-      console.log('tsoSchedule', date);
+      console.log(config.scheduleName, date);
 
       // 可加入關鍵字過濾
       const keywords = [
@@ -162,10 +162,10 @@ export class TSO_Service {
 
       await connection.commit();
     } catch (error) {
-      console.error('Error TSO Schedule:', error);
+      console.error(`Error ${config.scheduleName}:`, error);
       return;
     } finally {
-      console.log('tsoSchedule finally');
+      console.log(`${config.scheduleName} finally`);
       if (connection) {
         await connection.release();
       }
@@ -204,7 +204,7 @@ export class TSO_Service {
 
       if (unhandledNews.length > 0) {
         console.log(
-          'tsoNewsHandleSchedule unhandledNews',
+          `${config.scheduleName} unhandledNews`,
           unhandledNews.length
         );
         openaiHandledNewsCount = unhandledNews.length;
@@ -232,10 +232,10 @@ export class TSO_Service {
 
       await connection.commit();
     } catch (error) {
-      console.error('Error TSO News Handle Schedule:', error);
+      console.error(`Error ${config.scheduleName}:`, error);
       return;
     } finally {
-      console.log('tsoNewsHandleSchedule finally');
+      console.log(`${config.scheduleName} finally`);
       if (connection) {
         await connection.release();
       }
