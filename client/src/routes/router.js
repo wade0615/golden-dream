@@ -1,6 +1,5 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
-// import { RedisGui } from 'pages/redis';
 import { Login } from 'pages/login';
 import { PostList, PostPage } from 'pages/posts';
 import { CategoryList, CategoryPostsPage } from 'pages/categories';
@@ -59,10 +58,6 @@ export const routerConfig = [
   // {
   //   path: '/login', // 路由的路徑
   //   element: <Login /> // 當訪問 '/login' 路由時要渲染的元件
-  // },
-  // {
-  //   path: '/redis-gui', // 路由的路徑
-  //   element: <RedisGui /> // 當訪問 '/redis-gui' 路由時要渲染的元件
   // },
   {
     path: '/', // 路由的路徑
