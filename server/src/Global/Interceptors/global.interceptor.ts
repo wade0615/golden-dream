@@ -31,7 +31,7 @@ export default class ApiInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map((result) => {
         // 印 log 在 local 資料夾
-        this.logService.printLogToLocal(req, result);
+        // this.logService.printLogToLocal(req, result);
 
         // ELK 印 log 在 cmd
         const elkLogObj = <ELKLogObj>{};
