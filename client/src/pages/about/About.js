@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useForm, FormProvider } from 'react-hook-form';
+import { Form, Button } from 'react-bootstrap';
+import TextField from 'features/textField/TextField';
 // import localStorageUtil from 'utils/localStorageUtil';
 // import LocalStorageKeys from 'constants/localStorageKeys';
 // import api from 'services/api';
 import routerPath from 'routes/router.path';
+import api from 'services/api';
 
 import './aboutStyle.scss';
 
@@ -17,14 +21,24 @@ const _EHS = new ExceptionHandleService({
 /** 關於我  */
 const About = () => {
   const navigate = useNavigate();
+  const [sendMsgCount, setSendMsgCount] = useState(0);
 
-  /** 分頁資料 */
-  const [aboutDescription, setAboutDescription] = useState({
-    title: '<title> About me </title>',
-    name: '<name> Wade WU </name>',
-    location: '<location> New Taipei City,TW </location>',
-    email: '<email> wsw0615@gmail.com </email>'
+  const methods = useForm({
+    mode: 'onBlur',
+    defaultValues: {
+      tgName: '',
+      tgMsg: ''
+    }
+    // resolver: yupResolver(_schema)
   });
+
+  /** 特殊描述 */
+  // const [aboutDescription, setAboutDescription] = useState({
+  //   title: '<title> About me </title>',
+  //   name: '<name> Wade WU </name>',
+  //   location: '<location> New Taipei City,TW </location>',
+  //   email: '<email> wsw0615@gmail.com </email>'
+  // });
 
   /** 初次載入 */
   const getInit = useCallback(async () => {
@@ -43,6 +57,40 @@ const About = () => {
       _EHS.errorReport(error, 'getSecretDoor', _EHS._LEVEL.ERROR);
     }
   }, [navigate]);
+
+  /** 傳送訊息 */
+  const sendMessage = async (tgName = '', tgMsg = '') => {
+    try {
+      const apiReq = {
+        name: tgName,
+        msg: tgMsg
+      };
+      const res = await api.telegram.postTelegramMsg(apiReq);
+      const apiRes = res;
+      if (apiRes) {
+        setSendMsgCount(sendMsgCount + 1);
+        return res;
+      }
+    } catch (error) {
+      _EHS.errorReport(error, 'sendMessage', _EHS._LEVEL.ERROR);
+    }
+  };
+
+  const handleSubmit = async (data) => {
+    if (sendMsgCount >= 10) {
+      alert('講太多話了吧？明天再來跟我說說話吧！');
+      methods.reset({
+        tgName: '',
+        tgMsg: ''
+      });
+      return;
+    }
+    await sendMessage(data.tgName, data.tgMsg);
+    methods.reset({
+      tgName: '',
+      tgMsg: ''
+    });
+  };
 
   /** 初始化 */
   useEffect(() => {
@@ -87,6 +135,60 @@ const About = () => {
         <br />
         You travel to see things <span onClick={getSecretDoor}>different.</span>
       </h4>
+
+      <hr />
+
+      <h3 className='mb-4'>留下來過的足跡</h3>
+      <FormProvider {...methods}>
+        <Form
+          noValidate
+          onSubmit={methods.handleSubmit(handleSubmit)}
+          className='about_form'
+        >
+          <TextField
+            name='tgName'
+            variant='text'
+            placeholder='Your name'
+            maxLength={50}
+            formRules={{
+              required: { value: true, message: '說點什麼吧' },
+              validate: {
+                maxLength: (value) => {
+                  if (value && value.length > 50) {
+                    return '字數已達上限 50 字';
+                  }
+                  return true;
+                }
+              }
+            }}
+            className='mb-3'
+          />
+          <TextField
+            name='tgMsg'
+            variant='textarea'
+            placeholder='Say something'
+            maxLength={200}
+            lengthCount={true}
+            formRules={{
+              required: { value: true, message: '說點什麼吧' },
+              validate: {
+                maxLength: (value) => {
+                  if (value && value.length > 200) {
+                    return '字數已達上限 200 字';
+                  }
+                  return true;
+                }
+              }
+            }}
+            className='mb-3'
+          />
+          <div className='text-end'>
+            <Button type='submit' className='ml-auto'>
+              送出
+            </Button>
+          </div>
+        </Form>
+      </FormProvider>
     </div>
   );
 };

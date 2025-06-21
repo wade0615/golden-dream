@@ -38,8 +38,6 @@ import { Telegram_Module } from './Models/V1/Telegram/telegram.module';
 import { TestModule } from './Models/V1/Test/test.module';
 import { TSO_Module } from './Models/V1/TSO/tso.module';
 
-import { OpenAIService } from 'src/Providers/Openai/openai.service';
-import { TelegramService } from 'src/Providers/Telegram/telegram.service';
 import { ScheduleService } from 'src/Service/Basic/schedule.service';
 import { LogService } from 'src/Utils/log.service';
 
@@ -50,6 +48,8 @@ import { TSO_Service } from 'src/Service/TSO/tso.service';
 import { BatchScheduleService } from './Service/batchSchedule.service';
 
 import { MysqlModule } from 'src/Providers/Database/DatabaseMysql/mysql.module';
+import { OpenAIService } from 'src/Providers/Openai/openai.service';
+import { TelegramModule } from 'src/Providers/Telegram/telegram.module';
 
 const moduleImport = [
   ConfigApiModule,
@@ -59,6 +59,7 @@ const moduleImport = [
   }),
   RedisModule,
   MysqlModule,
+  TelegramModule,
   TestModule,
   CommonModule,
   AuthModule,
@@ -99,7 +100,6 @@ if (envNow === 'DEV' || envNow === 'STAGE' || envNow === 'PROD') {
   providers: [
     AppService,
     LogService,
-    TelegramService,
     ScheduleService,
     BatchScheduleService,
     TSO_ScheduleService,

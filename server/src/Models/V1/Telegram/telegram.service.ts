@@ -22,10 +22,13 @@ export class Telegram_Service {
         throw new Error('CHAT_ID environment variable is not set');
       }
 
-      const tgMsg = req.msg || 'No message provided';
+      let tgMsg = req.msg || 'No message provided';
       if (!tgMsg) {
         throw new Error('Message is required');
       }
+      tgMsg = `
+        Sender: ${req.name}\nContent: ${tgMsg}
+      `;
       // 發送 Telegram 訊息
       await this.telegramService.sendMessage(chatId, tgMsg);
 

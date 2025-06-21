@@ -1,5 +1,12 @@
-import { CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  HttpStatus,
+  Injectable
+} from '@nestjs/common';
 import { GlobalVariableService } from '../GlobalVariable/global-variable';
+
+import { CustomerException } from 'src/Global/ExceptionFilter/global.exception.handle.filter';
 
 @Injectable()
 export class MessageLimitGuard implements CanActivate {
@@ -10,8 +17,12 @@ export class MessageLimitGuard implements CanActivate {
     const ip = request.ip;
 
     if (!this.globalVariableService.canSendMessage(ip)) {
-      throw new HttpException(
-        'Message limit exceeded. Please try again tomorrow.',
+      throw new CustomerException(
+        {
+          code: 987987,
+          // msg: '系統錯誤，請聯繫系統管理員。'
+          msg: '講太多話了吧？明天再來吧！'
+        },
         HttpStatus.TOO_MANY_REQUESTS
       );
     }

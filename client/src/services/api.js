@@ -8,6 +8,8 @@ import category from './category';
 
 import backStage from './backStage';
 
+import telegram from './telegram';
+
 export default {
   template,
   auth,
@@ -15,5 +17,6 @@ export default {
   posts,
   category,
   common,
-  backStage
+  backStage,
+  telegram
 };
