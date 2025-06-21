@@ -114,6 +114,6 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer): void {
     consumer
       .apply(RequestLoggerMiddleware, RequestIdMiddleware)
-      .forRoutes({ path: '*', method: RequestMethod.ALL });
+      .forRoutes({ path: '/api/**', method: RequestMethod.ALL });
   }
 }
