@@ -7,7 +7,8 @@ const config = {
   test: 'test',
   posts: 'posts',
   category: 'category',
-  common: 'common'
+  common: 'common',
+  tg: 'tg'
 };
 
 const template = {
@@ -48,6 +49,10 @@ const backStage = {
   getBackStageCategoryOptions: `${config.backStageCategory}/getBackStageCategoryOptions`
 };
 
+const tg = {
+  postTelegramMsg: `${config.tg}/postTelegramMsg`
+};
+
 export default {
   template,
   auth,
@@ -55,5 +60,6 @@ export default {
   posts,
   category,
   common,
-  backStage
+  backStage,
+  tg
 };
