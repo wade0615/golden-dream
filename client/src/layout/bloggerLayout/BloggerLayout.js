@@ -16,6 +16,8 @@ import './bloggerLayoutStyle.scss';
 // import localStorageUtil from 'utils/localStorageUtil';
 // import LocalStorageKeys from 'constants/localStorageKeys';
 
+import { GetAsideCardDetailClass } from './getAsideCardDetailClass';
+
 import ExceptionHandleService from 'utils/exceptionHandler';
 
 const _EHS = new ExceptionHandleService({
@@ -159,10 +161,9 @@ function BloggerLayoutAsideCard() {
   /** 取得側邊欄小卡資訊 */
   const getAsideCardDetail = useCallback(async () => {
     try {
-      const res = await api.common.getAsideCardDetail();
-      const apiRes = res;
+      const apiRes = await api.common.getAsideCardDetail();
       if (apiRes) {
-        // const res = new GetPostByIdClass(apiRes);
+        const res = new GetAsideCardDetailClass(apiRes);
         return res;
       }
     } catch (error) {
