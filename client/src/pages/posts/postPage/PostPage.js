@@ -51,8 +51,7 @@ const PostPage = () => {
       const apiReq = {
         postId: postId
       };
-      const res = await api.posts.getPostById(apiReq);
-      const apiRes = res;
+      const apiRes = await api.posts.getPostById(apiReq);
       if (apiRes) {
         const res = new GetPostByIdClass(apiRes);
         return res;

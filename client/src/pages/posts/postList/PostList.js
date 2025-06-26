@@ -36,8 +36,7 @@ const PostList = () => {
         perPage: perPage,
         page: page
       };
-      const res = await api.posts.getPostList(apiReq);
-      const apiRes = res;
+      const apiRes = await api.posts.getPostList(apiReq);
       if (apiRes) {
         const res = new GetPostsClass(apiRes);
         return res;

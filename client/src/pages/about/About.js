@@ -65,11 +65,10 @@ const About = () => {
         name: tgName,
         msg: tgMsg
       };
-      const res = await api.telegram.postTelegramMsg(apiReq);
-      const apiRes = res;
+      const apiRes = await api.telegram.postTelegramMsg(apiReq);
       if (apiRes) {
         setSendMsgCount(sendMsgCount + 1);
-        return res;
+        return apiRes;
       }
     } catch (error) {
       _EHS.errorReport(error, 'sendMessage', _EHS._LEVEL.ERROR);
