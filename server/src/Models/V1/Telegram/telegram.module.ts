@@ -4,16 +4,11 @@ import { Telegram_Service } from './telegram.service';
 
 import { GlobalVariableService } from 'src/Global/GlobalVariable/global-variable';
 import { MessageLimitGuard } from 'src/Global/Guards/message-limit.guard';
-import { TelegramService } from 'src/Providers/Telegram/telegram.service';
+import { TelegramModule } from 'src/Providers/Telegram/telegram.module';
 
 @Module({
-  imports: [],
+  imports: [TelegramModule],
   controllers: [Telegram_Controller],
-  providers: [
-    TelegramService,
-    MessageLimitGuard,
-    GlobalVariableService,
-    Telegram_Service
-  ]
+  providers: [MessageLimitGuard, GlobalVariableService, Telegram_Service]
 })
 export class Telegram_Module {}

@@ -18,15 +18,15 @@ export class LogService {
       const date = UTCToTimeString(now).split(' ')[0];
       const folderPath = path.join(__dirname, 'logger');
       const logFilePath = path.join(folderPath, `${date}.log`);
-  
+
       // 檢查並建立日誌資料夾
       if (!fs.existsSync(folderPath)) {
         fs.mkdirSync(folderPath, { recursive: true });
       }
-  
+
       // 定義日誌內容
-      const logContent = `[${date}] ${JSON.stringify(req)} ${JSON.stringify(result)}\n`;
-  
+      const logContent = `[${date}] ${req} ${result}\n`;
+
       // 寫入日誌
       fs.appendFileSync(logFilePath, logContent);
     } catch (error) {

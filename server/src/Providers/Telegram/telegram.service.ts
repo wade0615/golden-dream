@@ -17,7 +17,7 @@ export class TelegramService implements OnModuleInit {
     });
   }
 
-  async sendMessage(chatId: number | string, text: string) {
+  public async sendMessage(chatId: number | string, text: string) {
     await this.bot.sendMessage(chatId, text);
     return `Message sent to chat ${chatId}: ${text}`;
   }
