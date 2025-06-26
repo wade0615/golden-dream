@@ -16,13 +16,13 @@ const _EHS = new ExceptionHandleService({
 /** 時間軸  */
 const Timeline = () => {
   /** 初次載入 */
-  const getInit = useCallback(async () => {
+  const getInit = async () => {
     try {
       console.log('Page timeline');
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
-  }, []);
+  };
 
   /** 初始化 */
   useEffect(() => {

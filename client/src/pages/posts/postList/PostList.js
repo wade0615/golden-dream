@@ -48,7 +48,7 @@ const PostList = () => {
   }, []);
 
   /** 初次載入 */
-  const getInit = useCallback(async () => {
+  const getInit = async () => {
     try {
       const postList = await getPostList();
       const metaData = postList.metaData;
@@ -58,7 +58,7 @@ const PostList = () => {
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
-  }, [getPostList]);
+  };
 
   /** 初始化 */
   useEffect(() => {

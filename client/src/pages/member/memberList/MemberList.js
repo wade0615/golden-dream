@@ -190,7 +190,7 @@ function MemberList() {
 
   const registerRangeWatch = methods.watch('registerRange');
 
-  const getInit = useCallback(async () => {
+  const getInit = async () => {
     try {
       // 取得 會籍, 特殊會員類型下拉式選項
       const [specialTypeMemberData, memberStatusData] = await Promise.all([
@@ -215,7 +215,7 @@ function MemberList() {
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
-  }, [dispatch]);
+  };
 
   const getMemberList = useCallback(async (req) => {
     try {

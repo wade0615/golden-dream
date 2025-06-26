@@ -41,22 +41,22 @@ const About = () => {
   // });
 
   /** 初次載入 */
-  const getInit = useCallback(async () => {
+  const getInit = async () => {
     try {
       console.log('Page About');
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
-  }, []);
+  };
 
   /** 前往密門 */
-  const getSecretDoor = useCallback(async () => {
+  const getSecretDoor = async () => {
     try {
       navigate(`/${routerPath.login}`);
     } catch (error) {
       _EHS.errorReport(error, 'getSecretDoor', _EHS._LEVEL.ERROR);
     }
-  }, [navigate]);
+  };
 
   /** 傳送訊息 */
   const sendMessage = async (tgName = '', tgMsg = '') => {

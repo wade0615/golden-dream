@@ -115,7 +115,7 @@ const PostPageCRUD = () => {
   }, []);
 
   /** 初次載入 */
-  const getInit = useCallback(async () => {
+  const getInit = async () => {
     try {
       const categoryOptions = await getBackStageCategoryOptions();
       setCategoryOptions(categoryOptions);
@@ -146,13 +146,7 @@ const PostPageCRUD = () => {
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
-  }, [
-    isAddMode,
-    postId,
-    getBackStagePostById,
-    getBackStageCategoryOptions,
-    reset
-  ]);
+  };
 
   /** 初始化 */
   useEffect(() => {

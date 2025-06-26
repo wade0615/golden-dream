@@ -171,7 +171,7 @@ function BloggerLayoutAsideCard() {
   }, []);
 
   /** 初次載入 */
-  const getInit = useCallback(async () => {
+  const getInit = async () => {
     try {
       const asideCardInfo = await getAsideCardDetail();
       const postCount = asideCardInfo?.postCount;
@@ -181,12 +181,13 @@ function BloggerLayoutAsideCard() {
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
-  }, [getAsideCardDetail]);
+  };
 
   /** 初始化 */
   useEffect(() => {
     getInit();
   }, [getInit]);
+
   return (
     <div className='blogger_layout_aside_card'>
       <section className='blogger_layout_aside_card_avatar'>

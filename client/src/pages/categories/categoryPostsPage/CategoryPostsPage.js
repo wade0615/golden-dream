@@ -66,7 +66,7 @@ const CategoryPostsPage = () => {
   );
 
   /** 初次載入 */
-  const getInit = useCallback(async () => {
+  const getInit = async () => {
     try {
       const postList = await getCategoryPostList(categoryId);
       const metaData = postList.metaData;
@@ -76,7 +76,7 @@ const CategoryPostsPage = () => {
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
-  }, [getCategoryPostList, categoryId]);
+  };
 
   /** 初始化 */
   useEffect(() => {
