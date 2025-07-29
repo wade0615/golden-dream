@@ -36,7 +36,8 @@ const PostList = () => {
         perPage: perPage,
         page: page
       };
-      const apiRes = await api.posts.getPostList(apiReq);
+      const res = await api.posts.getPostList(apiReq);
+      const apiRes = res;
       if (apiRes) {
         const res = new GetPostsClass(apiRes);
         return res;
@@ -47,7 +48,7 @@ const PostList = () => {
   }, []);
 
   /** 初次載入 */
-  const getInit = async () => {
+  const getInit = useCallback(async () => {
     try {
       const postList = await getPostList();
       const metaData = postList.metaData;
@@ -57,7 +58,7 @@ const PostList = () => {
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
-  };
+  }, [getPostList]);
 
   /** 初始化 */
   useEffect(() => {

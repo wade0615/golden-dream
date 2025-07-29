@@ -55,9 +55,9 @@ const PostPageCRUD = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const [postTitle, setPostTitle] = useState(null);
-  const [postCategory, setPostCategory] = useState(null);
-  const [postCreateDate, setPostCreateDate] = useState(null);
+  // const [postTitle, setPostTitle] = useState(null);
+  // const [postCategory, setPostCategory] = useState(null);
+  // const [postCreateDate, setPostCreateDate] = useState(null);
   const [markdown, setMarkdown] = useState(mdStr);
   const [categoryOptions, setCategoryOptions] = useState([]);
   // const [formData, setFormData] = useState({});
@@ -115,7 +115,7 @@ const PostPageCRUD = () => {
   }, []);
 
   /** 初次載入 */
-  const getInit = async () => {
+  const getInit = useCallback(async () => {
     try {
       const categoryOptions = await getBackStageCategoryOptions();
       setCategoryOptions(categoryOptions);
@@ -125,12 +125,12 @@ const PostPageCRUD = () => {
         const postInfo = await getBackStagePostById(postId);
         const postTitle = postInfo?.title;
         const postCategory = postInfo?.category;
-        const postCreatedDate = postInfo?.createdDate;
+        // const postCreatedDate = postInfo?.createdDate;
         const postContent = postInfo?.content;
         const postShortContent = postInfo?.shortContent;
-        setPostTitle(postTitle);
-        setPostCategory(postCategory);
-        setPostCreateDate(postCreatedDate);
+        // setPostTitle(postTitle);
+        // setPostCategory(postCategory);
+        // setPostCreateDate(postCreatedDate);
         setMarkdown(postContent);
 
         const formateData = {
@@ -146,7 +146,13 @@ const PostPageCRUD = () => {
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
-  };
+  }, [
+    getBackStageCategoryOptions,
+    getBackStagePostById,
+    isAddMode,
+    postId,
+    reset
+  ]);
 
   /** 初始化 */
   useEffect(() => {

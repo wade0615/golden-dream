@@ -41,13 +41,13 @@ const About = () => {
   // });
 
   /** 初次載入 */
-  const getInit = async () => {
+  const getInit = useCallback(async () => {
     try {
       console.log('Page About');
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
-  };
+  }, []);
 
   /** 前往密門 */
   const getSecretDoor = async () => {

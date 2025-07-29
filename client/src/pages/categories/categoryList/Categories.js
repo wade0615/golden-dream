@@ -39,7 +39,7 @@ const Categories = () => {
   }, []);
 
   /** 初次載入 */
-  const getInit = async () => {
+  const getInit = useCallback(async () => {
     try {
       console.log('Page Categories');
       const categoryList = await getCategoryList();
@@ -50,7 +50,7 @@ const Categories = () => {
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
-  };
+  }, [getCategoryList]);
 
   /** 初始化 */
   useEffect(() => {

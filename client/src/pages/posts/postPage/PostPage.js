@@ -146,7 +146,7 @@ const PostPage = () => {
   };
 
   /** 初次載入 */
-  const getInit = async () => {
+  const getInit = useCallback(async () => {
     try {
       const postInfo = await getPostById(postId);
       const postTitle = postInfo?.title;
@@ -166,7 +166,7 @@ const PostPage = () => {
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
-  };
+  }, [getPostById, postId, btnAnimation]);
 
   /** 初始化 */
   useEffect(() => {
