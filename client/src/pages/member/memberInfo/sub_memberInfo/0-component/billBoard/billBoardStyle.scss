@@ -1,7 +1,0 @@
-.billBoard {
-  margin: 1rem 0.5rem;
-  display: flex;
-  &__item + &__item {
-    border-left: 1px solid rgba(0, 0, 0, 0.12);
-  }
-}
