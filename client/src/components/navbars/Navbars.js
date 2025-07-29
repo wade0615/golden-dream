@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -13,17 +14,27 @@ import { useNavigate } from 'react-router-dom';
  * @returns <Navbars />
  */
 const Navbars = ({ brand = '', sideNavTitle = '', subPath = [] }) => {
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
     <>
       <Navbar key='md' expand='md'>
         <Container fluid='lg'>
           <Navbar.Brand href='/'>{brand}</Navbar.Brand>
-          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
+          <Navbar.Toggle
+            aria-controls={`offcanvasNavbar-expand-md`}
+            onClick={handleShow}
+          />
           <Navbar.Offcanvas
             id={`offcanvasNavbar-expand-md`}
             aria-labelledby={`offcanvasNavbarLabel-expand-md`}
             placement='end'
+            show={show}
+            onHide={handleClose}
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title id={`offcanvasNavbarLabel-expand-md`}>
@@ -36,7 +47,10 @@ const Navbars = ({ brand = '', sideNavTitle = '', subPath = [] }) => {
                   <Nav.Link
                     // href={_subPath?.path}
                     key={`navbars_subPath_${index}`}
-                    onClick={() => navigate(_subPath?.path)}
+                    onClick={() => {
+                      navigate(_subPath?.path);
+                      handleClose();
+                    }}
                   >
                     {_subPath?.title}
                   </Nav.Link>

@@ -4,6 +4,8 @@ import { routerConfig } from 'routes/router';
 import routerPath from 'routes/router.path';
 import api from 'services/api';
 
+import useScrollToTop from 'hooks/useScrollToTop';
+
 import Navbars from 'components/navbars/Navbars';
 // import Avatar from 'components/avatar/Avatar';
 // import Breadcrumb from 'components/breadcrumb/Breadcrumb';
@@ -28,6 +30,7 @@ const _EHS = new ExceptionHandleService({
 /** Nav */
 function BloggerLayoutNav() {
   const [isActive, setIsActive] = useState(false); // 用於管理 navbar 的狀態
+
   useEffect(() => {
     let lastScrollTop = 0;
 
@@ -48,6 +51,7 @@ function BloggerLayoutNav() {
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
   return (
     <nav className={`blogger_layout_nav_menu` + (isActive ? ' isActive' : '')}>
       <Navbars
@@ -83,6 +87,9 @@ function BloggerLayoutNav() {
 /* 基本樣式： 側邊欄 + 上部使用者導覽 + 名稱 */
 function BloggerLayout({ children, bannerHeight }) {
   const location = useLocation();
+
+  // 使用自定義 hook 來監聽路由變化並滾動到頂部
+  useScrollToTop();
 
   // 遞迴獲取最深層次且最匹配當前路徑的路由配置 反向遍歷
   const getMatchedRoute = (routes, pathname, prefix = '') => {

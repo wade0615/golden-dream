@@ -163,6 +163,12 @@ const PostPage = () => {
       setRecentPostId(postRecentPostId);
 
       btnAnimation();
+
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth' // 使用平滑滾動效果
+      });
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }

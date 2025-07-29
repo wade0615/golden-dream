@@ -18,4 +18,4 @@ const useScrollToTop = () => {
   }, [location.pathname]); // 依賴於路徑變化
 };
 
-export default useScrollToTop; 
+export default useScrollToTop;
