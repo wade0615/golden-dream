@@ -1,5 +1,5 @@
-@import "../../../styles/defaultStyle.scss";
-@import url("https://fonts.googleapis.com/css?family=Open+Sans|Prata");
+@import '../../../styles/defaultStyle.scss';
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Prata');
 
 #post_page.post_container {
   position: relative;
@@ -73,8 +73,8 @@
   p:has(img) img {
     width: 100%;
     height: auto;
-    // max-height: 60vh;
-    object-fit: cover;
+    max-height: 60vh;
+    object-fit: contain;
     border-radius: 0.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
@@ -108,7 +108,7 @@
       border-radius: 10px;
       color: $button-text-color;
       font-size: 1.2rem;
-      font-family: "Prata";
+      font-family: 'Prata';
       letter-spacing: 2px;
       svg {
         height: 1.5rem;
