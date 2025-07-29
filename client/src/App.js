@@ -11,10 +11,14 @@ import router from './routes/router';
 // import PageRoute from 'pages/PagesRoute';
 
 import Loading from 'components/loading/Loading';
+import useScrollToTop from './hooks/useScrollToTop';
 
 function GaTracker() {
   const location = useLocation();
   const navigationType = useNavigationType();
+  
+  // 使用自定義 hook 來監聽路由變化並滾動到頂部
+  useScrollToTop();
 
   useEffect(() => {
     ReactGA.send({
