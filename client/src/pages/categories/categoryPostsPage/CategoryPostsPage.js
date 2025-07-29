@@ -52,8 +52,7 @@ const CategoryPostsPage = () => {
           perPage: perPage,
           page: page
         };
-        const res = await api.category.getCategoryPostList(apiReq);
-        const apiRes = res;
+        const apiRes = await api.category.getCategoryPostList(apiReq);
         if (apiRes) {
           const res = new GetCategoryPostListClass(apiRes);
           return res;

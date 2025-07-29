@@ -51,8 +51,7 @@ const PostPage = () => {
       const apiReq = {
         postId: postId
       };
-      const res = await api.posts.getPostById(apiReq);
-      const apiRes = res;
+      const apiRes = await api.posts.getPostById(apiReq);
       if (apiRes) {
         const res = new GetPostByIdClass(apiRes);
         return res;
@@ -164,6 +163,12 @@ const PostPage = () => {
       setRecentPostId(postRecentPostId);
 
       btnAnimation();
+
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth' // 使用平滑滾動效果
+      });
     } catch (error) {
       _EHS.errorReport(error, 'getInit', _EHS._LEVEL.ERROR);
     }
