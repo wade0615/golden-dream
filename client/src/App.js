@@ -12,6 +12,7 @@ import router from './routes/router';
 
 import Loading from 'components/loading/Loading';
 import useScrollToTop from './hooks/useScrollToTop';
+import useCloseMobileSidebar from './hooks/useCloseMobileSidebar';
 
 function GaTracker() {
   const location = useLocation();
@@ -19,6 +20,9 @@ function GaTracker() {
   
   // 使用自定義 hook 來監聽路由變化並滾動到頂部
   useScrollToTop();
+  
+  // 使用自定義 hook 來監聽路由變化並關閉 react-bootstrap 手機版側邊欄
+  useCloseMobileSidebar();
 
   useEffect(() => {
     ReactGA.send({
