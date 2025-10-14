@@ -77,7 +77,8 @@ export class PostsRepository {
         bp.Post_Name AS title, 
         bp.Create_Date AS createdDate, 
         bp.Content AS content,
-        bc.Category_Name AS categoryName
+        bc.Category_Name AS categoryName,
+        bc.Category_ID AS categoryId
       FROM blog_post bp 
       LEFT JOIN blog_map_post_category bmpc 
         ON bmpc.Post_ID = bp.Post_ID

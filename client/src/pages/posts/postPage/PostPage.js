@@ -33,6 +33,7 @@ const PostPage = () => {
   const location = useLocation();
   const [postTitle, setPostTitle] = useState(null);
   const [postCategory, setPostCategory] = useState(null);
+  const [postCategoryId, setPostCategoryId] = useState(null);
   const [postCreateDate, setPostCreateDate] = useState(null);
   const [markdown, setMarkdown] = useState(mdStr);
   const [earlierPostId, setEarlierPostId] = useState(null);
@@ -151,12 +152,14 @@ const PostPage = () => {
       const postInfo = await getPostById(postId);
       const postTitle = postInfo?.title;
       const postCategory = postInfo?.category;
+      const postCategoryId = postInfo?.categoryId;
       const postCreatedDate = postInfo?.createdDate;
       const postContent = postInfo?.content;
       const postEarlierPostId = postInfo?.prevPostId;
       const postRecentPostId = postInfo?.nextPostId;
       setPostTitle(postTitle);
       setPostCategory(postCategory);
+      setPostCategoryId(postCategoryId);
       setPostCreateDate(postCreatedDate);
       setMarkdown(postContent);
       setEarlierPostId(postEarlierPostId);
@@ -186,7 +189,20 @@ const PostPage = () => {
         <BsCalendar3 />
         <span className='post_createDate'>{postCreateDate}</span>
         <FaRegFolderOpen />
-        <span className='post_category'>{postCategory}</span>
+        <span 
+          className='post_category' 
+          onClick={() => {
+            navigate(
+              `/${routerPath.categories}/${routerPath.categoryPostsPage}?id=${postCategoryId}`,
+              {
+                state: {
+                  categoryId: postCategoryId,
+                  categoryName: postCategory
+                }
+              }
+            );
+          }}
+        >{postCategory}</span>
       </header>
 
       <section className='post_content'>
