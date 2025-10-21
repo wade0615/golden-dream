@@ -1,8 +1,8 @@
 import { memo } from 'react';
 import './tagStyle.scss';
 
-function Tag({ children = 'tag' }) {
-  return <div className='tag'>{children}</div>;
+function Tag({ children = 'tag', variant = 'tag--secondary' }) {
+  return <div className={`tag ${variant}`}>{children}</div>;
 }
 
 export default memo(Tag);

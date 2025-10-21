@@ -7,4 +7,5 @@ export interface GetPostListInterface {
   tag: string;
   shortContent: string;
   isPublish: number;
+  isPublic: number;
 }

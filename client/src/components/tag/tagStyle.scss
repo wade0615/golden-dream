@@ -1,10 +1,22 @@
 .tag {
   display: inline-flex;
-  background: rgba(var(--bs-info-rgb), 0.2);
+  // background: rgba(var(--bs-info-rgb), 0.2);
   border-radius: 4px;
   padding: 4px 12px;
-  color: var(--bs-info);
+  // color: var(--bs-info);
   font-size: 14px;
   font-weight: 500;
   margin: 2px;
+  &.tag--success {
+    background: rgba(var(--bs-success-rgb), 0.2);
+    color: var(--bs-success);
+  }
+  &.tag--info {
+    background: rgba(var(--bs-info-rgb), 0.2);
+    color: var(--bs-info);
+  }
+  &.tag--secondary {
+    background: rgba(var(--bs-secondary-rgb), 0.2);
+    color: var(--bs-secondary);
+  }
 }

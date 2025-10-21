@@ -66,6 +66,16 @@ const _defaultSearch = {
   membershipStatus: ''
 };
 
+const getStatusText = (isPublish, isPublic) => {
+  if (isPublish && isPublic) {
+    return "已發佈並公開";
+  } else if (isPublish && !isPublic) {
+    return "已發佈未公開";
+  } else {
+    return "未發佈";
+  }
+};
+
 /** 後台文章列表 */
 function PostList() {
   const [listData, setListData] = useState([]); // table original datarestValues
@@ -134,7 +144,19 @@ function PostList() {
     }),
     columnHelper.accessor('isPublish', {
       header: '是否發佈',
-      cell: (info) => <Table.Tag>{info.getValue()}</Table.Tag>,
+      cell: (info) => {
+        const isPublish = info.getValue();
+        const isPublic = info.row.original.isPublic; // 假設有這個欄位
+        
+        let variant = 'tag--secondary'; // 預設未發佈
+        if (isPublish && isPublic) {
+          variant = 'tag--success'; // 已發佈並公開
+        } else if (isPublish && !isPublic) {
+          variant = 'tag--info'; // 已發佈未公開
+        }
+        
+        return <Table.Tag variant={variant}>{getStatusText(isPublish, isPublic)}</Table.Tag>;
+      },
       enableSorting: false
     }),
     columnHelper.accessor('createDate', {

@@ -77,7 +77,7 @@ export class PostList {
     example: '1',
     description: '是否發布'
   })
-  @IsString()
+  @IsNumber()
   isPublish: number;
 
   @ApiProperty({
@@ -87,6 +87,14 @@ export class PostList {
   })
   @IsString()
   content: string;
+
+  @ApiProperty({
+    title: '是否公開',
+    example: '1',
+    description: '是否公開'
+  })
+  @IsNumber()
+  isPublic: number;
 }
 
 export class GetPostListResp {
