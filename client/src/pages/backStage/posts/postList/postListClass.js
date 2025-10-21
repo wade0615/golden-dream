@@ -27,7 +27,8 @@ const Post = class {
     this.tag = data?.tag ?? '';
     this.content = data?.content ?? '';
     this.updatePerson = data?.alterPerson ?? 'Owner';
-    this.isPublish = data?.isPublish ? '已發布' : '未發布';
+    this.isPublish = data?.isPublish;
+    this.isPublic = data?.isPublic;
   }
 };
 

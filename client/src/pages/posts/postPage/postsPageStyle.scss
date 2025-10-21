@@ -21,6 +21,13 @@
       margin: 0 1rem 0 0.5rem;
       vertical-align: middle;
     }
+    span.post_category {
+      cursor: pointer;
+      transition: color 0.3s ease;
+      &:hover {
+        color: $main-color;
+      }
+    }
   }
   .post_editor {
     margin-bottom: 4rem;

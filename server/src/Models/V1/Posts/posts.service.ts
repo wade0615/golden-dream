@@ -65,6 +65,7 @@ export class PostsService {
       const result = {
         title: postInfo?.title ?? '未知的標題',
         category: postInfo?.categoryName ?? '未知的分類',
+        categoryId: postInfo?.categoryId ?? '未知的分類ID',
         createdDate: moment(postInfo?.createdDate).format('YYYY-MM-DD') ?? '',
         content:
           postInfo?.content.replace(/\\\\/g, '\\').replace(/\\n/g, '\n') ??

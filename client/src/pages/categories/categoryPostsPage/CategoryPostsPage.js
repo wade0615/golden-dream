@@ -89,11 +89,17 @@ const CategoryPostsPage = () => {
 
   /* 上下頁切換 */
   const handlePageFetch = async (page) => {
-    const postList = await getCategoryPostList(page, pageMeta.perPage);
+    const postList = await getCategoryPostList(categoryId, page, pageMeta.perPage);
     const metaData = postList.metaData;
     const posts = postList.postList;
     setPageMeta(metaData);
     setListData(posts);
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth' // 使用平滑滾動效果
+    });
   };
 
   return (

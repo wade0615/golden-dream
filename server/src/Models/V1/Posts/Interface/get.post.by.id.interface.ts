@@ -3,6 +3,7 @@ export interface GetPostByIdInterface {
   title: string;
   createdDate: string;
   categoryName: string;
+  categoryId: string;
   tag: string;
   content: string;
 }

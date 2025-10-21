@@ -6,6 +6,8 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 
 import { useNavigate } from 'react-router-dom';
 
+import './navbarsStyle.scss';
+
 /**
  * 部落格用 Navbars
  * @param {string} brand - 標題
@@ -51,6 +53,7 @@ const Navbars = ({ brand = '', sideNavTitle = '', subPath = [] }) => {
                       navigate(_subPath?.path);
                       handleClose();
                     }}
+                    className='navbars_subPath_link'
                   >
                     {_subPath?.title}
                   </Nav.Link>

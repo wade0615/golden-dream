@@ -77,6 +77,12 @@ const PostList = () => {
     const posts = postList.postList;
     setPageMeta(metaData);
     setListData(posts);
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth' // 使用平滑滾動效果
+    });
   };
 
   return (

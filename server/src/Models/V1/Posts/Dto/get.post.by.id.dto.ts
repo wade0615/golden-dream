@@ -31,6 +31,14 @@ export class GetPostByIdResp {
   category: string;
 
   @ApiProperty({
+    title: '分類ID',
+    example: '測試分類ID',
+    description: '分類'
+  })
+  @IsString()
+  categoryId: string;
+
+  @ApiProperty({
     title: '簡介',
     example: '這是一篇測試文章',
     description: '簡介'

@@ -28,7 +28,8 @@ export class PostsRepository {
         bp.Alter_Date AS alterDate,
         bp.Short_Content AS shortContent,
         bc.Category_Name AS categoryName,
-        bp.Is_Publish AS isPublish
+        bp.Is_Publish AS isPublish,
+        bp.Is_Public AS isPublic
       FROM blog_post bp 
       LEFT JOIN blog_map_post_category bmpc 
         ON bmpc.Post_ID = bp.Post_ID
