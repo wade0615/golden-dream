@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef
+} from 'react';
 // import '@wcj/dark-mode';
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -38,6 +44,8 @@ const PostPage = () => {
   const [markdown, setMarkdown] = useState(mdStr);
   const [earlierPostId, setEarlierPostId] = useState(null);
   const [recentPostId, setRecentPostId] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null); // 當前選中的圖片
+  const markdownRef = useRef(null); // 用於引用 markdown 容器
   const postId = useMemo(
     () => new URLSearchParams(location.search).get('id'),
     [location.search]
@@ -182,6 +190,63 @@ const PostPage = () => {
     getInit();
   }, [getInit]);
 
+  /** 為圖片添加點擊事件 */
+  useEffect(() => {
+    if (!markdown) return;
+
+    // 等待 markdown 渲染完成
+    const timer = setTimeout(() => {
+      const postEditor = document.querySelector('.post_editor');
+      if (!postEditor) return;
+
+      const images = postEditor.querySelectorAll('img');
+
+      images.forEach((img) => {
+        // 如果已經有事件監聽器，跳過
+        if (img.hasAttribute('data-image-click-bound')) return;
+
+        // 標記已綁定事件
+        img.setAttribute('data-image-click-bound', 'true');
+
+        // 添加點擊事件
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', (e) => {
+          e.stopPropagation();
+          setSelectedImage(img.src);
+        });
+      });
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [markdown]);
+
+  /** 關閉圖片預覽 */
+  const handleCloseImagePreview = useCallback(() => {
+    setSelectedImage(null);
+  }, []);
+
+  /** ESC 鍵關閉 */
+  useEffect(() => {
+    const handleEscKey = (e) => {
+      if (e.key === 'Escape' && selectedImage) {
+        handleCloseImagePreview();
+      }
+    };
+
+    if (selectedImage) {
+      window.addEventListener('keydown', handleEscKey);
+      // 防止背景滾動
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleEscKey);
+      document.body.style.overflow = '';
+    };
+  }, [selectedImage, handleCloseImagePreview]);
+
   return (
     <div id='post_page' className='post_container'>
       <header className='post_header'>
@@ -189,8 +254,8 @@ const PostPage = () => {
         <BsCalendar3 />
         <span className='post_createDate'>{postCreateDate}</span>
         <FaRegFolderOpen />
-        <span 
-          className='post_category' 
+        <span
+          className='post_category'
           onClick={() => {
             navigate(
               `/${routerPath.categories}/${routerPath.categoryPostsPage}?id=${postCategoryId}`,
@@ -202,13 +267,15 @@ const PostPage = () => {
               }
             );
           }}
-        >{postCategory}</span>
+        >
+          {postCategory}
+        </span>
       </header>
 
       <section className='post_content'>
         <dark-mode light='Light' dark='Dark'></dark-mode>
 
-        <div className='post_editor' data-color-mode='light'>
+        <div className='post_editor' data-color-mode='light' ref={markdownRef}>
           <MarkdownEditor.Markdown source={markdown} height='200px' />
         </div>
 
@@ -247,6 +314,21 @@ const PostPage = () => {
           ) : null}
         </div>
       </section>
+
+      {/* 全屏圖片預覽覆蓋層 */}
+      {selectedImage && (
+        <div
+          className='image_preview_overlay'
+          onClick={handleCloseImagePreview}
+        >
+          <img
+            src={selectedImage}
+            alt='Preview'
+            className='image_preview_fullscreen'
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </div>
   );
 };
